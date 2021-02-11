@@ -6,12 +6,18 @@ import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 
 import java.io.IOException;
 
+/**
+ * The presenter for the signin functionality of the application.
+ */
 public class SigninPresenter {
 
     private final View view;
 
+    /**
+     * The interface by which this presenter communicates with it's view.
+     */
     public interface View {
-
+        // If needed, specify methods here that will be called on the view in response to model updates
     }
 
     public SigninPresenter(SigninPresenter.View view) {
