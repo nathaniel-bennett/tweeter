@@ -9,8 +9,10 @@ import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.FollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
+import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
+import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 
 /**
  * Acts as a Facade to the Tweeter server. All network requests to the server should go through
@@ -137,5 +139,23 @@ public class ServerFacade {
         return Arrays.asList(user1, user2, user3, user4, user5, user6, user7,
                 user8, user9, user10, user11, user12, user13, user14, user15, user16, user17, user18,
                 user19, user20);
+    }
+
+    /**
+     * Logs out a user with an AuthToken
+     * @param logoutRequest
+     * @return
+     */
+    public LogoutResponse logout(LogoutRequest logoutRequest) {
+        LogoutResponse logoutResponse = null;
+
+        if (logoutRequest.getAuthToken() == null) {
+            logoutResponse = new LogoutResponse(false, "Invalid AuthToken");
+        } else {
+            logoutResponse = new LogoutResponse(true);
+        }
+
+        return  logoutResponse;
+
     }
 }
