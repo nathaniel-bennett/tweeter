@@ -26,14 +26,17 @@
                 android:layout_height="100dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:contentDescription="@string/userImageContentDescription" />
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_toEndOf="@+id/userImage"
-                android:layout_centerVertical="true">
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/userImage">
 
                 <TextView
                     android:id="@+id/userName"

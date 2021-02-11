@@ -28,7 +28,7 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
     private final AuthToken authToken;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm, User user, AuthToken authToken) {
-        super(fm);
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mContext = context;
         this.user = user;
         this.authToken = authToken;

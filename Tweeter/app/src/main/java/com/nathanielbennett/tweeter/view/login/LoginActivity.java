@@ -1,6 +1,7 @@
-package com.nathanielbennett.tweeter.view;
+package com.nathanielbennett.tweeter.view.login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
 import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
@@ -34,6 +36,15 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
 
         presenter = new LoginPresenter(this);
 
+        // Set up fragments associated with each tab
+        LoginTabPagerAdapter tabPagerAdapter = new LoginTabPagerAdapter(getSupportFragmentManager(), this);
+        ViewPager viewPager = findViewById(R.id.login_tab_pager);
+        viewPager.setAdapter(tabPagerAdapter);
+        TabLayout tabs = findViewById(R.id.login_tabs);
+        tabs.setupWithViewPager(viewPager);
+
+
+        // Set up temporary login button TODO: remove
         Button loginButton = findViewById(R.id.LoginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
 

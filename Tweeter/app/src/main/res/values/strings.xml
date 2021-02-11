@@ -18,4 +18,12 @@
     <string name="title_activity_login">Sign in</string>
     <string name="followeeCount">Following: %d</string>
     <string name="followerCount">Followers: %d</string>
+    <string name="login_label">Login</string>
+    <string name="register_label">Register</string>
+    <string name="app_title">tweeter</string>
+    <string name="username_label">\@username</string>
+    <string name="password_label">password</string>
+    <string name="first_name_label">first name</string>
+    <string name="last_name_label">last name</string>
+    <string name="take_profile_picture">Take Profile Picture</string>
 </resources>

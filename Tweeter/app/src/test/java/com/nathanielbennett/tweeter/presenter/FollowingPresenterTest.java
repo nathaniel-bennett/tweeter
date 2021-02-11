@@ -8,10 +8,10 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Arrays;
 
-import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.model.service.FollowingService;
-import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
-import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
+import com.nathanielbennett.tweeter.model.domain.User;
+import com.nathanielbennett.tweeter.model.service.FollowingService;
+import com.nathanielbennett.tweeter.model.service.request.FollowingRequest;
+import com.nathanielbennett.tweeter.model.service.response.FollowingResponse;
 
 public class FollowingPresenterTest {
 
