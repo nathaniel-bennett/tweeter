@@ -6,7 +6,7 @@ import java.util.Objects;
 import com.nathanielbennett.tweeter.model.domain.User;
 
 /**
- * A paged response for a {@link edu.byu.cs.tweeter.model.service.request.FollowingRequest}.
+ * A paged response for a {@link com.nathanielbennett.tweeter.model.service.request.FollowingRequest}.
  */
 public class FollowingResponse extends PagedResponse {
 
