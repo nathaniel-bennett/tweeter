@@ -1,5 +1,7 @@
 package com.nathanielbennett.tweeter.presenter;
 
+import android.util.Log;
+
 import java.io.IOException;
 
 import com.nathanielbennett.tweeter.model.service.LoginService;
@@ -35,6 +37,8 @@ public class LoginPresenter {
      * @param loginRequest the request.
      */
     public LoginResponse login(LoginRequest loginRequest) throws IOException {
+        Log.e("login username", loginRequest.getUsername());
+        Log.e("login password", loginRequest.getPassword());
         LoginService loginService = new LoginService();
         return loginService.login(loginRequest);
     }

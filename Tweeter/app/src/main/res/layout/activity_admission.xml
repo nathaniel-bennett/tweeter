@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.login.LoginActivity"
+    tools:context=".view.admission.AdmissionActivity"
     android:orientation="vertical">
 
 
@@ -31,7 +31,7 @@
 
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/login_tabs"
+            android:id="@+id/admission_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary" />
@@ -40,17 +40,10 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/login_tab_pager"
+        android:id="@+id/admission_tab_pager"
         android:layout_width="match_parent"
-        android:layout_height="325dp"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <Button
-        android:id="@+id/LoginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Push this Button to Login with a Hard-Coded User"
-        />
 
 </LinearLayout>

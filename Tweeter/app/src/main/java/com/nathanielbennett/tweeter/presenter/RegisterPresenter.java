@@ -1,6 +1,10 @@
 package com.nathanielbennett.tweeter.presenter;
 
 
+import com.nathanielbennett.tweeter.model.service.RegisterService;
+import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
+import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
+
 import java.io.IOException;
 
 /**
@@ -24,13 +28,10 @@ public class RegisterPresenter {
     /**
      * Makes a login request.
      *
-     * @param loginRequest the request.
+     * @param request the request to register.
      */
-    /*
-    public RegisterResponse register(LoginRequest loginRequest) throws IOException {
-        LoginService loginService = new LoginService();
-        return loginService.login(loginRequest);
+    public RegisterResponse performRegistration(RegisterRequest request) throws IOException {
+        RegisterService registerService = new RegisterService();
+        return registerService.register(request);
     }
-     */
-
 }

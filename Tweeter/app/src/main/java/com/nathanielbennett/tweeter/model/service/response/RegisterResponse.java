@@ -3,10 +3,7 @@ package com.nathanielbennett.tweeter.model.service.response;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
 
-/**
- * A response for a {@link com.nathanielbennett.tweeter.model.service.request.LoginRequest}.
- */
-public class LoginResponse extends Response {
+public class RegisterResponse extends Response {
 
     private User user;
     private AuthToken authToken;
@@ -16,7 +13,7 @@ public class LoginResponse extends Response {
      *
      * @param message a message describing why the request was unsuccessful.
      */
-    public LoginResponse(String message) {
+    public RegisterResponse(String message) {
         super(false, message);
     }
 
@@ -26,11 +23,12 @@ public class LoginResponse extends Response {
      * @param user the now logged in user.
      * @param authToken the auth token representing this user's session with the server.
      */
-    public LoginResponse(User user, AuthToken authToken) {
+    public RegisterResponse(User user, AuthToken authToken) {
         super(true, null);
         this.user = user;
         this.authToken = authToken;
     }
+
 
     /**
      * Returns the logged in user.
@@ -49,4 +47,5 @@ public class LoginResponse extends Response {
     public AuthToken getAuthToken() {
         return authToken;
     }
+
 }

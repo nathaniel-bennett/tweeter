@@ -53,7 +53,7 @@ public class ServerFacade {
      * @return the login response.
      */
     public LoginResponse login(LoginRequest request) {
-        if (request.getPassword() == "dummyPassword" && request.getUsername() == "dummyUserName"){
+        if (request.getPassword().equals("dummyPassword") && request.getUsername().equals("dummyUserName")){
             User user = new User("Test", "User", "helloWorld",
                     "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
             return new LoginResponse(user, new AuthToken());
