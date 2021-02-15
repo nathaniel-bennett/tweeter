@@ -3,13 +3,13 @@ Client-side Android App (clone of Twitter) for CS 340
 
 **Sign-Up Feature (Nathan):**
 
-__•	Make Unit Tests
+&emsp;•	Make Unit Tests
 
-•	Picture thingy (with Chris)
+&emsp;•	Picture thingy (with Chris)
 
 **Sign-In Feature (Nathan):**
 
-•	Make Unit Tests
+&emsp;•	Make Unit Tests
 
 **Sign-Out Feature (Curtis):**
 
@@ -17,19 +17,19 @@ __•	Make Unit Tests
 
 **View Feed Feature (Chris):**
 
-•	Using recycler-view abstraction
+&emsp;•	Using recycler-view abstraction
 
 **View User Story Feature (Chris):**
 
-•	Using recycler-view abstraction
+&emsp;•	Using recycler-view abstraction
 
 **View User Followers Feature (Curtis):**
 
-•	Abstracted requests and responses so this can be reused for followers
+&emsp;•	Abstracted requests and responses so this can be reused for followers
 
 **View User Following Feature (Curtis):**
 
-•	Abstracted requests and responses so this can be reused for followers
+&emsp;•	Abstracted requests and responses so this can be reused for followers
 
 **Follow Feature (Chris):**
 
