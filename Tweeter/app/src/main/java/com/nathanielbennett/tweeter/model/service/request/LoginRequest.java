@@ -3,7 +3,7 @@ package com.nathanielbennett.tweeter.model.service.request;
 /**
  * Contains all the information needed to make a login request.
  */
-public class LoginRequest {
+public class LoginRequest implements Request{
 
     private final String username;
     private final String password;
