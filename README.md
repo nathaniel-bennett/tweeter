@@ -3,7 +3,7 @@ Client-side Android App (clone of Twitter) for CS 340
 
 **Sign-Up Feature (Nathan):**
 
-•	Make Unit Tests
+_•	Make Unit Tests
 
 •	Picture thingy (with Chris)
 
