@@ -14,6 +14,10 @@ public abstract class TemplateTask extends AsyncTask<Request,  Void, Response> {
 
     private Exception exception;
 
+    public interface Observer {
+
+    }
+
 
     protected abstract Response performTask(Request request) throws IOException;
 

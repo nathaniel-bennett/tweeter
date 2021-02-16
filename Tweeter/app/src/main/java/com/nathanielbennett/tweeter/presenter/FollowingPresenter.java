@@ -1,15 +1,15 @@
 package com.nathanielbennett.tweeter.presenter;
 
-import java.io.IOException;
-
 import com.nathanielbennett.tweeter.model.service.FollowingService;
 import com.nathanielbennett.tweeter.model.service.request.FollowingRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowingResponse;
 
+import java.io.IOException;
+
 /**
  * The presenter for the "following" functionality of the application.
  */
-public class FollowingPresenter {
+public class FollowingPresenter implements TemplatePresenter {
 
     private final View view;
 

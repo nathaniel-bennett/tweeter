@@ -1,13 +1,13 @@
 package com.nathanielbennett.tweeter.view.asyncTasks;
 
 
-import java.io.IOException;
-
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.request.Request;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.model.service.response.Response;
 import com.nathanielbennett.tweeter.presenter.LoginPresenter;
+
+import java.io.IOException;
 
 public class LoginTask extends TemplateTask {
 
@@ -15,7 +15,7 @@ public class LoginTask extends TemplateTask {
      * An observer interface to be implemented by observers who want to be notified when this task
      * completes.
      */
-    public interface Observer {
+    public interface Observer extends TemplateTask.Observer {
         void loginSuccessful(LoginResponse loginResponse);
         void loginUnsuccessful(LoginResponse loginResponse);
         void loginException(Exception ex);
