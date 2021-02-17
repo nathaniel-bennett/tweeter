@@ -1,4 +1,4 @@
-package com.nathanielbennett.tweeter.view.main.fragments.following;
+package com.nathanielbennett.tweeter.view.main.fragments.follow;
 
 import android.content.Context;
 import android.view.View;
@@ -13,7 +13,7 @@ import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.view.main.fragments.TemplateItemHolder;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
 
-public class FollowingItemHolder extends TemplateItemHolder<User> {
+public class FollowItemHolder extends TemplateItemHolder<User> {
 
     private final ImageView userImage;
     private final TextView userAlias;
@@ -25,7 +25,7 @@ public class FollowingItemHolder extends TemplateItemHolder<User> {
      * @param itemView the view on which the user will be displayed.
      * @param context The context needed to make a toast
      */
-    FollowingItemHolder(@NonNull View itemView, int viewType, Context context) {
+    public FollowItemHolder(@NonNull View itemView, int viewType, Context context) {
         super(itemView);
 
         if (viewType == ITEM_VIEW_TYPE) {

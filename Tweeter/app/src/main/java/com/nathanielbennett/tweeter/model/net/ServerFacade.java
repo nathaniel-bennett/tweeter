@@ -1,18 +1,20 @@
 package com.nathanielbennett.tweeter.model.net;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.nathanielbennett.tweeter.BuildConfig;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
+import com.nathanielbennett.tweeter.model.service.request.FollowersRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
+import com.nathanielbennett.tweeter.model.service.response.FollowersResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Acts as a Facade to the Tweeter server. All network requests to the server should go through
@@ -104,6 +106,35 @@ public class ServerFacade {
         return new FollowingResponse(responseFollowees, hasMorePages);
     }
 
+    public FollowersResponse getFollowers(FollowersRequest request) {
+        if (BuildConfig.DEBUG) {
+            if(request.getLimit() < 0) {
+                throw new AssertionError();
+            }
+
+            if (request.getFolloweeAlias() == null) {
+                throw new AssertionError();
+            }
+        }
+
+        List<User> allFollowers = getDummyFollowers();
+        List<User> responseFollowers = new ArrayList<>(request.getLimit());
+
+        boolean hasMorePages = false;
+
+        if (request.getLimit() > 0) {
+            int followersIndex = getFolloweesStartingIndex(request.getLastFollowerAlias(), allFollowers);
+
+            for (int limitCounter = 0; followersIndex < allFollowers.size() && limitCounter < request.getLimit(); followersIndex++, limitCounter++) {
+                responseFollowers.add(allFollowers.get(followersIndex));
+            }
+
+            hasMorePages = followersIndex < allFollowers.size();
+        }
+
+        return new FollowersResponse(responseFollowers, hasMorePages);
+    }
+
     /**
      * Determines the index for the first followee in the specified 'allFollowees' list that should
      * be returned in the current request. This will be the index of the next followee after the
@@ -144,6 +175,10 @@ public class ServerFacade {
         return Arrays.asList(user1, user2, user3, user4, user5, user6, user7,
                 user8, user9, user10, user11, user12, user13, user14, user15, user16, user17, user18,
                 user19, user20);
+    }
+
+    List<User> getDummyFollowers() {
+        return Arrays.asList(user1, user3, user6, user9, user12, user15, user18, user20);
     }
 
     /**

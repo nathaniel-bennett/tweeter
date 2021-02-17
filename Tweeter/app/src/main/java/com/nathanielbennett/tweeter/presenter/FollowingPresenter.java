@@ -18,6 +18,7 @@ public class FollowingPresenter implements TemplatePresenter {
      */
     public interface View {
         // If needed, specify methods here that will be called on the view in response to model updates
+
     }
 
     /**

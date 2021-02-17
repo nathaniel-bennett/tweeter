@@ -4,7 +4,7 @@ package com.nathanielbennett.tweeter.model.service.request;
  * Contains all the information needed to make a request to have the server return the next page of
  * followees for a specified follower.
  */
-public class FollowingRequest {
+public class FollowingRequest implements Request {
 
     private final String followerAlias;
     private final int limit;

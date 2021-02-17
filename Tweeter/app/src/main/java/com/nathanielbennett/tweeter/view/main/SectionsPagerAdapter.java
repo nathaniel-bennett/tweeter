@@ -11,7 +11,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.view.main.fragments.following.FollowingFragment;
+import com.nathanielbennett.tweeter.view.main.fragments.follow.followers.FollowersFragment;
+import com.nathanielbennett.tweeter.view.main.fragments.follow.following.FollowingFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to one of the sections/tabs/pages
@@ -20,6 +21,7 @@ import com.nathanielbennett.tweeter.view.main.fragments.following.FollowingFragm
 class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     private static final int FOLLOWING_FRAGMENT_POSITION = 2;
+    private static final int FOLLOWER_FRAGMENT_POSITION = 3;
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.feedTabTitle, R.string.storyTabTitle, R.string.followingTabTitle, R.string.followersTabTitle};
@@ -38,6 +40,8 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         if (position == FOLLOWING_FRAGMENT_POSITION) {
             return FollowingFragment.newInstance(user, authToken);
+        } else if (position == FOLLOWER_FRAGMENT_POSITION) {
+            return FollowersFragment.newInstance(user, authToken);
         } else {
             return PlaceholderFragment.newInstance(position + 1);
         }

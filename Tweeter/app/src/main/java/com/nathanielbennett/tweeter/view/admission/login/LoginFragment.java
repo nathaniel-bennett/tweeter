@@ -10,7 +10,8 @@ import com.nathanielbennett.tweeter.presenter.LoginPresenter;
 import com.nathanielbennett.tweeter.view.admission.AdmissionTabFragment;
 import com.nathanielbennett.tweeter.view.asyncTasks.LoginTask;
 
-public class LoginFragment extends AdmissionTabFragment implements LoginPresenter.View, LoginTask.Observer {
+public class LoginFragment extends AdmissionTabFragment implements LoginPresenter.View,
+        LoginTask.Observer {
 
     private final LoginPresenter presenter;
 

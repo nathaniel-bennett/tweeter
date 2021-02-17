@@ -15,17 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract public class TemplateRecyclerViewAdapter<Item> extends RecyclerView.Adapter<TemplateItemHolder<Item>> {
-    public final List<Item> itemsToDisplay = new ArrayList<>();
+    protected final List<Item> itemsToDisplay = new ArrayList<>();
 
+    protected static final int LOADING_DATA_VIEW = 0;
+    protected static final int ITEM_VIEW = 1;
+    protected static final int PAGE_SIZE = 10;
 
-    public static final int LOADING_DATA_VIEW = 0;
-    public static final int ITEM_VIEW = 1;
-    public static final int PAGE_SIZE = 10;
-
-    public boolean hasMorePages;
-    public boolean isLoading = false;
-    public Context context;
-    public User user; //PASSED FROM THE FRAGMENT
+    protected boolean hasMorePages;
+    protected boolean isLoading = false;
+    protected Context context;
+    protected User user; //PASSED FROM THE FRAGMENT
 
     /**
      * Adds new items to the list from which the RecyclerView retrieves the users it displays
@@ -118,6 +117,22 @@ abstract public class TemplateRecyclerViewAdapter<Item> extends RecyclerView.Ada
         }
 
         return generateItemHolder(view, viewType);
+    }
+
+    /**
+     * Used update the loading boolean.
+     * @param loading The new state.
+     */
+    public void setLoading(boolean loading) {
+        isLoading = loading;
+    }
+
+    /**
+     * Used to set indicator for new pages.
+     * @param hasMorePages The new state.
+     */
+    public void setHasMorePages(boolean hasMorePages) {
+        this.hasMorePages = hasMorePages;
     }
 
 
