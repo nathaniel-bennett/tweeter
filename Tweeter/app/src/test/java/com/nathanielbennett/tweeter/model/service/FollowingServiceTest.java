@@ -10,16 +10,17 @@ import java.util.Arrays;
 
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.net.ServerFacade;
-import com.nathanielbennett.tweeter.model.service.request.FollowingRequest;
-import com.nathanielbennett.tweeter.model.service.response.FollowingResponse;
+import com.nathanielbennett.tweeter.model.service.FollowService.FollowingService;
+import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
+import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 
 public class FollowingServiceTest {
 
-    private FollowingRequest validRequest;
-    private FollowingRequest invalidRequest;
+    private FollowRequest validRequest;
+    private FollowRequest invalidRequest;
 
-    private FollowingResponse successResponse;
-    private FollowingResponse failureResponse;
+    private FollowResponse successResponse;
+    private FollowResponse failureResponse;
 
     private FollowingService followingServiceSpy;
 
@@ -39,15 +40,15 @@ public class FollowingServiceTest {
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
 
         // Setup request objects to use in the tests
-        validRequest = new FollowingRequest(currentUser.getAlias(), 3, null);
-        invalidRequest = new FollowingRequest(null, 0, null);
+        validRequest = new FollowRequest(currentUser.getAlias(), 3, null);
+        invalidRequest = new FollowRequest(null, 0, null);
 
         // Setup a mock ServerFacade that will return known responses
-        successResponse = new FollowingResponse(Arrays.asList(resultUser1, resultUser2, resultUser3), false);
+        successResponse = new FollowResponse(Arrays.asList(resultUser1, resultUser2, resultUser3), false);
         ServerFacade mockServerFacade = Mockito.mock(ServerFacade.class);
         Mockito.when(mockServerFacade.getFollowees(validRequest)).thenReturn(successResponse);
 
-        failureResponse = new FollowingResponse("An exception occurred");
+        failureResponse = new FollowResponse("An exception occurred");
         Mockito.when(mockServerFacade.getFollowees(invalidRequest)).thenReturn(failureResponse);
 
         // Create a FollowingService instance and wrap it with a spy that will use the mock service
@@ -56,7 +57,7 @@ public class FollowingServiceTest {
     }
 
     /**
-     * Verify that for successful requests the {@link FollowingService#getFollowees(FollowingRequest)}
+     * Verify that for successful requests the {@link FollowingService#getFollowees(FollowRequest)}
      * method returns the same result as the {@link ServerFacade}.
      * .
      *
@@ -64,19 +65,19 @@ public class FollowingServiceTest {
      */
     @Test
     public void testGetFollowees_validRequest_correctResponse() throws IOException {
-        FollowingResponse response = followingServiceSpy.getFollowees(validRequest);
+        FollowResponse response = followingServiceSpy.getFollowees(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
 
     /**
-     * Verify that the {@link FollowingService#getFollowees(FollowingRequest)} method loads the
+     * Verify that the {@link FollowingService#getFollowees(FollowRequest)} method loads the
      * profile image of each user included in the result.
      *
      * @throws IOException if an IO error occurs.
      */
     @Test
     public void testGetFollowees_validRequest_loadsProfileImages() throws IOException {
-        FollowingResponse response = followingServiceSpy.getFollowees(validRequest);
+        FollowResponse response = followingServiceSpy.getFollowees(validRequest);
 
         for(User user : response.getFollowees()) {
             Assertions.assertNotNull(user.getImageBytes());
@@ -84,14 +85,14 @@ public class FollowingServiceTest {
     }
 
     /**
-     * Verify that for failed requests the {@link FollowingService#getFollowees(FollowingRequest)}
+     * Verify that for failed requests the {@link FollowingService#getFollowees(FollowRequest)}
      * method returns the same result as the {@link ServerFacade}.
      *
      * @throws IOException if an IO error occurs.
      */
     @Test
     public void testGetFollowees_invalidRequest_returnsNoFollowees() throws IOException {
-        FollowingResponse response = followingServiceSpy.getFollowees(invalidRequest);
+        FollowResponse response = followingServiceSpy.getFollowees(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }
 }

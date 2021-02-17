@@ -1,9 +1,9 @@
 package com.nathanielbennett.tweeter.presenter;
 
 
-import com.nathanielbennett.tweeter.model.service.FollowersService;
-import com.nathanielbennett.tweeter.model.service.request.FollowersRequest;
-import com.nathanielbennett.tweeter.model.service.response.FollowersResponse;
+import com.nathanielbennett.tweeter.model.service.FollowService.FollowersService;
+import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
+import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 
 import java.io.IOException;
 
@@ -35,9 +35,9 @@ public class FollowersPresenter implements TemplatePresenter {
      * @param request contains the data required to fulfill the request.
      * @return the followers.
      */
-    public FollowersResponse getFollowers(FollowersRequest request) throws IOException {
+    public FollowResponse getFollowers(FollowRequest request) throws IOException {
         FollowersService followersService = getFollowersService();
-        return followersService.getFollowers(request);
+        return followersService.makeServerRequest(request);
     }
 
     /**

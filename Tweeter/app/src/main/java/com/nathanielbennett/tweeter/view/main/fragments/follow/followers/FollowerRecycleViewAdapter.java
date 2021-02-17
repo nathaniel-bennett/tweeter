@@ -3,7 +3,7 @@ package com.nathanielbennett.tweeter.view.main.fragments.follow.followers;
 import android.content.Context;
 
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.model.service.request.FollowersRequest;
+import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.presenter.FollowersPresenter;
 import com.nathanielbennett.tweeter.presenter.TemplatePresenter;
 import com.nathanielbennett.tweeter.view.asyncTasks.GetFollowersTask;
@@ -33,7 +33,7 @@ public class FollowerRecycleViewAdapter extends FollowRecycleViewAdapter {
         addLoadingFooter();
 
         GetFollowersTask getFollowersTask = new GetFollowersTask((FollowersPresenter) presenter, observer);
-        FollowersRequest request = new FollowersRequest(user.getAlias(), PAGE_SIZE, (lastFollow ==
+        FollowRequest request = new FollowRequest(user.getAlias(), PAGE_SIZE, (lastFollow ==
                 null ? null : lastFollow.getAlias()));
         getFollowersTask.execute(request);
     }

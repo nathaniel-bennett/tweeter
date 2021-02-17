@@ -3,12 +3,10 @@ package com.nathanielbennett.tweeter.model.net;
 import com.nathanielbennett.tweeter.BuildConfig;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.model.service.request.FollowersRequest;
-import com.nathanielbennett.tweeter.model.service.request.FollowingRequest;
+import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
-import com.nathanielbennett.tweeter.model.service.response.FollowersResponse;
-import com.nathanielbennett.tweeter.model.service.response.FollowingResponse;
+import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 
@@ -75,7 +73,7 @@ public class ServerFacade {
      *                other information required to satisfy the request.
      * @return the following response.
      */
-    public FollowingResponse getFollowees(FollowingRequest request) {
+    public FollowResponse getFollowees(FollowRequest request) {
 
         // Used in place of assert statements because Android does not support them
         if(BuildConfig.DEBUG) {
@@ -83,7 +81,7 @@ public class ServerFacade {
                 throw new AssertionError();
             }
 
-            if(request.getFollowerAlias() == null) {
+            if(request.getFollowAlias() == null) {
                 throw new AssertionError();
             }
         }
@@ -94,7 +92,7 @@ public class ServerFacade {
         boolean hasMorePages = false;
 
         if(request.getLimit() > 0) {
-            int followeesIndex = getFolloweesStartingIndex(request.getLastFolloweeAlias(), allFollowees);
+            int followeesIndex = getFolloweesStartingIndex(request.getLastFollowAlias(), allFollowees);
 
             for(int limitCounter = 0; followeesIndex < allFollowees.size() && limitCounter < request.getLimit(); followeesIndex++, limitCounter++) {
                 responseFollowees.add(allFollowees.get(followeesIndex));
@@ -103,16 +101,16 @@ public class ServerFacade {
             hasMorePages = followeesIndex < allFollowees.size();
         }
 
-        return new FollowingResponse(responseFollowees, hasMorePages);
+        return new FollowResponse(responseFollowees, hasMorePages);
     }
 
-    public FollowersResponse getFollowers(FollowersRequest request) {
+    public FollowResponse getFollowers(FollowRequest request) {
         if (BuildConfig.DEBUG) {
             if(request.getLimit() < 0) {
                 throw new AssertionError();
             }
 
-            if (request.getFolloweeAlias() == null) {
+            if (request.getFollowAlias() == null) {
                 throw new AssertionError();
             }
         }
@@ -123,7 +121,7 @@ public class ServerFacade {
         boolean hasMorePages = false;
 
         if (request.getLimit() > 0) {
-            int followersIndex = getFolloweesStartingIndex(request.getLastFollowerAlias(), allFollowers);
+            int followersIndex = getFolloweesStartingIndex(request.getLastFollowAlias(), allFollowers);
 
             for (int limitCounter = 0; followersIndex < allFollowers.size() && limitCounter < request.getLimit(); followersIndex++, limitCounter++) {
                 responseFollowers.add(allFollowers.get(followersIndex));
@@ -132,7 +130,7 @@ public class ServerFacade {
             hasMorePages = followersIndex < allFollowers.size();
         }
 
-        return new FollowersResponse(responseFollowers, hasMorePages);
+        return new FollowResponse(responseFollowers, hasMorePages);
     }
 
     /**

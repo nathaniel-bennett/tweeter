@@ -1,9 +1,9 @@
 package com.nathanielbennett.tweeter.presenter;
 
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.model.service.FollowingService;
-import com.nathanielbennett.tweeter.model.service.request.FollowingRequest;
-import com.nathanielbennett.tweeter.model.service.response.FollowingResponse;
+import com.nathanielbennett.tweeter.model.service.FollowService.FollowingService;
+import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
+import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +15,8 @@ import java.util.Arrays;
 
 public class FollowingPresenterTest {
 
-    private FollowingRequest request;
-    private FollowingResponse response;
+    private FollowRequest request;
+    private FollowResponse response;
     private FollowingService mockFollowingService;
     private FollowingPresenter presenter;
 
@@ -31,8 +31,8 @@ public class FollowingPresenterTest {
         User resultUser3 = new User("FirstName3", "LastName3",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
 
-        request = new FollowingRequest(currentUser.getAlias(), 3, null);
-        response = new FollowingResponse(Arrays.asList(resultUser1, resultUser2, resultUser3), false);
+        request = new FollowRequest(currentUser.getAlias(), 3, null);
+        response = new FollowResponse(Arrays.asList(resultUser1, resultUser2, resultUser3), false);
 
         // Create a mock FollowingService
         mockFollowingService = Mockito.mock(FollowingService.class);

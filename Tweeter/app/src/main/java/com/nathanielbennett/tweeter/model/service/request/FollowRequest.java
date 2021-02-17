@@ -4,25 +4,25 @@ package com.nathanielbennett.tweeter.model.service.request;
  * Contains all the information needed to make a request to have the server return the next page of
  * followees for a specified follower.
  */
-public class FollowingRequest implements Request {
+public class FollowRequest implements Request {
 
-    private final String followerAlias;
+    private final String followAlias;
     private final int limit;
-    private final String lastFolloweeAlias;
+    private final String lastFollowAlias;
 
     /**
      * Creates an instance.
      *
-     * @param followerAlias the alias of the user whose followees are to be returned.
-     * @param limit the maximum number of followees to return.
-     * @param lastFolloweeAlias the alias of the last followee that was returned in the previous request (null if
-     *                     there was no previous request or if no followees were returned in the
+     * @param followAlias the alias of the user whose follow data is to be returned.
+     * @param limit the maximum number of followUsers to return.
+     * @param lastFollowAlias the alias of the last follow data that was returned in the previous request (null if
+     *                     there was no previous request or if no follow data was returned in the
      *                     previous request).
      */
-    public FollowingRequest(String followerAlias, int limit, String lastFolloweeAlias) {
-        this.followerAlias = followerAlias;
+    public FollowRequest(String followAlias, int limit, String lastFollowAlias) {
+        this.followAlias = followAlias;
         this.limit = limit;
-        this.lastFolloweeAlias = lastFolloweeAlias;
+        this.lastFollowAlias = lastFollowAlias;
     }
 
     /**
@@ -30,8 +30,8 @@ public class FollowingRequest implements Request {
      *
      * @return the follower.
      */
-    public String getFollowerAlias() {
-        return followerAlias;
+    public String getFollowAlias() {
+        return followAlias;
     }
 
     /**
@@ -49,7 +49,7 @@ public class FollowingRequest implements Request {
      *
      * @return the last followee.
      */
-    public String getLastFolloweeAlias() {
-        return lastFolloweeAlias;
+    public String getLastFollowAlias() {
+        return lastFollowAlias;
     }
 }

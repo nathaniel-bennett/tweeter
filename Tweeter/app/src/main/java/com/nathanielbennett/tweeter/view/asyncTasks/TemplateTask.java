@@ -49,7 +49,7 @@ public abstract class TemplateTask extends AsyncTask<Request,  Void, Response> {
                 loadImage(response.getUser());
             }
             */
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             exception = ex;
         }
 

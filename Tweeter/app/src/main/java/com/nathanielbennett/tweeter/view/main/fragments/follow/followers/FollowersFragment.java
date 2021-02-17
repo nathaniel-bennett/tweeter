@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.model.service.response.FollowersResponse;
+import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.presenter.FollowersPresenter;
 import com.nathanielbennett.tweeter.view.asyncTasks.GetFollowersTask;
 import com.nathanielbennett.tweeter.view.main.fragments.TemplateFragment;
@@ -79,8 +79,8 @@ public class FollowersFragment extends TemplateFragment<User> implements Followe
     }
 
     @Override
-    public void followersRetrieved(FollowersResponse followersResponse) {
-        List<User> followers = followersResponse.getFollowers();
+    public void followersRetrieved(FollowResponse followersResponse) {
+        List<User> followers = followersResponse.getRequestedUsers();
         User lastFollower = (followers.size() > 0) ? followers.get(followers.size() - 1) : null;
 
         FollowRecycleViewAdapter followRecycleViewAdapter = (FollowRecycleViewAdapter) recyclerViewAdapter;
@@ -93,8 +93,8 @@ public class FollowersFragment extends TemplateFragment<User> implements Followe
     }
 
     @Override
-    public void followersNotRetrieved(FollowersResponse followersResponse) {
-
+    public void followersNotRetrieved(FollowResponse followersResponse) {
+        // TODO IMPLEMENT ME PLEASE
     }
 
     @Override

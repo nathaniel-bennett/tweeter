@@ -2,9 +2,9 @@ package com.nathanielbennett.tweeter.view.asyncTasks;
 
 import android.os.AsyncTask;
 
-import com.nathanielbennett.tweeter.model.service.request.FollowingRequest;
+import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.Request;
-import com.nathanielbennett.tweeter.model.service.response.FollowingResponse;
+import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.model.service.response.Response;
 import com.nathanielbennett.tweeter.presenter.FollowingPresenter;
 
@@ -20,7 +20,7 @@ public class GetFollowingTask extends TemplateTask {
      * completes.
      */
     public interface Observer {
-        void followeesRetrieved(FollowingResponse followingResponse);
+        void followeesRetrieved(FollowResponse followResponse);
         void handleException(Exception exception);
     }
 
@@ -34,12 +34,12 @@ public class GetFollowingTask extends TemplateTask {
 
     @Override
     protected Response performTask(Request request) throws IOException {
-        return presenter.getFollowing((FollowingRequest) request);
+        return presenter.getFollowing((FollowRequest) request);
     }
 
     @Override
     protected void taskSuccessful(Response response) {
-        observer.followeesRetrieved((FollowingResponse) response);
+        observer.followeesRetrieved((FollowResponse) response);
     }
 
     @Override

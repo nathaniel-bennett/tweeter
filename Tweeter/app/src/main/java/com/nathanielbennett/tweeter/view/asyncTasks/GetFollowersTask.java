@@ -1,18 +1,18 @@
 package com.nathanielbennett.tweeter.view.asyncTasks;
 
-import com.nathanielbennett.tweeter.model.service.request.FollowersRequest;
+import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.Request;
-import com.nathanielbennett.tweeter.model.service.response.FollowersResponse;
+import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.model.service.response.Response;
 import com.nathanielbennett.tweeter.presenter.FollowersPresenter;
 
 import java.io.IOException;
 
-public class GetFollowersTask extends TemplateTask{
+public class GetFollowersTask extends TemplateTask {
 
     public interface Observer {
-        void followersRetrieved(FollowersResponse followersResponse);
-        void followersNotRetrieved(FollowersResponse followersResponse);
+        void followersRetrieved(FollowResponse followResponse);
+        void followersNotRetrieved(FollowResponse followResponse);
         void handleException(Exception ex);
     }
 
@@ -26,17 +26,17 @@ public class GetFollowersTask extends TemplateTask{
 
     @Override
     protected Response performTask(Request request) throws IOException {
-        return presenter.getFollowers((FollowersRequest) request);
+        return presenter.getFollowers((FollowRequest) request);
     }
 
     @Override
     protected void taskSuccessful(Response response) {
-        observer.followersRetrieved((FollowersResponse) response);
+        observer.followersRetrieved((FollowResponse) response);
     }
 
     @Override
     protected void taskUnsuccessful(Response response) {
-        observer.followersNotRetrieved((FollowersResponse) response);
+        observer.followersNotRetrieved((FollowResponse) response);
     }
 
     @Override

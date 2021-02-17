@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.model.service.response.FollowingResponse;
+import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.presenter.FollowingPresenter;
 import com.nathanielbennett.tweeter.view.asyncTasks.GetFollowingTask;
 import com.nathanielbennett.tweeter.view.main.fragments.TemplateFragment;
@@ -84,18 +84,18 @@ public class FollowingFragment extends TemplateFragment<User> implements Followi
     /**
      * Is called when the task receives the response from the database.
      * This method parses the response and adds the appropriate data.
-     * @param followingResponse The response from the getFolloweesTask.
+     * @param followResponse The response from the getFolloweesTask.
      */
     @Override
-    public void followeesRetrieved(FollowingResponse followingResponse) {
-        List<User> followees = followingResponse.getFollowees();
+    public void followeesRetrieved(FollowResponse followResponse) {
+        List<User> followees = followResponse.getRequestedUsers();
         User lastFollowee = (followees.size() > 0) ? followees.get(followees.size() -1) : null;
 
         FollowRecycleViewAdapter followRecycleViewAdapter = (
                 FollowRecycleViewAdapter) recyclerViewAdapter;
 
         followRecycleViewAdapter.setLastFollow(lastFollowee);
-        followRecycleViewAdapter.setHasMorePages(followingResponse.getHasMorePages());
+        followRecycleViewAdapter.setHasMorePages(followResponse.getHasMorePages());
         followRecycleViewAdapter.setLoading(false);
         followRecycleViewAdapter.removeLoadingFooter();
         followRecycleViewAdapter.addItems(followees);
