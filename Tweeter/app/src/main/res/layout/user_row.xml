@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/userImage">
+        android:layout_toEndOf="@id/userImage"
+        android:layout_toRightOf="@id/userImage">
 
         <TextView
             android:id="@+id/userName"

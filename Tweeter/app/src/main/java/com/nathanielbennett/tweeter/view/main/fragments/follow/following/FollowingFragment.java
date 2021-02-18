@@ -52,7 +52,8 @@ public class FollowingFragment extends TemplateFragment<User> implements Followi
      * Creates a new following fragment view.
      * @param inflater The inflater passed from the OS
      * @param container The container passed from the OS
-     * @param savedInstanceState The bundle passed from the OS
+     * @param savedInstanceState The savedInstanceState passed from the OS
+     *
      * @return new following fragment view.
      */
     @Nullable
@@ -115,6 +116,7 @@ public class FollowingFragment extends TemplateFragment<User> implements Followi
     public void handleException(Exception exception) {
         Log.e(LOG_TAG, exception.getMessage(), exception);
         recyclerViewAdapter.removeLoadingFooter();
+        recyclerViewAdapter.setLoading(false);
         Toast.makeText(getContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

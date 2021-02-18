@@ -25,6 +25,9 @@ public class FollowingRecycleViewAdapter extends FollowRecycleViewAdapter {
         loadMoreItems();
     }
 
+    /**
+     * Loads more items for the recycleView to display.
+     */
     @Override
     public void loadMoreItems() {
         this.isLoading = true;

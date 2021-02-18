@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context=".view.main.fragments.follow.following.FollowingFragment">
+    tools:context=".view.main.fragments.StoryFragment">
 
     <ImageView
-        android:id="@+id/userImage"
+        android:id="@+id/userImage_Story"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
@@ -18,17 +18,16 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:orientation="vertical"
-        android:layout_toEndOf="@id/userImage"
-        android:layout_toRightOf="@id/userImage">
+        android:layout_toEndOf="@id/userImage_Story"
+        android:layout_toRightOf="@id/userImage_Story">
 
         <LinearLayout
             android:id="@+id/UserData"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:Layout_aboveOf="@id/">
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/userName"
+                android:id="@+id/userName_story"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -37,7 +36,7 @@
                 android:layout_marginRight="35px"/>
 
             <TextView
-                android:id="@+id/userAlias"
+                android:id="@+id/userAlias_story"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/sampleAlias" />
@@ -50,6 +49,17 @@
             tools:text="@string/story_creation_date" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/statusMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userImage_Story"
+        android:textSize="10pt"
+        android:singleLine="false"
+        android:ellipsize="none"
+        android:layout_marginTop="50px"
+        tools:text="@string/status_message" />
 
 
 </RelativeLayout>

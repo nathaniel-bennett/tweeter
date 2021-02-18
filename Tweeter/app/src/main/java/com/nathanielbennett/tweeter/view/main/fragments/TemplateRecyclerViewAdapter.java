@@ -18,7 +18,8 @@ abstract public class TemplateRecyclerViewAdapter<Item> extends RecyclerView.Ada
     protected final List<Item> itemsToDisplay = new ArrayList<>();
 
     protected static final int LOADING_DATA_VIEW = 0;
-    protected static final int ITEM_VIEW = 1;
+    protected static final int FOLLOW_ITEM_VIEW = 1;
+    protected static final int STORY_ITEM_VIEW = 2;
     protected static final int PAGE_SIZE = 10;
 
     protected boolean hasMorePages;
@@ -85,18 +86,6 @@ abstract public class TemplateRecyclerViewAdapter<Item> extends RecyclerView.Ada
     }
 
     /**
-     * Returns the type of the view that should be displayed for the item currently at the
-     * specified position.
-     *
-     * @param position the position of the items whose view type is to be returned.
-     * @return the view type.
-     */
-    @Override
-    public int getItemViewType(int position) {
-        return (position == itemsToDisplay.size() - 1 && isLoading) ? LOADING_DATA_VIEW : ITEM_VIEW;
-    }
-
-    /**
      * Is called when a new item is ready to be inserted into the recycler view.
      * Generates the view and passed the necessary data onto the ItemHolderConstructor.
      * @param parent Parent passed in from OS.
@@ -109,11 +98,12 @@ abstract public class TemplateRecyclerViewAdapter<Item> extends RecyclerView.Ada
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view;
 
-        if(viewType == LOADING_DATA_VIEW) {
-            view =layoutInflater.inflate(R.layout.loading_row, parent, false);
-
-        } else {
+        if (viewType == FOLLOW_ITEM_VIEW) {
             view = layoutInflater.inflate(R.layout.user_row, parent, false);
+        } else if (viewType == STORY_ITEM_VIEW) {
+            view = layoutInflater.inflate(R.layout.story_row, parent, false);
+        } else {
+            view =layoutInflater.inflate(R.layout.loading_row, parent, false);
         }
 
         return generateItemHolder(view, viewType);
@@ -137,6 +127,8 @@ abstract public class TemplateRecyclerViewAdapter<Item> extends RecyclerView.Ada
 
 
     // TODO: FUNCTIONS PASSED TO THE CHILD
+
+    public abstract int getItemViewType(int position);
 
     abstract public TemplateItemHolder<Item> generateItemHolder(@NonNull View view, int viewType);
 

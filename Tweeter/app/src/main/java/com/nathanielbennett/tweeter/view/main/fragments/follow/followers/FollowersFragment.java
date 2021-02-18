@@ -106,6 +106,7 @@ public class FollowersFragment extends TemplateFragment<User> implements Followe
     public void handleException(Exception ex) {
         Log.e(LOG_TAG, ex.getMessage(), ex);
         recyclerViewAdapter.removeLoadingFooter();
+        recyclerViewAdapter.setLoading(false);
         Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

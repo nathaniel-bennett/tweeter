@@ -68,5 +68,15 @@ abstract public class FollowRecycleViewAdapter extends TemplateRecyclerViewAdapt
         removeItem(itemsToDisplay.get(itemsToDisplay.size() - 1));
     }
 
-
+    /**
+     * Returns the type of the view that should be displayed for the item currently at the
+     * specified position.
+     *
+     * @param position the position of the items whose view type is to be returned.
+     * @return the view type.
+     */
+    @Override
+    public int getItemViewType(int position) {
+        return (position == itemsToDisplay.size() - 1 && isLoading) ? LOADING_DATA_VIEW : FOLLOW_ITEM_VIEW;
+    }
 }
