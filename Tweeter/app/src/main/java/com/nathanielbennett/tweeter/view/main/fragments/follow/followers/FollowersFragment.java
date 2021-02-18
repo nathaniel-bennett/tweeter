@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,6 +73,10 @@ public class FollowersFragment extends TemplateFragment<User> implements Followe
         this.followersRecyclerView.setLayoutManager(layoutManager);
 
         this.recyclerViewAdapter = new FollowerRecycleViewAdapter(this.getContext(), presenter, user, this);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(followersRecyclerView.getContext(), layoutManager.getOrientation());
+
+        this.followersRecyclerView.addItemDecoration(dividerItemDecoration);
         this.followersRecyclerView.setAdapter(recyclerViewAdapter);
         this.followersRecyclerView.addOnScrollListener(getOnScrollListener(layoutManager));
 
