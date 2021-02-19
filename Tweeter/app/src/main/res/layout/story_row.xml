@@ -44,10 +44,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/userImage_Story"
-        android:textSize="10pt"
+        android:textSize="18sp"
         android:singleLine="false"
         android:ellipsize="none"
-
         android:padding="10sp"
         tools:text="@string/status_message"
         app:layout_constraintTop_toBottomOf="@+id/postDateInfo"
