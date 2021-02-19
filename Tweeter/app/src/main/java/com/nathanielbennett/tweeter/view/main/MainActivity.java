@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.view.main;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,28 +21,37 @@ import android.widget.TextView;
 import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
+import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
+import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
+import com.nathanielbennett.tweeter.presenter.MainPresenter;
 import com.nathanielbennett.tweeter.view.admission.AdmissionActivity;
+import com.nathanielbennett.tweeter.view.asyncTasks.LogoutTask;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
 
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainPresenter.View, LogoutTask.Observer {
 
     public static final String CURRENT_USER_KEY = "CurrentUser";
     public static final String AUTH_TOKEN_KEY = "AuthTokenKey";
+    private AuthToken authToken;
+    private MainPresenter mainPresenter;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        User user = (User) getIntent().getSerializableExtra(CURRENT_USER_KEY);
+        mainPresenter = new MainPresenter(this);
+
+        user = (User) getIntent().getSerializableExtra(CURRENT_USER_KEY);
         if(user == null) {
             throw new RuntimeException("User not passed to activity");
         }
 
-        AuthToken authToken = (AuthToken) getIntent().getSerializableExtra(AUTH_TOKEN_KEY);
+        authToken = (AuthToken) getIntent().getSerializableExtra(AUTH_TOKEN_KEY);
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(), user, authToken);
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -87,14 +97,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.logoutMenu){
-            // TODO: clear data cache and any user-associated values
-            Intent intent = new Intent(MainActivity.this, AdmissionActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            return true;
+            LogoutTask logoutTask = new LogoutTask(this, mainPresenter);
+            AsyncTask<LogoutRequest, Void, LogoutResponse> execute = logoutTask.execute(new LogoutRequest(user.getAlias(), authToken));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void logoutSuccessful(LogoutResponse logoutResponse) {
+        Intent intent = new Intent(MainActivity.this, AdmissionActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    @Override
+    public void logoutUnsuccessful(LogoutResponse logoutResponse) {
+
+    }
+
+    @Override
+    public void handleException(Exception ex) {
+
     }
 }

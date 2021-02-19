@@ -6,7 +6,7 @@ public class LogoutRequest {
     private String username;
     private AuthToken authToken;
 
-    LogoutRequest(String username, AuthToken authToken) {
+    public LogoutRequest(String username, AuthToken authToken) {
         this.username = username;
         this.authToken = authToken;
     }

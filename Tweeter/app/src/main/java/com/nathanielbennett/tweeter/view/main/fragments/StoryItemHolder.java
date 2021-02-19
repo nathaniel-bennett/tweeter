@@ -57,7 +57,7 @@ public class StoryItemHolder extends TemplateItemHolder<Status> {
         try {
             userImage.setImageDrawable(ImageUtils.drawableFromByteArray(itemToBind.getUserOfStatus().getImageBytes()));
             userAlias.setText(itemToBind.getUserOfStatus().getAlias());
-            userAlias.setText(itemToBind.getUserOfStatus().getName());
+            userName.setText(itemToBind.getUserOfStatus().getName());
             postDateInfo.setText(itemToBind.getDatePosted());
             statusMessage.setText(itemToBind.getStatusMessage());
         } catch (Exception e) {

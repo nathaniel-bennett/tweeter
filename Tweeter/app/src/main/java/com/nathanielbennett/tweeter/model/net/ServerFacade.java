@@ -47,7 +47,7 @@ public class ServerFacade {
     private final User user19 = new User("Justin", "Jones", MALE_IMAGE_URL);
     private final User user20 = new User("Jill", "Johnson", FEMALE_IMAGE_URL);
 
-    private final User dummyUser = new User("Dummy", "User", MALE_IMAGE_URL);
+    private final User dummyUser = new User("Dummy", "User", "dummyUser", MALE_IMAGE_URL);
     private final Status dummyUserStatus1 = new Status(dummyUser, "Hello Status!", "Feburary 17 2021 9:16 PM", new ArrayList<User>());
     private final Status dummyUserStatus2 = new Status(dummyUser, "Goodbye Status!", "Feburary 17 2021 9:17 PM", new ArrayList<User>());
     private final Status dummyUserStatus3 = new Status(dummyUser, "I would like to mention @AllenAnderson and @HelenHopwell", "February 17 2021 9:18 PM", Arrays.asList(user1, user16));
