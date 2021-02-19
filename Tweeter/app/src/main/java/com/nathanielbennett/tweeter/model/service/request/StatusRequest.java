@@ -2,7 +2,7 @@ package com.nathanielbennett.tweeter.model.service.request;
 
 import com.nathanielbennett.tweeter.model.domain.User;
 
-public class StoryRequest implements Request{
+public class StatusRequest implements Request{
 
     private User userToGet;
     private final int limit;
@@ -13,7 +13,7 @@ public class StoryRequest implements Request{
      * @param userToGet the user that we want to get their stories.
      * @param limit
      */
-    public StoryRequest(User userToGet, int limit, String lastStatusSent) {
+    public StatusRequest(User userToGet, int limit, String lastStatusSent) {
         this.userToGet = userToGet;
         this.limit = limit;
         this.lastStatusMessageSent = lastStatusSent;

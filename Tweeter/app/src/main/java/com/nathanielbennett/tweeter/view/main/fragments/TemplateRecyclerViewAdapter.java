@@ -53,6 +53,7 @@ abstract public class TemplateRecyclerViewAdapter<Item> extends RecyclerView.Ada
     /**
      * Removes an item from the list from whcich the RecyclerView retrieves the users it displays
      * and notifies the RecyclerView that an item has been removed.
+     *
      * @param item the item to remove
      */
     public void removeItem(Item item) {
@@ -88,6 +89,7 @@ abstract public class TemplateRecyclerViewAdapter<Item> extends RecyclerView.Ada
     /**
      * Is called when a new item is ready to be inserted into the recycler view.
      * Generates the view and passed the necessary data onto the ItemHolderConstructor.
+     *
      * @param parent Parent passed in from OS.
      * @param viewType Type passed in from OS. Indicates if the item is of type loading.
      * @return
@@ -111,6 +113,7 @@ abstract public class TemplateRecyclerViewAdapter<Item> extends RecyclerView.Ada
 
     /**
      * Used update the loading boolean.
+     *
      * @param loading The new state.
      */
     public void setLoading(boolean loading) {
@@ -119,14 +122,22 @@ abstract public class TemplateRecyclerViewAdapter<Item> extends RecyclerView.Ada
 
     /**
      * Used to set indicator for new pages.
+     *
      * @param hasMorePages The new state.
      */
     public void setHasMorePages(boolean hasMorePages) {
         this.hasMorePages = hasMorePages;
     }
 
+    /**
+     * Used to remove the loading footer.
+     */
+    public void removeLoadingFooter() {
+        removeItem(itemsToDisplay.get(itemsToDisplay.size() - 1));
+    }
 
-    // TODO: FUNCTIONS PASSED TO THE CHILD
+
+    // The following functions are passed to the concrete class to implement.
 
     public abstract int getItemViewType(int position);
 
@@ -135,8 +146,6 @@ abstract public class TemplateRecyclerViewAdapter<Item> extends RecyclerView.Ada
     abstract public void loadMoreItems();
 
     abstract public void addLoadingFooter();
-
-    abstract public void removeLoadingFooter();
 
 
 }

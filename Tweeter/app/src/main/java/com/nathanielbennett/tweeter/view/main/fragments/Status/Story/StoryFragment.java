@@ -1,4 +1,4 @@
-package com.nathanielbennett.tweeter.view.main.fragments;
+package com.nathanielbennett.tweeter.view.main.fragments.Status.Story;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,9 +17,10 @@ import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.Status;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.model.service.response.StoryResponse;
+import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.presenter.StoryPresenter;
 import com.nathanielbennett.tweeter.view.asyncTasks.GetStoryTask;
+import com.nathanielbennett.tweeter.view.main.fragments.TemplateFragment;
 
 import java.util.List;
 
@@ -30,6 +31,13 @@ public class StoryFragment extends TemplateFragment<Status> implements StoryPres
 
     private RecyclerView storyRecyclerView;
 
+    /**
+     * Called to create a new instance.
+     *
+     * @param user The user related to the Story
+     * @param authToken The authToken for the session.
+     * @return a new instance.
+     */
     public static StoryFragment newInstance(User user, AuthToken authToken) {
         StoryFragment fragment = new StoryFragment();
 
@@ -68,7 +76,7 @@ public class StoryFragment extends TemplateFragment<Status> implements StoryPres
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(storyRecyclerView.getContext(), layoutManager.getOrientation());
         this.storyRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        recyclerViewAdapter = new StoryRecyclerViewAdapter(this.getContext(), (StoryPresenter) presenter, this, user);
+        recyclerViewAdapter = new StoryRecyclerViewAdapter(this.getContext(), (StoryPresenter) presenter, "", this, user);
         storyRecyclerView.setAdapter(recyclerViewAdapter);
         storyRecyclerView.addOnScrollListener(getOnScrollListener(layoutManager));
 
@@ -82,13 +90,13 @@ public class StoryFragment extends TemplateFragment<Status> implements StoryPres
      * @param response The response from the getStoryTask.
      */
     @Override
-    public void storyRetrieved(StoryResponse response) {
+    public void storyRetrieved(StatusResponse response) {
         List<Status> statuses = response.getStatuses();
         String lastStatusMessage = (statuses.size() > 0) ? statuses.get(statuses.size() - 1).getStatusMessage() : null;
 
         StoryRecyclerViewAdapter adapter = (StoryRecyclerViewAdapter) recyclerViewAdapter;
 
-        adapter.setLastStatus(lastStatusMessage);
+        adapter.setLastStatusMessage(lastStatusMessage);
         adapter.setHasMorePages(response.getHasMorePages());
         adapter.setLoading(false);
         adapter.removeLoadingFooter();
@@ -96,7 +104,7 @@ public class StoryFragment extends TemplateFragment<Status> implements StoryPres
     }
 
     @Override
-    public void storyNotRetrieved(StoryResponse response) {
+    public void storyNotRetrieved(StatusResponse response) {
         //TODO SOMETHING NEEDS TO BE DONE IN CASE OF AN ERROR
     }
 

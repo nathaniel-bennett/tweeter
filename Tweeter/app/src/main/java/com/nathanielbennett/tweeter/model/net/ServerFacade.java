@@ -7,11 +7,11 @@ import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
-import com.nathanielbennett.tweeter.model.service.request.StoryRequest;
+import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
-import com.nathanielbennett.tweeter.model.service.response.StoryResponse;
+import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,6 +61,21 @@ public class ServerFacade {
     private final Status dummyUserStatus11 = new Status(dummyUser, "3Goodbye Status!", "Feburary 17 2021 9:26 PM", new ArrayList<User>());
     private final Status dummyUserStatus12 = new Status(dummyUser, "3I would like to mention @AllenAnderson and @HelenHopwell", "February 17 2021 9:27 PM", Arrays.asList(user1, user16));
 
+    private final Status user1Status = new Status(user1, "I miss coding at work.", "Feburary 18 2021 9:11 PM", new ArrayList<>());
+    private final Status user2Status = new Status(user2, "I really don't like fake news.", "Feburary 18 2021 9:12 PM", new ArrayList<>());
+    private final Status user3Status = new Status(user3, "I hope @ChrisColston is doing well.", "Feburary 18 2021 9:13 PM", Arrays.asList(user5));
+    private final Status user4Status = new Status(user4, "I hate using google.com.", "Feburary 18 2021 9:14 PM", new ArrayList<>());
+    private final Status user5Status = new Status(user5, "Hello world.", "Feburary 18 2021 9:15 PM", new ArrayList<>());
+    private final Status user6Status = new Status(user6, "Visit csmcclain.com for an awesome video.", "Feburary 18 2021 9:16 PM", new ArrayList<>());
+    private final Status user7Status = new Status(user7, "It's snowing outisde right now.", "Feburary 18 2021 9:17 PM", new ArrayList<>());
+    private final Status user8Status = new Status(user8, "Amazing Time at the beach.", "Feburary 18 2021 9:18 PM", new ArrayList<>());
+    private final Status user9Status = new Status(user9, "@JillJohnson is awesome.", "Feburary 18 2021 9:19 PM", Arrays.asList(user20));
+    private final Status user10Status = new Status(user10, "Missing swimming.", "Feburary 18 2021 9:20 PM", new ArrayList<>());
+    private final Status user11Status = new Status(user11, "Live, Laugh, Love.", "Feburary 18 2021 9:21 PM", new ArrayList<>());
+    private final Status user12Status = new Status(user12, "I enjoy the outdoors.", "Feburary 18 2021 9:22 PM", new ArrayList<>());
+    private final Status user13Status = new Status(user13, "The programmers of this app did an amazing job.", "Feburary 18 2021 9:23 PM", new ArrayList<>());
+    private final Status user14Status = new Status(user14, "I hope that tomorrow will be snowy.", "Feburary 18 2021 9:24 PM", new ArrayList<>());
+    private final Status user15Status = new Status(user15, "Wake me up, when september ends!", "Feburary 18 2021 9:25 PM", new ArrayList<>());
 
     /**
      * Performs a login and if successful, returns the logged in user and an auth token. The current
@@ -170,7 +185,7 @@ public class ServerFacade {
      * @param request contains information about the user whos status are to be returned
      * @return the story response.
      */
-    public StoryResponse getStory(StoryRequest request) {
+    public StatusResponse getStory(StatusRequest request) {
         if (BuildConfig.DEBUG) {
             if (request.getLimit() < 0) {
                 throw new AssertionError();
@@ -196,7 +211,36 @@ public class ServerFacade {
             hasMorePages = storyIndex < allStatuses.size();
         }
 
-        return new StoryResponse(true, hasMorePages, responseStatuses);
+        return new StatusResponse(true, hasMorePages, responseStatuses);
+    }
+
+    public StatusResponse getFeed(StatusRequest request) {
+        if (BuildConfig.DEBUG) {
+            if (request.getLimit() < 0) {
+                throw new AssertionError();
+            }
+
+            if (request.getUserToGet() == null) {
+                throw new AssertionError();
+            }
+        }
+
+        List<Status> allStatuses = getDummyFeed();
+        List<Status> responseStatuses = new ArrayList<>(request.getLimit());
+
+        boolean hasMorePages = false;
+
+        if (request.getLimit() > 0) {
+            int storyIndex = getStatusStartingIndex(request.getLastStatusSent(), allStatuses);
+
+            for (int limitCounter = 0; storyIndex < allStatuses.size() && limitCounter < request.getLimit(); storyIndex++, limitCounter++) {
+                responseStatuses.add(allStatuses.get(storyIndex));
+            }
+
+            hasMorePages = storyIndex < allStatuses.size();
+        }
+
+        return new StatusResponse(true, hasMorePages, responseStatuses);
     }
 
     /**
@@ -258,9 +302,22 @@ public class ServerFacade {
     }
 
     /**
+     * Returns the list of dummy status for the feed. This is written as a separate method to allow
+     * mocking of the feed.
+     *
+     * @return the dummy feed.
+     */
+    List<Status> getDummyFeed() {
+        return Arrays.asList(user1Status, user2Status,  user3Status,  user4Status,  user5Status,
+                user6Status,  user7Status,  user8Status,  user9Status,  user10Status,  user11Status,
+                user12Status,  user13Status,  user14Status,  user15Status);
+    }
+
+    /**
      * Returns the list of dummy status for the story. This is written as a separate method to allow
      * mocking of the story.
-     * @return
+     *
+     * @return the dummy story.
      */
     List<Status> getDummyStory() {
         return Arrays.asList(dummyUserStatus1, dummyUserStatus2, dummyUserStatus3, dummyUserStatus4,

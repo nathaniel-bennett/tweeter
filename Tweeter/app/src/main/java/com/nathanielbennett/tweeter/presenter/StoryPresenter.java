@@ -1,8 +1,8 @@
 package com.nathanielbennett.tweeter.presenter;
 
-import com.nathanielbennett.tweeter.model.service.StoryService;
-import com.nathanielbennett.tweeter.model.service.request.StoryRequest;
-import com.nathanielbennett.tweeter.model.service.response.StoryResponse;
+import com.nathanielbennett.tweeter.model.service.StatusService.StoryService;
+import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
+import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
 import java.io.IOException;
 
@@ -26,7 +26,14 @@ public class StoryPresenter implements TemplatePresenter {
         this.view = view;
     }
 
-    public StoryResponse getStory(StoryRequest request) throws IOException {
+    /**
+     * Makes a request to the story service for the specified data.
+     *
+     * @param request the request to be made to the service.
+     * @return the response from the service.
+     * @throws IOException
+     */
+    public StatusResponse getStory(StatusRequest request) throws IOException {
         StoryService storyService = getStoryService();
         return storyService.makeServerRequest(request);
     }

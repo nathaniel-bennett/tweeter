@@ -19,10 +19,10 @@ abstract public class FollowRecycleViewAdapter extends TemplateRecyclerViewAdapt
     protected User lastFollow;
 
     /**
-     * Creates an instance and loads the first page of data
-     * @param context
-     * @param presenter
-     * @param user
+     * Creates an instance.
+     * @param context The context passed in from the OS.
+     * @param presenter The presenter used to make requests.
+     * @param user The last seen user.
      */
     public FollowRecycleViewAdapter(Context context, TemplatePresenter presenter, User user) {
         this.context = context;
@@ -30,12 +30,18 @@ abstract public class FollowRecycleViewAdapter extends TemplateRecyclerViewAdapt
         this.user = user;
     }
 
+    /**
+     * Setter for the last follow user.
+     *
+     * @param lastFollow The user last seen.
+     */
     public void setLastFollow(User lastFollow) {
         this.lastFollow = lastFollow;
     }
 
     /**
      * Generates a new Item Holder.
+     *
      * @param view the required View.
      * @param viewType The view type.
      * @return a new FollowingItemHolder.
@@ -46,12 +52,6 @@ abstract public class FollowRecycleViewAdapter extends TemplateRecyclerViewAdapt
     }
 
     /**
-     * Generates requests and forwards them onto the task.
-     */
-    @Override
-    abstract public void loadMoreItems();
-
-    /**
      * Generates a temporary item to indicating loading.
      */
     @Override
@@ -60,13 +60,6 @@ abstract public class FollowRecycleViewAdapter extends TemplateRecyclerViewAdapt
                 ""));
     }
 
-    /**
-     * Removes temporary item indicating loading.
-     */
-    @Override
-    public void removeLoadingFooter() {
-        removeItem(itemsToDisplay.get(itemsToDisplay.size() - 1));
-    }
 
     /**
      * Returns the type of the view that should be displayed for the item currently at the
@@ -79,4 +72,8 @@ abstract public class FollowRecycleViewAdapter extends TemplateRecyclerViewAdapt
     public int getItemViewType(int position) {
         return (position == itemsToDisplay.size() - 1 && isLoading) ? LOADING_DATA_VIEW : FOLLOW_ITEM_VIEW;
     }
+
+    @Override
+    abstract public void loadMoreItems();
+
 }

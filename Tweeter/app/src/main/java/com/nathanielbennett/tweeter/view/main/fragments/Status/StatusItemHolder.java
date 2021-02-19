@@ -1,4 +1,4 @@
-package com.nathanielbennett.tweeter.view.main.fragments;
+package com.nathanielbennett.tweeter.view.main.fragments.Status;
 
 import android.content.Context;
 import android.view.View;
@@ -10,9 +10,10 @@ import androidx.annotation.NonNull;
 
 import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.Status;
+import com.nathanielbennett.tweeter.view.main.fragments.TemplateItemHolder;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
 
-public class StoryItemHolder extends TemplateItemHolder<Status> {
+public class StatusItemHolder extends TemplateItemHolder<Status> {
 
     private final ImageView userImage;
     private final TextView userAlias;
@@ -26,7 +27,7 @@ public class StoryItemHolder extends TemplateItemHolder<Status> {
      *
      * @param itemView
      */
-    public StoryItemHolder(@NonNull View itemView, int viewType, Context context) {
+    public StatusItemHolder(@NonNull View itemView, int viewType, Context context) {
         super(itemView);
 
         if (viewType == STORY_VIEW_TYPE) {

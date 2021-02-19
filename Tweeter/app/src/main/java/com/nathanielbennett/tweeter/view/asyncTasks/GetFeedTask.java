@@ -4,31 +4,32 @@ import com.nathanielbennett.tweeter.model.service.request.Request;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.Response;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
-import com.nathanielbennett.tweeter.presenter.StoryPresenter;
+import com.nathanielbennett.tweeter.presenter.FeedPresenter;
 
 import java.io.IOException;
 
-public class GetStoryTask extends TemplateTask {
+public class GetFeedTask extends TemplateTask {
 
     /**
      * An observer interface to be implemented by observers who want to be notified when this task
      * completes.
      */
     public interface Observer {
-        void storyRetrieved(StatusResponse response);
-        void storyNotRetrieved(StatusResponse response);
+        void feedRetrieved(StatusResponse response);
+        void feedNotRetrieved(StatusResponse response);
         void handleException(Exception exception);
     }
 
-    private final StoryPresenter presenter;
+    private final FeedPresenter presenter;
     private final Observer observer;
 
     /**
      * Creates an instance.
-     * @param presenter
-     * @param observer
+     *
+     * @param presenter the presenter for this task.
+     * @param observer the observer to notify on task complete.
      */
-    public GetStoryTask(StoryPresenter presenter, Observer observer) {
+    public GetFeedTask(FeedPresenter presenter, Observer observer) {
         this.presenter = presenter;
         this.observer = observer;
     }
@@ -36,23 +37,23 @@ public class GetStoryTask extends TemplateTask {
     /**
      * Method called to make request to backend.
      *
-     * @param request the story request.
+     * @param request the feedRequest.
      * @return The response from the backend.
      * @throws IOException
      */
     @Override
     protected Response performTask(Request request) throws IOException {
-        return presenter.getStory((StatusRequest) request);
+        return presenter.getFeed((StatusRequest) request);
     }
 
     /**
      * Method called when the task was successful.
      *
-     * @param response The response from the backend.
+     * @param response The resposne from the backend.
      */
     @Override
     protected void taskSuccessful(Response response) {
-        observer.storyRetrieved((StatusResponse) response);
+        observer.feedRetrieved((StatusResponse) response);
     }
 
     /**
@@ -62,7 +63,7 @@ public class GetStoryTask extends TemplateTask {
      */
     @Override
     protected void taskUnsuccessful(Response response) {
-        observer.storyNotRetrieved((StatusResponse) response);
+        observer.feedNotRetrieved((StatusResponse) response);
     }
 
     /**

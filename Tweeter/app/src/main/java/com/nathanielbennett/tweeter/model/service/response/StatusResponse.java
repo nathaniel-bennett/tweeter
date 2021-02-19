@@ -4,7 +4,7 @@ import com.nathanielbennett.tweeter.model.domain.Status;
 
 import java.util.List;
 
-public class StoryResponse extends PagedResponse {
+public class StatusResponse extends PagedResponse {
     List<Status> statuses;
 
     /**
@@ -13,7 +13,7 @@ public class StoryResponse extends PagedResponse {
      * @param hasMorePages indicator of if more pages are available.
      * @param statuses the list of statues for the requested user.
      */
-    public StoryResponse(boolean success, boolean hasMorePages, List<Status> statuses) {
+    public StatusResponse(boolean success, boolean hasMorePages, List<Status> statuses) {
         super(success, hasMorePages);
         this.statuses = statuses;
     }
@@ -24,7 +24,7 @@ public class StoryResponse extends PagedResponse {
      * @param message message indicating failure.
      * @param hasMorePages indicator of if more pages are available.
      */
-    public StoryResponse(boolean success, String message, boolean hasMorePages) {
+    public StatusResponse(boolean success, String message, boolean hasMorePages) {
         super(success, message, hasMorePages);
     }
 

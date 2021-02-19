@@ -11,7 +11,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.view.main.fragments.StoryFragment;
+import com.nathanielbennett.tweeter.view.main.fragments.Status.Feed.FeedFragment;
+import com.nathanielbennett.tweeter.view.main.fragments.Status.Story.StoryFragment;
 import com.nathanielbennett.tweeter.view.main.fragments.follow.followers.FollowersFragment;
 import com.nathanielbennett.tweeter.view.main.fragments.follow.following.FollowingFragment;
 
@@ -21,6 +22,7 @@ import com.nathanielbennett.tweeter.view.main.fragments.follow.following.Followi
  */
 class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+    private static final int FEED_FRAGMENT_POSITION = 0;
     private static final int STORY_FRAGMENT_POSITION = 1;
     private static final int FOLLOWING_FRAGMENT_POSITION = 2;
     private static final int FOLLOWER_FRAGMENT_POSITION = 3;
@@ -46,6 +48,8 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
             return FollowersFragment.newInstance(user, authToken);
         } else if (position == STORY_FRAGMENT_POSITION) {
             return StoryFragment.newInstance(user, authToken);
+        } else if (position == FEED_FRAGMENT_POSITION) {
+            return FeedFragment.newInstance(user, authToken);
         } else {
             return PlaceholderFragment.newInstance(position + 1);
         }
