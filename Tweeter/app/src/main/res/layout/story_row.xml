@@ -36,6 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@string/story_creation_date"
+        android:paddingLeft="10sp"
         app:layout_constraintTop_toBottomOf="@+id/userAlias_story"
         app:layout_constraintStart_toEndOf="@id/userImage_Story"/>
 
