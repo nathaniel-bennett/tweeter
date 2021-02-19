@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:paddingTop="5sp"
         android:paddingLeft="10sp"
         tools:text="@string/sampleUserName"
         app:layout_constraintStart_toEndOf="@id/userImage_Story"/>
@@ -28,6 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@string/sampleAlias"
+        android:paddingTop="5sp"
         android:paddingLeft="10sp"
         app:layout_constraintStart_toEndOf="@id/userName_story"/>
 
@@ -36,6 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@string/story_creation_date"
+        android:paddingTop="5sp"
         android:paddingLeft="10sp"
         app:layout_constraintTop_toBottomOf="@+id/userAlias_story"
         app:layout_constraintStart_toEndOf="@id/userImage_Story"/>
@@ -48,10 +51,8 @@
         android:textSize="18sp"
         android:singleLine="false"
         android:ellipsize="none"
-        android:padding="10sp"
+        android:padding="5sp"
         tools:text="@string/status_message"
-        app:layout_constraintTop_toBottomOf="@+id/postDateInfo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/userImage_Story"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
