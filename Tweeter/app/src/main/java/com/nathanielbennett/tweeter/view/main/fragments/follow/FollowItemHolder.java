@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.view.main.fragments.follow;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,6 +11,8 @@ import androidx.annotation.NonNull;
 
 import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.User;
+import com.nathanielbennett.tweeter.view.main.MainActivity;
+import com.nathanielbennett.tweeter.view.main.UserActivity;
 import com.nathanielbennett.tweeter.view.main.fragments.TemplateItemHolder;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
 
@@ -18,6 +21,7 @@ public class FollowItemHolder extends TemplateItemHolder<User> {
     private final ImageView userImage;
     private final TextView userAlias;
     private final TextView userName;
+    private User associatedUser;
 
     /**
      * Creates an instance and sets an OnClickListener for the user's row.
@@ -36,7 +40,9 @@ public class FollowItemHolder extends TemplateItemHolder<User> {
             itemView.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "You Selected '" + userName.getText() + "'.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, UserActivity.class);
+                    intent.putExtra("user", associatedUser);
+                    context.startActivity(intent);
                 }
             });
         } else {
@@ -53,6 +59,7 @@ public class FollowItemHolder extends TemplateItemHolder<User> {
      */
     @Override
     public void bindItem(User itemToBind) {
+        associatedUser = itemToBind;
         userImage.setImageDrawable(ImageUtils.drawableFromByteArray(itemToBind.getImageBytes()));
         userAlias.setText(itemToBind.getAlias());
         userName.setText(itemToBind.getName());

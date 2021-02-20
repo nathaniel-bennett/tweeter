@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.view.main.fragments.Status;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,6 +11,8 @@ import androidx.annotation.NonNull;
 
 import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.Status;
+import com.nathanielbennett.tweeter.model.domain.User;
+import com.nathanielbennett.tweeter.view.main.UserActivity;
 import com.nathanielbennett.tweeter.view.main.fragments.TemplateItemHolder;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
 
@@ -20,7 +23,7 @@ public class StatusItemHolder extends TemplateItemHolder<Status> {
     private final TextView userName;
     private final TextView postDateInfo;
     private final TextView statusMessage;
-
+    private User associatedUser;
 
     /**
      * Creates an instance.
@@ -40,7 +43,9 @@ public class StatusItemHolder extends TemplateItemHolder<Status> {
             itemView.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "You Selected '" + userName.getText() + "'.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, UserActivity.class);
+                    intent.putExtra("user", associatedUser);
+                    context.startActivity(intent);
                 }
             });
 
@@ -55,6 +60,7 @@ public class StatusItemHolder extends TemplateItemHolder<Status> {
 
     @Override
     public void bindItem(Status itemToBind) {
+        associatedUser = itemToBind.getUserOfStatus();
         try {
             userImage.setImageDrawable(ImageUtils.drawableFromByteArray(itemToBind.getUserOfStatus().getImageBytes()));
             userAlias.setText(itemToBind.getUserOfStatus().getAlias());
