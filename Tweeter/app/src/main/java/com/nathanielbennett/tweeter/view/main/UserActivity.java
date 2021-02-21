@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,7 +43,7 @@ public class UserActivity extends AppCompatActivity implements MainPresenter.Vie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_user);
 
         mainPresenter = new MainPresenter(this);
         user = (User) getIntent().getSerializableExtra(USER_KEY);
@@ -58,15 +59,18 @@ public class UserActivity extends AppCompatActivity implements MainPresenter.Vie
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-
-        // We should use a Java 8 lambda function for the listener (and all other listeners), but
-        // they would be unfamiliar to many students who use this code.
-        fab.setOnClickListener(new View.OnClickListener() {
+        Button button = findViewById(R.id.followButton);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View view){
+                if (button.getText() == getResources().getString(R.string.followButton)) {
+                    button.setText(R.string.unfollowButton);
+                    button.setBackgroundColor(getResources().getColor(R.color.red));
+                }
+                else{
+                    button.setText(R.string.followButton);
+                    button.setBackgroundColor(getResources().getColor(R.color.green));
+                }
             }
         });
 

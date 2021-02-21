@@ -3,6 +3,7 @@ package com.nathanielbennett.tweeter.view.admission;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
