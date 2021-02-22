@@ -1,5 +1,8 @@
 package com.nathanielbennett.tweeter.view.main;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,9 +11,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nathanielbennett.tweeter.R;
+import com.nathanielbennett.tweeter.model.NewPostFragment;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
@@ -26,6 +33,7 @@ import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 import com.nathanielbennett.tweeter.presenter.MainPresenter;
 import com.nathanielbennett.tweeter.view.admission.AdmissionActivity;
 import com.nathanielbennett.tweeter.view.asyncTasks.LogoutTask;
+import com.nathanielbennett.tweeter.view.main.fragments.follow.followers.FollowersFragment;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
 
 /**
@@ -66,8 +74,25 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+
+                // Inflate and set the layout for the dialog
+                // Pass null as the parent view because its going in the dialog layout
+                builder.setView(inflater.inflate(R.layout.fragment_newpost, null))
+                        // Add action buttons
+                        .setPositiveButton(R.string.post, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                // post the status
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.show();
             }
         });
 

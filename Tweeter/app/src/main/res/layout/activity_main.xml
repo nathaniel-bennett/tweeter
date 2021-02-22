@@ -103,7 +103,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:scaleType="center"
-        app:backgroundTint="@color/white"
+        app:backgroundTint="@color/green"
         app:srcCompat="@drawable/feather" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

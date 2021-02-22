@@ -31,4 +31,6 @@
     <string name="title_activity_user">Tweeter</string>
     <string name="followButton">Follow</string>
     <string name="unfollowButton">Unfollow</string>
+    <string name="cancel">Cancel</string>
+    <string name="post">Post</string>
 </resources>
