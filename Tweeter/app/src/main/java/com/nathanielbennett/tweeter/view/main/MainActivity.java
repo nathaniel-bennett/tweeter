@@ -1,21 +1,10 @@
 package com.nathanielbennett.tweeter.view.main;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,8 +13,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.nathanielbennett.tweeter.R;
-import com.nathanielbennett.tweeter.model.NewPostFragment;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
@@ -33,7 +26,6 @@ import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 import com.nathanielbennett.tweeter.presenter.MainPresenter;
 import com.nathanielbennett.tweeter.view.admission.AdmissionActivity;
 import com.nathanielbennett.tweeter.view.asyncTasks.LogoutTask;
-import com.nathanielbennett.tweeter.view.main.fragments.follow.followers.FollowersFragment;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
 
 /**
