@@ -37,7 +37,13 @@ public class LoginTask extends TemplateTask {
 
     @Override
     public Response performTask(Request request) throws IOException {
-        return presenter.login((LoginRequest) request);
+        LoginResponse response = presenter.login((LoginRequest) request);
+
+        if (response.isSuccess()) {
+            loadImage(response.getUser());
+        }
+
+        return response;
     }
 
     @Override

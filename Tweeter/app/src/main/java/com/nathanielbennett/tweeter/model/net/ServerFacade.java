@@ -1,29 +1,113 @@
 package com.nathanielbennett.tweeter.model.net;
 
+import android.util.Log;
+
+import com.nathanielbennett.tweeter.BuildConfig;
+import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.Status;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
+import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
+import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 
 /**
  * Acts as a Facade to the Tweeter server. All network requests to the server should go through
  * this class.
  */
 public class ServerFacade {
-    private DummyServer dummyServer;
+    // This is the hard coded followee data returned by the 'getFollowees()' method
+    private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
+    private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
+
+    private final User user1 = new User("Allen", "Anderson", MALE_IMAGE_URL);
+    private final User user2 = new User("Amy", "Ames", FEMALE_IMAGE_URL);
+    private final User user3 = new User("Bob", "Bobson", MALE_IMAGE_URL);
+    private final User user4 = new User("Bonnie", "Beatty", FEMALE_IMAGE_URL);
+    private final User user5 = new User("Chris", "Colston", MALE_IMAGE_URL);
+    private final User user6 = new User("Cindy", "Coats", FEMALE_IMAGE_URL);
+    private final User user7 = new User("Dan", "Donaldson", MALE_IMAGE_URL);
+    private final User user8 = new User("Dee", "Dempsey", FEMALE_IMAGE_URL);
+    private final User user9 = new User("Elliott", "Enderson", MALE_IMAGE_URL);
+    private final User user10 = new User("Elizabeth", "Engle", FEMALE_IMAGE_URL);
+    private final User user11 = new User("Frank", "Frandson", MALE_IMAGE_URL);
+    private final User user12 = new User("Fran", "Franklin", FEMALE_IMAGE_URL);
+    private final User user13 = new User("Gary", "Gilbert", MALE_IMAGE_URL);
+    private final User user14 = new User("Giovanna", "Giles", FEMALE_IMAGE_URL);
+    private final User user15 = new User("Henry", "Henderson", MALE_IMAGE_URL);
+    private final User user16 = new User("Helen", "Hopwell", FEMALE_IMAGE_URL);
+    private final User user17 = new User("Igor", "Isaacson", MALE_IMAGE_URL);
+    private final User user18 = new User("Isabel", "Isaacson", FEMALE_IMAGE_URL);
+    private final User user19 = new User("Justin", "Jones", MALE_IMAGE_URL);
+    private final User user20 = new User("Jill", "Johnson", FEMALE_IMAGE_URL);
+
+    private final User dummyUser = new User("Dummy", "User", "dummyUser", MALE_IMAGE_URL);
+    private final Status dummyUserStatus1 = new Status(dummyUser, "Hello Status!", "Feburary 17 2021 9:16 PM", new ArrayList<User>());
+    private final Status dummyUserStatus2 = new Status(dummyUser, "Goodbye Status!", "Feburary 17 2021 9:17 PM", new ArrayList<User>());
+    private final Status dummyUserStatus3 = new Status(dummyUser, "I would like to mention @AllenAnderson and @HelenHopwell", "February 17 2021 9:18 PM", Arrays.asList(user1, user16));
+    private final Status dummyUserStatus4 = new Status(dummyUser, "1Hello Status!", "Feburary 17 2021 9:19 PM", new ArrayList<User>());
+    private final Status dummyUserStatus5 = new Status(dummyUser, "1Goodbye Status!", "Feburary 17 2021 9:20 PM", new ArrayList<User>());
+    private final Status dummyUserStatus6 = new Status(dummyUser, "1I would like to mention @AllenAnderson and @HelenHopwell", "February 17 2021 9:21 PM", Arrays.asList(user1, user16));
+    private final Status dummyUserStatus7 = new Status(dummyUser, "2Hello Status!", "Feburary 17 2021 9:22 PM", new ArrayList<User>());
+    private final Status dummyUserStatus8 = new Status(dummyUser, "2Goodbye Status!", "Feburary 17 2021 9:23 PM", new ArrayList<User>());
+    private final Status dummyUserStatus9 = new Status(dummyUser, "2I would like to mention @AllenAnderson and @HelenHopwell", "February 17 2021 9:24 PM", Arrays.asList(user1, user16));
+    private final Status dummyUserStatus10 = new Status(dummyUser, "3Hello Status!", "Feburary 17 2021 9:25 PM", new ArrayList<User>());
+    private final Status dummyUserStatus11 = new Status(dummyUser, "3Goodbye Status!", "Feburary 17 2021 9:26 PM", new ArrayList<User>());
+    private final Status dummyUserStatus12 = new Status(dummyUser, "3I would like to mention @AllenAnderson and @HelenHopwell", "February 17 2021 9:27 PM", Arrays.asList(user1, user16));
+
+    private final Status user1Status = new Status(user1, "I miss coding at work.", "Feburary 18 2021 9:11 PM", new ArrayList<>());
+    private final Status user2Status = new Status(user2, "I really don't like fake news.", "Feburary 18 2021 9:12 PM", new ArrayList<>());
+    private final Status user3Status = new Status(user3, "I hope @ChrisColston is doing well.", "Feburary 18 2021 9:13 PM", Arrays.asList(user5));
+    private final Status user4Status = new Status(user4, "I hate using google.com.", "Feburary 18 2021 9:14 PM", new ArrayList<>());
+    private final Status user5Status = new Status(user5, "Hello world.", "Feburary 18 2021 9:15 PM", new ArrayList<>());
+    private final Status user6Status = new Status(user6, "Visit csmcclain.com for an awesome video.", "Feburary 18 2021 9:16 PM", new ArrayList<>());
+    private final Status user7Status = new Status(user7, "It's snowing outisde right now.", "Feburary 18 2021 9:17 PM", new ArrayList<>());
+    private final Status user8Status = new Status(user8, "Amazing Time at the beach.", "Feburary 18 2021 9:18 PM", new ArrayList<>());
+    private final Status user9Status = new Status(user9, "@JillJohnson is awesome.", "Feburary 18 2021 9:19 PM", Arrays.asList(user20));
+    private final Status user10Status = new Status(user10, "Missing swimming.", "Feburary 18 2021 9:20 PM", new ArrayList<>());
+    private final Status user11Status = new Status(user11, "Live, Laugh, Love.", "Feburary 18 2021 9:21 PM", new ArrayList<>());
+    private final Status user12Status = new Status(user12, "I enjoy the outdoors.", "Feburary 18 2021 9:22 PM", new ArrayList<>());
+    private final Status user13Status = new Status(user13, "The programmers of this app did an amazing job.", "Feburary 18 2021 9:23 PM", new ArrayList<>());
+    private final Status user14Status = new Status(user14, "I hope that tomorrow will be snowy.", "Feburary 18 2021 9:24 PM", new ArrayList<>());
+    private final Status user15Status = new Status(user15, "Wake me up, when september ends!", "Feburary 18 2021 9:25 PM", new ArrayList<>());
+
+    private static final AuthToken authToken1 = new AuthToken();
+
+    /*
+     ***********************************************************************************************
+     *                                    SERVER FACADE API
+     ***********************************************************************************************
+     */
 
 
-    public ServerFacade() {
-        dummyServer = DummyServer.getInstance();
+    /**
+     * Performs a user registration and if successful, returns the registered user and an auth
+     * token. The current implementation is hard-coded to return a dummy user and doesn't actually
+     * make a network request.
+     * @param request contains all information needed to register a user.
+     * @return the register response.
+     */
+    public RegisterResponse register(RegisterRequest request) {
+        if (request.getUsername().equals("dummyUserName")) {
+            return new RegisterResponse("Username taken; please try another username");
+        } else {
+            User user = new User(request.getFirstName(), request.getLastName(), request.getUsername(),
+                    "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
+            return new RegisterResponse(user, authToken1);
+        }
     }
+
 
     /**
      * Performs a login and if successful, returns the logged in user and an auth token. The current
@@ -34,7 +118,14 @@ public class ServerFacade {
      * @return the login response.
      */
     public LoginResponse login(LoginRequest request) {
-        return dummyServer.login(request);
+        if (request.getPassword().equals("dummyPassword") && request.getUsername().equals("dummyUserName")){
+            User user = new User("Test", "User", "helloWorld",
+                    "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
+            return new LoginResponse(user, authToken1);
+        }
+        else{
+            return new LoginResponse("Failed to authenticate user on login");
+        }
     }
 
     /**
@@ -48,7 +139,34 @@ public class ServerFacade {
      * @return the following response.
      */
     public FollowResponse getFollowees(FollowRequest request) {
-        return dummyServer.getFollowees(request);
+
+        // Used in place of assert statements because Android does not support them
+        if(BuildConfig.DEBUG) {
+            if(request.getLimit() < 0) {
+                throw new AssertionError();
+            }
+
+            if(request.getFollowAlias() == null) {
+                throw new AssertionError();
+            }
+        }
+
+        List<User> allFollowees = getDummyFollowees();
+        List<User> responseFollowees = new ArrayList<>(request.getLimit());
+
+        boolean hasMorePages = false;
+
+        if(request.getLimit() > 0) {
+            int followeesIndex = getFollowStartingIndex(request.getLastFollowAlias(), allFollowees);
+
+            for(int limitCounter = 0; followeesIndex < allFollowees.size() && limitCounter < request.getLimit(); followeesIndex++, limitCounter++) {
+                responseFollowees.add(allFollowees.get(followeesIndex));
+            }
+
+            hasMorePages = followeesIndex < allFollowees.size();
+        }
+
+        return new FollowResponse(responseFollowees, hasMorePages);
     }
 
     /**
@@ -62,7 +180,32 @@ public class ServerFacade {
      * @return the followers response
      */
     public FollowResponse getFollowers(FollowRequest request) {
-        return dummyServer.getFollowers(request);
+        if (BuildConfig.DEBUG) {
+            if(request.getLimit() < 0) {
+                throw new AssertionError();
+            }
+
+            if (request.getFollowAlias() == null) {
+                throw new AssertionError();
+            }
+        }
+
+        List<User> allFollowers = getDummyFollowers();
+        List<User> responseFollowers = new ArrayList<>(request.getLimit());
+
+        boolean hasMorePages = false;
+
+        if (request.getLimit() > 0) {
+            int followersIndex = getFollowStartingIndex(request.getLastFollowAlias(), allFollowers);
+
+            for (int limitCounter = 0; followersIndex < allFollowers.size() && limitCounter < request.getLimit(); followersIndex++, limitCounter++) {
+                responseFollowers.add(allFollowers.get(followersIndex));
+            }
+
+            hasMorePages = followersIndex < allFollowers.size();
+        }
+
+        return new FollowResponse(responseFollowers, hasMorePages);
     }
 
     /**
@@ -71,15 +214,156 @@ public class ServerFacade {
      * that were returned in the previous request. The current implementation returns generated data
      * and doesn't actually make a network request.
      *
-     * @param request contains information about the user whos status are to be returned
+     * @param request contains information about the user whose status are to be returned
      * @return the story response.
      */
     public StatusResponse getStory(StatusRequest request) {
-        return dummyServer.getStory(request);
+        if (BuildConfig.DEBUG) {
+            if (request.getLimit() < 0) {
+                throw new AssertionError();
+            }
+
+            if (request.getUserToGet() == null) {
+                throw new AssertionError();
+            }
+        }
+
+        List<Status> allStatuses = getDummyStory();
+        List<Status> responseStatuses = new ArrayList<>(request.getLimit());
+
+        boolean hasMorePages = false;
+
+        if (request.getLimit() > 0) {
+            int storyIndex = getStatusStartingIndex(request.getLastStatusSent(), allStatuses);
+
+            for (int limitCounter = 0; storyIndex < allStatuses.size() && limitCounter < request.getLimit(); storyIndex++, limitCounter++) {
+                responseStatuses.add(allStatuses.get(storyIndex));
+            }
+
+            hasMorePages = storyIndex < allStatuses.size();
+        }
+
+        return new StatusResponse(true, hasMorePages, responseStatuses);
     }
 
     public StatusResponse getFeed(StatusRequest request) {
-        return dummyServer.getFeed(request);
+        if (BuildConfig.DEBUG) {
+            if (request.getLimit() < 0) {
+                throw new AssertionError();
+            }
+
+            if (request.getUserToGet() == null) {
+                throw new AssertionError();
+            }
+        }
+
+        List<Status> allStatuses = getDummyFeed();
+        List<Status> responseStatuses = new ArrayList<>(request.getLimit());
+
+        boolean hasMorePages = false;
+
+        if (request.getLimit() > 0) {
+            int storyIndex = getStatusStartingIndex(request.getLastStatusSent(), allStatuses);
+
+            for (int limitCounter = 0; storyIndex < allStatuses.size() && limitCounter < request.getLimit(); storyIndex++, limitCounter++) {
+                responseStatuses.add(allStatuses.get(storyIndex));
+            }
+
+            hasMorePages = storyIndex < allStatuses.size();
+        }
+
+        return new StatusResponse(true, hasMorePages, responseStatuses);
+    }
+
+
+
+
+
+
+
+    /**
+     * Logs out the user specified in the request. The current implementation returns
+     * generated data and doesn't actually make a network request.
+     * @param logoutRequest Contains information about the user to be logged out.
+     * @return A response indicating whether the logout was successful or not.
+     */
+    public LogoutResponse logout(LogoutRequest logoutRequest) {
+
+        Log.i("Received token: ", logoutRequest.getAuthToken().getTokenID());
+        Log.i("Checked token: ", authToken1.getTokenID());
+
+        if (!logoutRequest.getAuthToken().equals(authToken1)) {
+            return new LogoutResponse("Invalid AuthToken");
+        } else {
+            return new LogoutResponse();
+        }
+    }
+
+
+    /*
+     ***********************************************************************************************
+     *                                   HELPER FUNCTIONS
+     ***********************************************************************************************
+     */
+
+
+
+    /**
+     * Determines the index for the first status in the specified 'allStatuses' list that should be
+     * returned in the current request. This will be the index of the next status after the specified
+     * 'message'.
+     *
+     * @param message the last message seen.
+     * @param allStatuses all of the statuses.
+     * @return the index of the first status to be returned.
+     */
+    private int getStatusStartingIndex(String message, List<Status> allStatuses) {
+        int statusIndex = 0;
+
+        if (message != null) {
+            // This is a paged request for something after the first page. Find the first item
+            // we should return
+            for (int i = 0; i < allStatuses.size(); i++) {
+                if(message.equals(allStatuses.get(i).getStatusMessage())) {
+                    // We found the index of the last item returned last time. Increment to get
+                    // to the first one we should return;
+                    statusIndex = i + 1;
+                    break;
+                }
+            }
+        }
+
+        return statusIndex;
+    }
+
+    /**
+     * Determines the index for the first followUser in the specified 'allFollow' list that should
+     * be returned in the current request. This will be the index of the next followUser after the
+     * specified 'lastFollow'.
+     *
+     * @param lastFolloweeAlias the alias of the last followee that was returned in the previous
+     *                          request or null if there was no previous request.
+     * @param allFollow the generated list of followUser from which we are returning paged results.
+     * @return the index of the first followee to be returned.
+     */
+    private int getFollowStartingIndex(String lastFolloweeAlias, List<User> allFollow) {
+
+        int followeesIndex = 0;
+
+        if(lastFolloweeAlias != null) {
+            // This is a paged request for something after the first page. Find the first item
+            // we should return
+            for (int i = 0; i < allFollow.size(); i++) {
+                if(lastFolloweeAlias.equals(allFollow.get(i).getAlias())) {
+                    // We found the index of the last item returned last time. Increment to get
+                    // to the first one we should return
+                    followeesIndex = i + 1;
+                    break;
+                }
+            }
+        }
+
+        return followeesIndex;
     }
 
     /**
@@ -89,7 +373,9 @@ public class ServerFacade {
      * @return the dummy feed.
      */
     List<Status> getDummyFeed() {
-        return dummyServer.getDummyFeed();
+        return Arrays.asList(user1Status, user2Status,  user3Status,  user4Status,  user5Status,
+                user6Status,  user7Status,  user8Status,  user9Status,  user10Status,  user11Status,
+                user12Status,  user13Status,  user14Status,  user15Status);
     }
 
     /**
@@ -99,7 +385,9 @@ public class ServerFacade {
      * @return the dummy story.
      */
     List<Status> getDummyStory() {
-        return dummyServer.getDummyStory();
+        return Arrays.asList(dummyUserStatus1, dummyUserStatus2, dummyUserStatus3, dummyUserStatus4,
+                dummyUserStatus5, dummyUserStatus6, dummyUserStatus7, dummyUserStatus8, dummyUserStatus9,
+                dummyUserStatus10, dummyUserStatus11, dummyUserStatus12);
     }
 
     /**
@@ -109,7 +397,9 @@ public class ServerFacade {
      * @return the followees.
      */
     List<User> getDummyFollowees() {
-        return dummyServer.getDummyFollowees();
+        return Arrays.asList(user1, user2, user3, user4, user5, user6, user7,
+                user8, user9, user10, user11, user12, user13, user14, user15, user16, user17, user18,
+                user19, user20);
     }
 
     /**
@@ -119,15 +409,6 @@ public class ServerFacade {
      * @return the followers.
      */
     List<User> getDummyFollowers() {
-        return dummyServer.getDummyFollowers();
-    }
-
-    /**
-     * Logs out a user with an AuthToken
-     * @param logoutRequest
-     * @return
-     */
-    public LogoutResponse logout(LogoutRequest logoutRequest) {
-        return dummyServer.logout(logoutRequest);
+        return Arrays.asList(user1, user3, user6, user9, user12, user15, user18, user20);
     }
 }

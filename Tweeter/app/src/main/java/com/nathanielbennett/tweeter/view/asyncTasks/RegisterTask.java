@@ -26,7 +26,13 @@ public class RegisterTask extends TemplateTask {
 
     @Override
     public Response performTask(Request request) throws IOException {
-        return presenter.performRegistration((RegisterRequest) request);
+        RegisterResponse response = presenter.performRegistration((RegisterRequest) request);
+
+        if (response.isSuccess()) {
+            loadImage(response.getUser());
+        }
+
+        return response;
     }
 
     @Override

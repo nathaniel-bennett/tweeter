@@ -6,6 +6,7 @@ import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
+import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
 import com.nathanielbennett.tweeter.util.ByteArrayUtils;
 
 /**
@@ -15,23 +16,18 @@ public class LoginService {
 
     public LoginResponse login(LoginRequest request) throws IOException {
         ServerFacade serverFacade = getServerFacade();
-        LoginResponse loginResponse = serverFacade.login(request);
 
-        if(loginResponse.isSuccess()) {
-            loadImage(loginResponse.getUser());
+        if (request == null) {
+            throw new NullPointerException("Null login request passed into LoginService");
         }
 
-        return loginResponse;
-    }
+        if (request.getUsername() == null || request.getUsername().isEmpty()) {
+            return new LoginResponse("A Username is required to sign in (please enter)");
+        } else if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            return new LoginResponse("A password is required to sign in (please enter)");
+        }
 
-    /**
-     * Loads the profile image data for the user.
-     *
-     * @param user the user whose profile image data is to be loaded.
-     */
-    private void loadImage(User user) throws IOException {
-        byte [] bytes = ByteArrayUtils.bytesFromUrl(user.getImageUrl());
-        user.setImageBytes(bytes);
+        return serverFacade.login(request);
     }
 
     /**

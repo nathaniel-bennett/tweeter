@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
         }
 
         authToken = (AuthToken) getIntent().getSerializableExtra(AUTH_TOKEN_KEY);
+
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(), user, authToken);
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -130,11 +132,21 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
 
     @Override
     public void logoutUnsuccessful(LogoutResponse logoutResponse) {
+        Toast.makeText(this, "Logout failed: " + logoutResponse.getMessage(), Toast.LENGTH_LONG).show();
 
+        // Silently fail--still go back to login page
+        Intent intent = new Intent(MainActivity.this, AdmissionActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
     public void handleException(Exception ex) {
+        Toast.makeText(this, "Logout failed: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 
+        // Silently fail--still go back to login page
+        Intent intent = new Intent(MainActivity.this, AdmissionActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }
