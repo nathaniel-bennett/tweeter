@@ -4,14 +4,14 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.model.service.request.Request;
-import com.nathanielbennett.tweeter.model.service.response.Response;
+import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
+import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 import com.nathanielbennett.tweeter.util.ByteArrayUtils;
 
 import java.io.IOException;
 import java.util.List;
 
-public abstract class TemplateTask extends AsyncTask<Request,  Void, Response> {
+public abstract class TemplateTask extends AsyncTask<TweeterAPIRequest,  Void, TweeterAPIResponse> {
 
     private Exception exception;
 
@@ -20,11 +20,11 @@ public abstract class TemplateTask extends AsyncTask<Request,  Void, Response> {
     }
 
 
-    protected abstract Response performTask(Request request) throws IOException;
+    protected abstract TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException;
 
-    protected abstract void taskSuccessful(Response response);
+    protected abstract void taskSuccessful(TweeterAPIResponse response);
 
-    protected abstract void taskUnsuccessful(Response response);
+    protected abstract void taskUnsuccessful(TweeterAPIResponse response);
 
     protected abstract void handleException(Exception ex);
 
@@ -32,14 +32,14 @@ public abstract class TemplateTask extends AsyncTask<Request,  Void, Response> {
 
     /**
      * The method that is invoked on a background thread to log the user in. This method is
-     * invoked indirectly by calling {@link #execute(Request...)}.
+     * invoked indirectly by calling {@link #execute(TweeterAPIRequest...)}.
      *
      * @param requests the request object (there will only be one).
      * @return the response.
      */
     @Override
-    protected Response doInBackground(Request... requests) {
-        Response response = null;
+    protected TweeterAPIResponse doInBackground(TweeterAPIRequest... requests) {
+        TweeterAPIResponse response = null;
 
         try {
             response = performTask(requests[0]);
@@ -91,12 +91,12 @@ public abstract class TemplateTask extends AsyncTask<Request,  Void, Response> {
 
     /**
      * Notifies the observer (on the thread of the invoker of the
-     * {@link #execute(Request...)} method) when the task completes.
+     * {@link #execute(TweeterAPIRequest...)} method) when the task completes.
      *
      * @param response the response that was received by the task.
      */
     @Override
-    protected void onPostExecute(Response response) {
+    protected void onPostExecute(TweeterAPIResponse response) {
         if(exception != null) {
             handleException(exception);
         } else if(response.isSuccess()) {

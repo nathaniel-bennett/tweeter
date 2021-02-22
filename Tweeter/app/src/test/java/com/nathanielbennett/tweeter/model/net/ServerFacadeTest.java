@@ -37,7 +37,7 @@ class ServerFacadeTest {
         Mockito.when(serverFacadeSpy.getDummyFollowees()).thenReturn(followees);
 
         FollowRequest request = new FollowRequest(user1.getAlias(), 10, null);
-        FollowResponse response = serverFacadeSpy.getFollowees(request);
+        FollowResponse response = serverFacadeSpy.getFollowing(request);
 
         Assertions.assertEquals(0, response.getFollowees().size());
         Assertions.assertFalse(response.getHasMorePages());
@@ -49,7 +49,7 @@ class ServerFacadeTest {
         Mockito.when(serverFacadeSpy.getDummyFollowees()).thenReturn(followees);
 
         FollowRequest request = new FollowRequest(user1.getAlias(), 10, null);
-        FollowResponse response = serverFacadeSpy.getFollowees(request);
+        FollowResponse response = serverFacadeSpy.getFollowing(request);
 
         Assertions.assertEquals(1, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user2));
@@ -62,7 +62,7 @@ class ServerFacadeTest {
         Mockito.when(serverFacadeSpy.getDummyFollowees()).thenReturn(followees);
 
         FollowRequest request = new FollowRequest(user3.getAlias(), 2, null);
-        FollowResponse response = serverFacadeSpy.getFollowees(request);
+        FollowResponse response = serverFacadeSpy.getFollowing(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user2));
@@ -76,7 +76,7 @@ class ServerFacadeTest {
         Mockito.when(serverFacadeSpy.getDummyFollowees()).thenReturn(followees);
 
         FollowRequest request = new FollowRequest(user5.getAlias(), 2, null);
-        FollowResponse response = serverFacadeSpy.getFollowees(request);
+        FollowResponse response = serverFacadeSpy.getFollowing(request);
 
         // Verify first page
         Assertions.assertEquals(2, response.getFollowees().size());
@@ -86,7 +86,7 @@ class ServerFacadeTest {
 
         // Get and verify second page
         request = new FollowRequest(user5.getAlias(), 2, response.getFollowees().get(1).getAlias());
-        response = serverFacadeSpy.getFollowees(request);
+        response = serverFacadeSpy.getFollowing(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user4));
@@ -95,7 +95,7 @@ class ServerFacadeTest {
 
         // Get and verify third page
         request = new FollowRequest(user5.getAlias(), 2, response.getFollowees().get(1).getAlias());
-        response = serverFacadeSpy.getFollowees(request);
+        response = serverFacadeSpy.getFollowing(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user6));
@@ -110,7 +110,7 @@ class ServerFacadeTest {
         Mockito.when(serverFacadeSpy.getDummyFollowees()).thenReturn(followees);
 
         FollowRequest request = new FollowRequest(user6.getAlias(), 2, null);
-        FollowResponse response = serverFacadeSpy.getFollowees(request);
+        FollowResponse response = serverFacadeSpy.getFollowing(request);
 
         // Verify first page
         Assertions.assertEquals(2, response.getFollowees().size());
@@ -120,7 +120,7 @@ class ServerFacadeTest {
 
         // Get and verify second page
         request = new FollowRequest(user6.getAlias(), 2, response.getFollowees().get(1).getAlias());
-        response = serverFacadeSpy.getFollowees(request);
+        response = serverFacadeSpy.getFollowing(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user4));
@@ -129,7 +129,7 @@ class ServerFacadeTest {
 
         // Get and verify third page
         request = new FollowRequest(user6.getAlias(), 2, response.getFollowees().get(1).getAlias());
-        response = serverFacadeSpy.getFollowees(request);
+        response = serverFacadeSpy.getFollowing(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user6));
@@ -138,7 +138,7 @@ class ServerFacadeTest {
 
         // Get and verify fourth page
         request = new FollowRequest(user6.getAlias(), 2, response.getFollowees().get(1).getAlias());
-        response = serverFacadeSpy.getFollowees(request);
+        response = serverFacadeSpy.getFollowing(request);
 
         Assertions.assertEquals(1, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user8));

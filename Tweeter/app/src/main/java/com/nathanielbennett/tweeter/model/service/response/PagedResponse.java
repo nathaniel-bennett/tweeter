@@ -3,7 +3,7 @@ package com.nathanielbennett.tweeter.model.service.response;
 /**
  * A response that can indicate whether there is more data available from the server.
  */
-public class PagedResponse extends Response {
+public class PagedResponse extends TweeterAPIResponse {
 
     private final boolean hasMorePages;
 

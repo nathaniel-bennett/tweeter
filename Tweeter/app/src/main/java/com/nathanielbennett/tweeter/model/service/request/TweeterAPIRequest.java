@@ -1,4 +1,4 @@
 package com.nathanielbennett.tweeter.model.service.request;
 
-public interface Request {
+public interface TweeterAPIRequest {
 }

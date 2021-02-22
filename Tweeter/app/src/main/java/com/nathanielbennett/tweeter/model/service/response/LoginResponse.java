@@ -6,7 +6,7 @@ import com.nathanielbennett.tweeter.model.domain.User;
 /**
  * A response for a {@link com.nathanielbennett.tweeter.model.service.request.LoginRequest}.
  */
-public class LoginResponse extends Response {
+public class LoginResponse extends TweeterAPIResponse {
 
     private User user;
     private AuthToken authToken;

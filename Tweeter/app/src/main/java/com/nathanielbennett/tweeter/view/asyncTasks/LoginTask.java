@@ -2,9 +2,9 @@ package com.nathanielbennett.tweeter.view.asyncTasks;
 
 
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
-import com.nathanielbennett.tweeter.model.service.request.Request;
+import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
-import com.nathanielbennett.tweeter.model.service.response.Response;
+import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 import com.nathanielbennett.tweeter.presenter.LoginPresenter;
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class LoginTask extends TemplateTask {
     }
 
     @Override
-    public Response performTask(Request request) throws IOException {
+    public TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
         LoginResponse response = presenter.login((LoginRequest) request);
 
         if (response.isSuccess()) {
@@ -47,12 +47,12 @@ public class LoginTask extends TemplateTask {
     }
 
     @Override
-    public void taskSuccessful(Response response) {
+    public void taskSuccessful(TweeterAPIResponse response) {
         observer.loginSuccessful((LoginResponse) response);
     }
 
     @Override
-    public void taskUnsuccessful(Response response) {
+    public void taskUnsuccessful(TweeterAPIResponse response) {
         observer.loginUnsuccessful((LoginResponse) response);
     }
 

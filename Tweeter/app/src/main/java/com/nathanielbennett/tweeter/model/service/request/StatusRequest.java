@@ -2,7 +2,7 @@ package com.nathanielbennett.tweeter.model.service.request;
 
 import com.nathanielbennett.tweeter.model.domain.User;
 
-public class StatusRequest implements Request{
+public class StatusRequest implements TweeterAPIRequest {
 
     private User userToGet;
     private final int limit;

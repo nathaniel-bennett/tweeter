@@ -3,7 +3,7 @@ package com.nathanielbennett.tweeter.model.service.response;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
 
-public class RegisterResponse extends Response {
+public class RegisterResponse extends TweeterAPIResponse {
 
     private User user;
     private AuthToken authToken;

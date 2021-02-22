@@ -3,9 +3,9 @@ package com.nathanielbennett.tweeter.view.asyncTasks;
 import android.os.AsyncTask;
 
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
-import com.nathanielbennett.tweeter.model.service.request.Request;
+import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
-import com.nathanielbennett.tweeter.model.service.response.Response;
+import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 import com.nathanielbennett.tweeter.presenter.FollowingPresenter;
 
 import java.io.IOException;
@@ -46,7 +46,7 @@ public class GetFollowingTask extends TemplateTask {
      * @throws IOException
      */
     @Override
-    protected Response performTask(Request request) throws IOException {
+    protected TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
         FollowResponse response = presenter.getFollowing((FollowRequest) request);
         if (response.isSuccess()) {
             loadUserImages(response.getRequestedUsers());
@@ -61,7 +61,7 @@ public class GetFollowingTask extends TemplateTask {
      * @param response The response from the back end.
      */
     @Override
-    protected void taskSuccessful(Response response) {
+    protected void taskSuccessful(TweeterAPIResponse response) {
         observer.followeesRetrieved((FollowResponse) response);
     }
 
@@ -71,7 +71,7 @@ public class GetFollowingTask extends TemplateTask {
      * @param response The response from the back end.
      */
     @Override
-    protected void taskUnsuccessful(Response response) {
+    protected void taskUnsuccessful(TweeterAPIResponse response) {
         // Intentionally left blank
         // TODO: ADD SOME ERROR STUFF HERE
     }

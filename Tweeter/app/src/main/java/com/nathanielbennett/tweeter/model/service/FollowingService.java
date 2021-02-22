@@ -31,6 +31,6 @@ public class FollowingService extends Service {
             throw new NullPointerException("Alias field missing in FollowRequest (FollowingService)");
         }
 
-        return serverFacade.getFollowees(request);
+        return serverFacade.getFollowing(request);
     }
 }

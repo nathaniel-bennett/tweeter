@@ -1,8 +1,8 @@
 package com.nathanielbennett.tweeter.view.asyncTasks;
 
-import com.nathanielbennett.tweeter.model.service.request.Request;
+import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
-import com.nathanielbennett.tweeter.model.service.response.Response;
+import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.presenter.StoryPresenter;
 
@@ -41,7 +41,7 @@ public class GetStoryTask extends TemplateTask {
      * @throws IOException
      */
     @Override
-    protected Response performTask(Request request) throws IOException {
+    protected TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
         StatusResponse response = presenter.getStory((StatusRequest) request);
         if (response.isSuccess()) {
             loadStatusImages(response.getStatuses());
@@ -56,7 +56,7 @@ public class GetStoryTask extends TemplateTask {
      * @param response The response from the backend.
      */
     @Override
-    protected void taskSuccessful(Response response) {
+    protected void taskSuccessful(TweeterAPIResponse response) {
         observer.storyRetrieved((StatusResponse) response);
     }
 
@@ -66,7 +66,7 @@ public class GetStoryTask extends TemplateTask {
      * @param response The response from the backend.
      */
     @Override
-    protected void taskUnsuccessful(Response response) {
+    protected void taskUnsuccessful(TweeterAPIResponse response) {
         observer.storyNotRetrieved((StatusResponse) response);
     }
 

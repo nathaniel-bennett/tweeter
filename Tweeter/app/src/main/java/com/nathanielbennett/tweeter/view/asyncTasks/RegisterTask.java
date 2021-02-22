@@ -1,9 +1,9 @@
 package com.nathanielbennett.tweeter.view.asyncTasks;
 
 import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
-import com.nathanielbennett.tweeter.model.service.request.Request;
+import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
-import com.nathanielbennett.tweeter.model.service.response.Response;
+import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 import com.nathanielbennett.tweeter.presenter.RegisterPresenter;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class RegisterTask extends TemplateTask {
     }
 
     @Override
-    public Response performTask(Request request) throws IOException {
+    public TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
         RegisterResponse response = presenter.performRegistration((RegisterRequest) request);
 
         if (response.isSuccess()) {
@@ -36,12 +36,12 @@ public class RegisterTask extends TemplateTask {
     }
 
     @Override
-    public void taskSuccessful(Response response) {
+    public void taskSuccessful(TweeterAPIResponse response) {
         observer.registrationSuccessful((RegisterResponse) response);
     }
 
     @Override
-    public void taskUnsuccessful(Response response) {
+    public void taskUnsuccessful(TweeterAPIResponse response) {
         observer.registrationUnsuccessful((RegisterResponse) response);
     }
 

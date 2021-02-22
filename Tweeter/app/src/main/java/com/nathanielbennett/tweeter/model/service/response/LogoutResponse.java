@@ -1,6 +1,6 @@
 package com.nathanielbennett.tweeter.model.service.response;
 
-public class LogoutResponse extends Response {
+public class LogoutResponse extends TweeterAPIResponse {
 
     /**
      * Creates a response indicating that the user was successfully logged out.

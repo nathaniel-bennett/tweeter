@@ -3,7 +3,7 @@ package com.nathanielbennett.tweeter.model.service.response;
 /**
  * A base class for server responses.
  */
-public class Response {
+public abstract class TweeterAPIResponse {
 
     private final boolean success;
     private final String message;
@@ -11,7 +11,7 @@ public class Response {
     /**
      * Creates a response to a successful request.
      */
-    Response() {
+    TweeterAPIResponse() {
         this.success = true;
         this.message = null;
     }
@@ -21,7 +21,7 @@ public class Response {
      *
      * @param message an error message describing why the request was unsuccessful.
      */
-    Response(String message) {
+    TweeterAPIResponse(String message) {
         this.success = false;
         this.message = message;
     }

@@ -1,6 +1,6 @@
 package com.nathanielbennett.tweeter.model.service.request;
 
-public class RegisterRequest implements Request {
+public class RegisterRequest implements TweeterAPIRequest {
 
     private String firstName;
 
