@@ -11,7 +11,9 @@
         android:id="@+id/userImage_Story"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:contentDescription="@string/userImageContentDescription"/>
+        android:contentDescription="@string/userImageContentDescription"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/userName_story"
@@ -21,7 +23,9 @@
         android:textStyle="bold"
         android:paddingTop="5sp"
         android:paddingLeft="10sp"
+        android:paddingRight="10sp"
         tools:text="@string/sampleUserName"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/userImage_Story"/>
 
     <TextView
@@ -31,6 +35,8 @@
         tools:text="@string/sampleAlias"
         android:paddingTop="5sp"
         android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/userName_story"/>
 
     <TextView
@@ -40,8 +46,9 @@
         tools:text="@string/story_creation_date"
         android:paddingTop="5sp"
         android:paddingLeft="10sp"
+        android:paddingRight="10sp"
         app:layout_constraintTop_toBottomOf="@+id/userAlias_story"
-        app:layout_constraintStart_toEndOf="@id/userImage_Story"/>
+        app:layout_constraintStart_toEndOf="@id/userImage_Story" />
 
     <TextView
         android:id="@+id/statusMessage"
