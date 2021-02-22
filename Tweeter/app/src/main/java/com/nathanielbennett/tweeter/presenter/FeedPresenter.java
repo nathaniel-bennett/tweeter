@@ -1,6 +1,6 @@
 package com.nathanielbennett.tweeter.presenter;
 
-import com.nathanielbennett.tweeter.model.service.StatusService.FeedService;
+import com.nathanielbennett.tweeter.model.service.FeedService;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
@@ -35,7 +35,7 @@ public class FeedPresenter implements TemplatePresenter {
      */
     public StatusResponse getFeed(StatusRequest request) throws IOException {
         FeedService feedService = getFeedService();
-        return feedService.makeServerRequest(request);
+        return feedService.fetchFeed(request);
     }
 
     /**

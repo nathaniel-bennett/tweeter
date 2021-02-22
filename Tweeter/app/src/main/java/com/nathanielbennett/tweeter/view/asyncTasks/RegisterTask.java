@@ -29,7 +29,7 @@ public class RegisterTask extends TemplateTask {
         RegisterResponse response = presenter.performRegistration((RegisterRequest) request);
 
         if (response.isSuccess()) {
-            loadImage(response.getUser());
+            loadUserImage(response.getUser());
         }
 
         return response;

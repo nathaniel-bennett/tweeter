@@ -16,23 +16,23 @@ public class FollowResponse extends PagedResponse {
     private List<User> requestedUsers;
 
     /**
-     * Creates a response indicating that the corresponding request was unsuccessful. Sets the
+     * Creates a response indicating that the corresponding Follow request was unsuccessful. Sets the
      * success and more pages indicators to false.
      *
-     * @param message a message describing why the request was unsuccessful.
+     * @param message an error message describing why the Follow request was unsuccessful.
      */
     public FollowResponse(String message) {
-        super(false, message, false);
+        super(message);
     }
 
     /**
-     * Creates a response indicating that the corresponding request was successful.
+     * Creates a response indicating that the corresponding Follow request was successful.
      *
      * @param requestedUsers the the users to be included in the result.
      * @param hasMorePages an indicator of whether more data is available for the request.
      */
     public FollowResponse(List<User> requestedUsers, boolean hasMorePages) {
-        super(true, hasMorePages);
+        super(hasMorePages);
         this.requestedUsers = requestedUsers;
     }
 

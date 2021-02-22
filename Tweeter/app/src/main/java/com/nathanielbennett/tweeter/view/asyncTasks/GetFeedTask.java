@@ -43,7 +43,12 @@ public class GetFeedTask extends TemplateTask {
      */
     @Override
     protected Response performTask(Request request) throws IOException {
-        return presenter.getFeed((StatusRequest) request);
+        StatusResponse response = presenter.getFeed((StatusRequest) request);
+        if (response.isSuccess()) {
+            loadStatusImages(response.getStatuses());
+        }
+
+        return response;
     }
 
     /**

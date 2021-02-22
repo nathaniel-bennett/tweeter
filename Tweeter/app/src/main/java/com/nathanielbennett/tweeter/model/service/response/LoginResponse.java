@@ -12,22 +12,22 @@ public class LoginResponse extends Response {
     private AuthToken authToken;
 
     /**
-     * Creates a response indicating that the corresponding request was unsuccessful.
+     * Creates a response indicating that the login attempt was unsuccessful.
      *
-     * @param message a message describing why the request was unsuccessful.
+     * @param message an error message describing why the login was unsuccessful.
      */
     public LoginResponse(String message) {
-        super(false, message);
+        super(message);
     }
 
     /**
-     * Creates a response indicating that the corresponding request was successful.
+     * Creates a response indicating that the login attempt was successful.
      *
      * @param user the now logged in user.
      * @param authToken the auth token representing this user's session with the server.
      */
     public LoginResponse(User user, AuthToken authToken) {
-        super(true, null);
+        super();
         this.user = user;
         this.authToken = authToken;
     }

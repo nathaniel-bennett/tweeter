@@ -26,7 +26,12 @@ public class GetFollowersTask extends TemplateTask {
 
     @Override
     protected Response performTask(Request request) throws IOException {
-        return presenter.getFollowers((FollowRequest) request);
+        FollowResponse response = presenter.getFollowers((FollowRequest) request);
+        if (response.isSuccess()) {
+            loadUserImages(response.getRequestedUsers());
+        }
+
+        return response;
     }
 
     @Override

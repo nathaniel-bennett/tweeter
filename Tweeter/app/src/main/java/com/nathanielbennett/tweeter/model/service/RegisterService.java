@@ -4,7 +4,7 @@ import com.nathanielbennett.tweeter.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
 import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
 
-public class RegisterService {
+public class RegisterService extends Service {
 
     /**
      * Attempts to register a new user with the given {@link RegisterRequest} information. Returns a
@@ -31,16 +31,5 @@ public class RegisterService {
         }
 
         return serverFacade.register(request);
-    }
-
-    /**
-     * Returns an instance of {@link ServerFacade}. Allows mocking of the ServerFacade class for
-     * testing purposes. All usages of ServerFacade should get their ServerFacade instance from this
-     * method to allow for proper mocking.
-     *
-     * @return the instance.
-     */
-    ServerFacade getServerFacade() {
-        return new ServerFacade();
     }
 }

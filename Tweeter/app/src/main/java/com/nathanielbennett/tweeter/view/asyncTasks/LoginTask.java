@@ -40,7 +40,7 @@ public class LoginTask extends TemplateTask {
         LoginResponse response = presenter.login((LoginRequest) request);
 
         if (response.isSuccess()) {
-            loadImage(response.getUser());
+            loadUserImage(response.getUser());
         }
 
         return response;

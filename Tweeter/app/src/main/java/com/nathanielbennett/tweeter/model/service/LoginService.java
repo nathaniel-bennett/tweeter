@@ -12,7 +12,7 @@ import com.nathanielbennett.tweeter.util.ByteArrayUtils;
 /**
  * Contains the business logic to support the login operation.
  */
-public class LoginService {
+public class LoginService extends Service {
 
     public LoginResponse login(LoginRequest request) throws IOException {
         ServerFacade serverFacade = getServerFacade();
@@ -28,16 +28,5 @@ public class LoginService {
         }
 
         return serverFacade.login(request);
-    }
-
-    /**
-     * Returns an instance of {@link ServerFacade}. Allows mocking of the ServerFacade class for
-     * testing purposes. All usages of ServerFacade should get their ServerFacade instance from this
-     * method to allow for proper mocking.
-     *
-     * @return the instance.
-     */
-    ServerFacade getServerFacade() {
-        return new ServerFacade();
     }
 }

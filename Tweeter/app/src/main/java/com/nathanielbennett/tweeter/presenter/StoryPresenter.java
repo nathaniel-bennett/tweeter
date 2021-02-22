@@ -1,6 +1,6 @@
 package com.nathanielbennett.tweeter.presenter;
 
-import com.nathanielbennett.tweeter.model.service.StatusService.StoryService;
+import com.nathanielbennett.tweeter.model.service.StoryService;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
@@ -35,7 +35,7 @@ public class StoryPresenter implements TemplatePresenter {
      */
     public StatusResponse getStory(StatusRequest request) throws IOException {
         StoryService storyService = getStoryService();
-        return storyService.makeServerRequest(request);
+        return storyService.fetchStory(request);
     }
 
     /**

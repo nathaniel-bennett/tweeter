@@ -9,22 +9,20 @@ public class Response {
     private final String message;
 
     /**
-     * Creates an instance with a null message.
-     *
-     * @param success the success message.
+     * Creates a response to a successful request.
      */
-    Response(boolean success) {
-        this(success, null);
+    Response() {
+        this.success = true;
+        this.message = null;
     }
 
     /**
-     * Creates an instance.
+     * Creates a response to a failed request,.
      *
-     * @param success the success indicator.
-     * @param message the error message.
+     * @param message an error message describing why the request was unsuccessful.
      */
-    Response(boolean success, String message) {
-        this.success = success;
+    Response(String message) {
+        this.success = false;
         this.message = message;
     }
 

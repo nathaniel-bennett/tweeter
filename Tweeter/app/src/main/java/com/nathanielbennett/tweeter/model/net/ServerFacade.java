@@ -243,7 +243,7 @@ public class ServerFacade {
             hasMorePages = storyIndex < allStatuses.size();
         }
 
-        return new StatusResponse(true, hasMorePages, responseStatuses);
+        return new StatusResponse(hasMorePages, responseStatuses);
     }
 
     public StatusResponse getFeed(StatusRequest request) {
@@ -272,7 +272,7 @@ public class ServerFacade {
             hasMorePages = storyIndex < allStatuses.size();
         }
 
-        return new StatusResponse(true, hasMorePages, responseStatuses);
+        return new StatusResponse(hasMorePages, responseStatuses);
     }
 
 

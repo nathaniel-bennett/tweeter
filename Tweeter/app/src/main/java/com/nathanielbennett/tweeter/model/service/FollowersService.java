@@ -1,4 +1,4 @@
-package com.nathanielbennett.tweeter.model.service.FollowService;
+package com.nathanielbennett.tweeter.model.service;
 
 import com.nathanielbennett.tweeter.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
@@ -6,7 +6,7 @@ import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 
 import java.io.IOException;
 
-public class FollowersService extends TemplateFollowService {
+public class FollowersService extends Service {
 
     /**
      * Returns the users that the user specified in the request. Uses information in the request
@@ -17,15 +17,17 @@ public class FollowersService extends TemplateFollowService {
      * @param request contains the data required to fulfill the request.
      * @return the followers.
      */
-    @Override
-    public FollowResponse makeServerRequest(FollowRequest request) throws IOException {
-        FollowResponse response = getServerFacade().getFollowers(request);
+    public FollowResponse fetchFollowers(FollowRequest request) throws IOException {
+        ServerFacade serverFacade = getServerFacade();
 
-        if (response.isSuccess()) {
-            loadImages(response);
+        if (request == null) {
+            throw new NullPointerException("Null Follow request passed into FollowersService");
         }
 
-        return response;
-    }
+        if (request.getFollowAlias() == null || request.getFollowAlias().isEmpty()) {
+            throw new NullPointerException("Alias field missing in FollowRequest (FollowersService)");
+        }
 
+        return serverFacade.getFollowers(request);
+    }
 }

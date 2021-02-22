@@ -10,7 +10,6 @@ import java.util.Arrays;
 
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.net.ServerFacade;
-import com.nathanielbennett.tweeter.model.service.FollowService.FollowingService;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 

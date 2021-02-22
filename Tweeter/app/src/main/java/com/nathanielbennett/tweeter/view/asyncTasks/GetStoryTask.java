@@ -42,7 +42,12 @@ public class GetStoryTask extends TemplateTask {
      */
     @Override
     protected Response performTask(Request request) throws IOException {
-        return presenter.getStory((StatusRequest) request);
+        StatusResponse response = presenter.getStory((StatusRequest) request);
+        if (response.isSuccess()) {
+            loadStatusImages(response.getStatuses());
+        }
+
+        return response;
     }
 
     /**

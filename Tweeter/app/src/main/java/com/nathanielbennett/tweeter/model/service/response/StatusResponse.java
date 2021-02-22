@@ -9,23 +9,20 @@ public class StatusResponse extends PagedResponse {
 
     /**
      * creates a response indicating that the request was successful.
-     * @param success status of request.
      * @param hasMorePages indicator of if more pages are available.
      * @param statuses the list of statues for the requested user.
      */
-    public StatusResponse(boolean success, boolean hasMorePages, List<Status> statuses) {
-        super(success, hasMorePages);
+    public StatusResponse(boolean hasMorePages, List<Status> statuses) {
+        super(hasMorePages);
         this.statuses = statuses;
     }
 
     /**
      * Creates a response indicating the request was unsuccessful.
-     * @param success status of request.
-     * @param message message indicating failure.
-     * @param hasMorePages indicator of if more pages are available.
+     * @param message message indicating why the request was unsuccessful.
      */
-    public StatusResponse(boolean success, String message, boolean hasMorePages) {
-        super(success, message, hasMorePages);
+    public StatusResponse(String message) {
+        super(message);
     }
 
     /**

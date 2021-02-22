@@ -7,14 +7,22 @@ public class PagedResponse extends Response {
 
     private final boolean hasMorePages;
 
-    PagedResponse(boolean success, boolean hasMorePages) {
-        super(success);
+    /**
+     * creates a response indicating that the page request was successful.
+     * @param hasMorePages indicator of whether pages are available or not.
+     */
+    PagedResponse(boolean hasMorePages) {
+        super();
         this.hasMorePages = hasMorePages;
     }
 
-    PagedResponse(boolean success, String message, boolean hasMorePages) {
-        super(success, message);
-        this.hasMorePages = hasMorePages;
+    /**
+     * creates a response indicating that the paged request failed.
+     * @param message an error message indicating why the page request was unsuccessful.
+     */
+    PagedResponse(String message) {
+        super(message);
+        hasMorePages = false;
     }
 
     /**

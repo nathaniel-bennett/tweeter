@@ -9,6 +9,7 @@ import com.nathanielbennett.tweeter.model.service.response.Response;
 import com.nathanielbennett.tweeter.util.ByteArrayUtils;
 
 import java.io.IOException;
+import java.util.List;
 
 public abstract class TemplateTask extends AsyncTask<Request,  Void, Response> {
 
@@ -41,19 +42,36 @@ public abstract class TemplateTask extends AsyncTask<Request,  Void, Response> {
         Response response = null;
 
         try {
-
             response = performTask(requests[0]);
 
-            /*
-            if(response.isSuccess()) {
-                loadImage(response.getUser());
-            }
-            */
         } catch (Exception ex) {
             exception = ex;
         }
 
         return response;
+    }
+
+
+    /**
+     * Loads the profile image data for each user in the list of users.
+     *
+     * @param statuses the users whose profile images are to be loaded.
+     */
+    protected void loadStatusImages(List<com.nathanielbennett.tweeter.model.domain.Status> statuses) throws IOException {
+        for(com.nathanielbennett.tweeter.model.domain.Status status : statuses) {
+            loadUserImage(status.getUserOfStatus());
+        }
+    }
+
+    /**
+     * Loads the profile image data for each user in the list of users.
+     *
+     * @param users the users whose profile images are to be loaded.
+     */
+    protected void loadUserImages(List<User> users) throws IOException {
+        for(User user : users) {
+            loadUserImage(user);
+        }
     }
 
     /**
@@ -62,7 +80,7 @@ public abstract class TemplateTask extends AsyncTask<Request,  Void, Response> {
      * @param user the user whose profile image is to be loaded.
      */
 
-    protected void loadImage(User user) {
+    protected void loadUserImage(User user) {
         try {
             byte [] bytes = ByteArrayUtils.bytesFromUrl(user.getImageUrl());
             user.setImageBytes(bytes);
