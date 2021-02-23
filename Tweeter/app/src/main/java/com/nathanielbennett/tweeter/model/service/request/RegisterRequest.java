@@ -13,13 +13,14 @@ public class RegisterRequest implements TweeterAPIRequest {
     private byte[] image;
 
 
-    public RegisterRequest(String firstName, String lastName, String username, String password) {
+    public RegisterRequest(String firstName, String lastName, String username, String password, byte[] image) {
         // TODO: add image to this constructor
 
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
+        this.image = image;
     }
 
     public String getFirstName() {
