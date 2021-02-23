@@ -16,7 +16,7 @@ public class FollowUserResponse extends TweeterAPIResponse {
      *
      * @param message an error message describing why the FollowUser request was unsuccessful.
      */
-    FollowUserResponse(String message) {
+    public FollowUserResponse(String message) {
         super(message);
     }
 }
