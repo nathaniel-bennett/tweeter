@@ -164,4 +164,11 @@ public class DataCache {
         return followingMap.get(user);
     }
 
+    public void registerUser(User userToRegister) {
+        allUsers.put(userToRegister.getAlias(), userToRegister);
+        statusMap.put(userToRegister, new ArrayList<>());
+        followingMap.put(userToRegister, new ArrayList<>());
+        followerMap.put(userToRegister, new ArrayList<>());
+    }
+
 }
