@@ -2,9 +2,7 @@ package com.nathanielbennett.tweeter.model.service.request;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 
-public class FollowUserRequest implements TweeterAPIRequest {
-    private final String username;
-    private final AuthToken authToken;
+public class FollowUserRequest extends AuthorizedRequest {
     private final String userToFollow;
 
 
@@ -15,17 +13,8 @@ public class FollowUserRequest implements TweeterAPIRequest {
      * @param userToFollow The username of the user to begin following.
      */
     public FollowUserRequest(String username, AuthToken authToken, String userToFollow) {
-        this.username = username;
-        this.authToken = authToken;
+        super(username, authToken);
         this.userToFollow = userToFollow;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public AuthToken getAuthToken() {
-        return authToken;
     }
 
     public String getUserToFollow() {

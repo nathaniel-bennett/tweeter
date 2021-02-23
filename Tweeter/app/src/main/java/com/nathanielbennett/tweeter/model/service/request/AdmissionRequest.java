@@ -1,8 +1,8 @@
 package com.nathanielbennett.tweeter.model.service.request;
 
-public abstract class AdmissionRequest {
-    private String username;
-    private String password; // TODO: change to hash? Or handle hashing in Service class?
+public abstract class AdmissionRequest implements TweeterAPIRequest {
+    private final String username;
+    private final String password;
 
     public AdmissionRequest(String username, String password) {
         this.username = username;

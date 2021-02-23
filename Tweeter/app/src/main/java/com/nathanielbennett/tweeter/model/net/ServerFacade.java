@@ -238,7 +238,6 @@ public class ServerFacade {
         return new FollowResponse(responseFollowers, hasMorePages);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public PostResponse addToStory(PostRequest request) {
         if (BuildConfig.DEBUG) {
             if (request.getUser() == null) {
@@ -253,7 +252,7 @@ public class ServerFacade {
 
         dc.postStatus(request.getUser(), newStatus);
 
-        return new PostResponse(true, "Status added successfully!");
+        return new PostResponse();
     }
 
     /**
@@ -362,9 +361,8 @@ public class ServerFacade {
             if (message.charAt(i) == '@') {
                 atSymbol = i;
             } else if ((message.charAt(i) == ' ' || i == message.length() - 1) && atSymbol != -1) {
-                int start = atSymbol;
                 int end = (i == message.length() - 1) ? i + 1 : i;
-                String username = message.substring(start, end);
+                String username = message.substring(atSymbol, end);
                 User mentioned = dc.getUser(username);
                 if (mentioned != null) {
                     mentions.add(mentioned);

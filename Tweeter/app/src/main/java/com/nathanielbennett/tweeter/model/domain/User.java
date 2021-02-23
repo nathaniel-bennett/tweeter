@@ -3,7 +3,6 @@ package com.nathanielbennett.tweeter.model.domain;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Represents a user in the system.
@@ -46,7 +45,7 @@ public class User implements Comparable<User>, Serializable {
     }
 
     public String getName() {
-        return String.format("%s %s", firstName, lastName);
+        return String.format("%s %s", this.getFirstName(), this.getLastName());
     }
 
     public String getAlias() {

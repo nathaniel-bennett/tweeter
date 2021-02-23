@@ -2,11 +2,8 @@ package com.nathanielbennett.tweeter.model.service.request;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 
-public class UnfollowUserRequest implements TweeterAPIRequest {
-    private final String username;
-    private final AuthToken authToken;
+public class UnfollowUserRequest extends AuthorizedRequest {
     private final String userToUnfollow;
-
 
     /**
      * Creates a new Request to follow a user.
@@ -15,17 +12,8 @@ public class UnfollowUserRequest implements TweeterAPIRequest {
      * @param userToUnfollow The username of the user to stop following.
      */
     public UnfollowUserRequest(String username, AuthToken authToken, String userToUnfollow) {
-        this.username = username;
-        this.authToken = authToken;
+        super(username, authToken);
         this.userToUnfollow = userToUnfollow;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public AuthToken getAuthToken() {
-        return authToken;
     }
 
     public String getUserToUnfollow() {

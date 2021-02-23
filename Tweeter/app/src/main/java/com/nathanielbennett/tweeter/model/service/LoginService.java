@@ -1,20 +1,15 @@
 package com.nathanielbennett.tweeter.model.service;
 
-import java.io.IOException;
-
-import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
-import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
-import com.nathanielbennett.tweeter.util.ByteArrayUtils;
 
 /**
  * Contains the business logic to support the login operation.
  */
 public class LoginService extends Service {
 
-    public LoginResponse login(LoginRequest request) throws IOException {
+    public LoginResponse login(LoginRequest request) {
         ServerFacade serverFacade = getServerFacade();
 
         if (request == null) {

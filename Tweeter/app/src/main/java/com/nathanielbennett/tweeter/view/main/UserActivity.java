@@ -28,6 +28,8 @@ import com.nathanielbennett.tweeter.view.asyncTasks.TemplateTask;
 import com.nathanielbennett.tweeter.view.asyncTasks.UnfollowTask;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
 
+import java.text.MessageFormat;
+
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
  */
@@ -39,7 +41,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
             UNKNOWN,
             FOLLOWING,
             NOT_FOLLOWING,
-    };
+    }
 
     TemplateTask followTask = null;
     FollowingState followingState = FollowingState.UNKNOWN;
@@ -136,10 +138,10 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
         userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(selectedUser.getImageBytes()));
 
         TextView followeeCount = findViewById(R.id.followeeCount);
-        followeeCount.setText("Following: " + Integer.toString(selectedUser.getFolloweeCount()));
+        followeeCount.setText(MessageFormat.format("Following: {0}", Integer.toString(selectedUser.getFolloweeCount())));
 
         userFollowerCount = findViewById(R.id.followerCount);
-        userFollowerCount.setText("Followers: " + Integer.toString(selectedUser.getFollowerCount()));
+        userFollowerCount.setText(MessageFormat.format("Followers: {0}", Integer.toString(selectedUser.getFollowerCount())));
 
         // Begin a query to find out if the logged in user is following the selected user or not
         followTask = new CheckFollowingTask(this, userPresenter);
@@ -186,7 +188,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
         setFollowing();
         loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount()+1);
         selectedUser.setFollowerCount(selectedUser.getFollowerCount()+1);
-        userFollowerCount.setText("Followers: " + Integer.toString(selectedUser.getFollowerCount()));
+        userFollowerCount.setText(MessageFormat.format("Followers: {0}", Integer.toString(selectedUser.getFollowerCount())));
     }
 
     @Override
@@ -206,7 +208,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
         setNotFollowing();
         loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount()-1);
         selectedUser.setFollowerCount(selectedUser.getFollowerCount()-1);
-        userFollowerCount.setText("Followers: " + Integer.toString(selectedUser.getFollowerCount()));
+        userFollowerCount.setText(MessageFormat.format("Followers: {0}", selectedUser.getFollowerCount()));
     }
 
     @Override
@@ -222,7 +224,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
 
     private void setNotFollowing() {
         followingState = FollowingState.NOT_FOLLOWING;
-        followButton.setText("Follow");
+        followButton.setText(R.string.start_following_user_labe);
         followButton.setTextColor(getResources().getColor(R.color.white));
         followButton.setBackgroundColor(getResources().getColor(R.color.green));
         followTask = null;
@@ -230,7 +232,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
 
     private void setFollowing() {
         followingState = FollowingState.FOLLOWING;
-        followButton.setText("Following");
+        followButton.setText(R.string.following_user_label);
         followButton.setTextColor(getResources().getColor(R.color.black));
         followButton.setBackgroundColor(getResources().getColor(R.color.white));
         followTask = null;

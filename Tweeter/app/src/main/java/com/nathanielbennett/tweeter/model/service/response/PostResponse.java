@@ -1,17 +1,21 @@
 package com.nathanielbennett.tweeter.model.service.response;
 
-public class PostResponse extends TweeterAPIResponse{
-    public PostResponse(Boolean success, String message){
-        this.success = success;
-        this.message = message;
+public class PostResponse extends TweeterAPIResponse {
+
+    /**
+     * Creates a new PostResponse indicating that the attempted Post was successful.
+     */
+    public PostResponse() {
+        super();
     }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    public Boolean getSuccess() {
-        return success;
+    /**
+     * Creates a new PostResponse indicating that the attempted Post failed, with
+     * an error message explaining why failure occurred.
+     *
+     * @param message An error message indicating wy the PostRequest failed.
+     */
+    public PostResponse(String message) {
+        super(message);
     }
 }

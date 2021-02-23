@@ -24,10 +24,10 @@ public class DataCache {
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
     private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
 
-    private Map<String, User> allUsers = new HashMap<>();
-    private Map<User, ArrayList<Status>> statusMap = new HashMap<>();
-    private Map<User, ArrayList<User>> followerMap = new HashMap<>();
-    private Map<User, ArrayList<User>> followingMap = new HashMap<>();
+    private final Map<String, User> allUsers = new HashMap<>();
+    private final Map<User, ArrayList<Status>> statusMap = new HashMap<>();
+    private final Map<User, ArrayList<User>> followerMap = new HashMap<>();
+    private final Map<User, ArrayList<User>> followingMap = new HashMap<>();
 
     private DataCache(){
         // Set up users in backend
@@ -61,12 +61,18 @@ public class DataCache {
             followingMap.put(allUsers.get(s), new ArrayList<>());
         }
 
+        User dummyUser = allUsers.get("dummyUser");
+        ArrayList<Status> dummyStatuses = statusMap.get(dummyUser);
+        if (dummyStatuses == null) {
+            throw new NullPointerException("Couldn't access dummyUser statuses");
+        }
+
         // Add dummy User statuses
-        statusMap.get(allUsers.get("dummyUser")).add(new Status(allUsers.get("dummyUser"), "Hello Status!", "Feburary 17 2021 9:16 PM", new ArrayList<User>()));
-        statusMap.get(allUsers.get("dummyUser")).add(new Status(allUsers.get("dummyUser"), "Goodbye Status!", "Feburary 17 2021 9:17 PM", new ArrayList<User>()));
-        statusMap.get(allUsers.get("dummyUser")).add(new Status(allUsers.get("dummyUser"), "I would like to mention @AllenAnderson and @HelenHopwell", "February 17 2021 9:18 PM", Arrays.asList(allUsers.get("@AllenAnderson"), allUsers.get("@HelenHopwell"))));
-        statusMap.get(allUsers.get("dummyUser")).add(new Status(allUsers.get("dummyUser"), "Chris is cool!", "Feburary 17 2021 9:19 PM", new ArrayList<User>()));
-        statusMap.get(allUsers.get("dummyUser")).add(new Status(allUsers.get("dummyUser"), "Nathan is neat!", "Feburary 17 2021 9:20 PM", new ArrayList<User>()));
+        dummyStatuses.add(new Status(allUsers.get("dummyUser"), "Hello Status!", "Feburary 17 2021 9:16 PM", new ArrayList<User>()));
+        dummyStatuses.add(new Status(allUsers.get("dummyUser"), "Goodbye Status!", "Feburary 17 2021 9:17 PM", new ArrayList<User>()));
+        dummyStatuses.add(new Status(allUsers.get("dummyUser"), "I would like to mention @AllenAnderson and @HelenHopwell", "February 17 2021 9:18 PM", Arrays.asList(allUsers.get("@AllenAnderson"), allUsers.get("@HelenHopwell"))));
+        dummyStatuses.add(new Status(allUsers.get("dummyUser"), "Chris is cool!", "Feburary 17 2021 9:19 PM", new ArrayList<User>()));
+        dummyStatuses.add(new Status(allUsers.get("dummyUser"), "Nathan is neat!", "Feburary 17 2021 9:20 PM", new ArrayList<User>()));
 
         // Add other user statuses
         statusMap.get(allUsers.get("@AllenAnderson")).add(new Status(allUsers.get("@AllenAnderson"), "I miss coding at work.", "Feburary 18 2021 9:11 PM", new ArrayList<>()));

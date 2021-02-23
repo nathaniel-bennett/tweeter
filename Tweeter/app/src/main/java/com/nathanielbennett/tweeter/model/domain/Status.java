@@ -3,12 +3,10 @@ package com.nathanielbennett.tweeter.model.domain;
 import java.util.List;
 
 public class Status {
-    private User userOfStatus;
-    private String statusMessage;
-    private String datePosted;
-    private List<User> mentions;
-
-    // TODO: DISCUSS HOW TO HANDLE MENTIONS (@AWESOMEGROUP) AND URLS (WWW.AWESOMEPEOPLE.COM)
+    private final User userOfStatus;
+    private final String statusMessage;
+    private final String datePosted;
+    private final List<User> mentions;
 
     /**
      * Creates an instance of status.

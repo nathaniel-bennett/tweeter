@@ -1,9 +1,5 @@
 package com.nathanielbennett.tweeter.model.domain;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -11,7 +7,7 @@ import java.util.UUID;
  * Represents an auth token in the system.
  */
 public class AuthToken implements Serializable {
-    private String authTokenID;
+    private final String authTokenID;
 
     public AuthToken() {
         authTokenID = UUID.randomUUID().toString();

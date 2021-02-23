@@ -33,4 +33,6 @@
     <string name="unfollowButton">Unfollow</string>
     <string name="cancel">Cancel</string>
     <string name="post">Post</string>
+    <string name="start_following_user_labe">Follow</string>
+    <string name="following_user_label">Following</string>
 </resources>

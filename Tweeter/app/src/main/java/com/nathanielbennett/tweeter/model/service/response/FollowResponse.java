@@ -1,19 +1,17 @@
 package com.nathanielbennett.tweeter.model.service.response;
 
-import android.os.Build;
 
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A paged response for a {@link FollowRequest}.
  */
 public class FollowResponse extends PagedResponse {
 
-    private List<User> requestedUsers;
+    private final List<User> requestedUsers;
 
     /**
      * Creates a response indicating that the corresponding Follow request was unsuccessful. Sets the
@@ -23,6 +21,7 @@ public class FollowResponse extends PagedResponse {
      */
     public FollowResponse(String message) {
         super(message);
+        requestedUsers = null;
     }
 
     /**
@@ -57,21 +56,19 @@ public class FollowResponse extends PagedResponse {
 
         FollowResponse that = (FollowResponse) param;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return (Objects.equals(requestedUsers, that.requestedUsers) &&
-                    Objects.equals(this.getMessage(), that.getMessage()) &&
-                    this.isSuccess() == that.isSuccess());
+        if (requestedUsers == null) {
+            return super.equals(param);
+        } else {
+            return this.requestedUsers.equals(that.requestedUsers);
         }
-
-        return true;
     }
 
     @Override
     public int hashCode() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return Objects.hash(requestedUsers);
-        }
-
-        return (int)(requestedUsers.size() / Math.PI);
+         if (requestedUsers != null) {
+             return requestedUsers.hashCode();
+         } else {
+             return super.hashCode();
+         }
     }
 }

@@ -2,11 +2,8 @@ package com.nathanielbennett.tweeter.model.service;
 
 import com.nathanielbennett.tweeter.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.PostRequest;
-import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
-import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
-import java.io.IOException;
 
 public class PostService extends Service {
 
@@ -16,9 +13,8 @@ public class PostService extends Service {
      *
      * @param request the request to be made to the backend.
      * @return response from the backend.
-     * @throws IOException
      */
-    public PostResponse addPost(PostRequest request) throws IOException {
+    public PostResponse addPost(PostRequest request) {
         ServerFacade serverFacade = getServerFacade();
 
         if (request == null) {
