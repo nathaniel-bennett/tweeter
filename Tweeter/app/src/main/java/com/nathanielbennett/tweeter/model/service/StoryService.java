@@ -4,6 +4,8 @@ import com.nathanielbennett.tweeter.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
+import java.io.IOException;
+
 public class StoryService extends Service {
 
     /**
@@ -12,8 +14,9 @@ public class StoryService extends Service {
      *
      * @param request the request to be made to the backend.
      * @return response from the backend.
+     * @throws IOException if an error occurred in sending/receiving the action.
      */
-    public StatusResponse fetchStory(StatusRequest request) {
+    public StatusResponse fetchStory(StatusRequest request) throws IOException {
         ServerFacade serverFacade = getServerFacade();
 
         if (request == null) {

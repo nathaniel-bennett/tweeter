@@ -4,6 +4,8 @@ import com.nathanielbennett.tweeter.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 
+import java.io.IOException;
+
 
 /**
  * Contains the business logic to support the logout operation.
@@ -16,8 +18,9 @@ public class LogoutService extends Service {
      *
      * @param request The information of the user being logged out.
      * @return A response indicating either success or failure.
+     * @throws IOException if an error occurred in sending/receiving the action.
      */
-    public LogoutResponse logout(LogoutRequest request) {
+    public LogoutResponse logout(LogoutRequest request) throws IOException {
         ServerFacade serverFacade = getServerFacade();
 
         if (request == null) {

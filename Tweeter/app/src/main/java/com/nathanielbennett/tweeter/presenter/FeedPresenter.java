@@ -4,6 +4,8 @@ import com.nathanielbennett.tweeter.model.service.FeedService;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
+import java.io.IOException;
+
 public class FeedPresenter implements TemplatePresenter {
 
     private final View view;
@@ -29,8 +31,9 @@ public class FeedPresenter implements TemplatePresenter {
      *
      * @param request the request to be made to the service.
      * @return the response from the service.
+     * @throws IOException if an error occurred in sending/receiving the action.
      */
-    public StatusResponse getFeed(StatusRequest request) {
+    public StatusResponse getFeed(StatusRequest request) throws IOException {
         FeedService feedService = getFeedService();
         return feedService.fetchFeed(request);
     }

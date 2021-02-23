@@ -31,8 +31,8 @@ public class MainPresenter {
      * Makes a login request.
      *
      * @param logoutRequest The user authentication details needed to log one out.
-     * @return LogoutResponse
-     * @throws IOException
+     * @return A success response if the user was deauthenticated, or an error message on failure.
+     * @throws IOException if an error occurred in sending/receiving the action.
      */
     public LogoutResponse logout(LogoutRequest logoutRequest) throws IOException {
         LogoutService logoutService = new LogoutService();

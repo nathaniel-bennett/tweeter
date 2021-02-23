@@ -29,6 +29,8 @@ public class RegisterPresenter {
      * Makes a login request.
      *
      * @param request the request to register.
+     * @return user and authorization credentials on success, or an error message on failure.
+     * @throws IOException if an error occurred in sending/receiving the action.
      */
     public RegisterResponse performRegistration(RegisterRequest request) throws IOException {
         RegisterService registerService = new RegisterService();

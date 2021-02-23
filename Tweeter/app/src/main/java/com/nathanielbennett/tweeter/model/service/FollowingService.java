@@ -4,6 +4,8 @@ import com.nathanielbennett.tweeter.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 
+import java.io.IOException;
+
 /**
  * Contains the business logic for getting the users a user is following.
  */
@@ -16,9 +18,10 @@ public class FollowingService extends Service {
      * get the followees from the server.
      *
      * @param request contains the data required to fulfill the request.
-     * @return the followees.
+     * @return the followees
+     * @throws IOException if an error occurred in sending/receiving the action.
      */
-    public FollowResponse fetchFollowing(FollowRequest request) {
+    public FollowResponse fetchFollowing(FollowRequest request) throws IOException {
         ServerFacade serverFacade = getServerFacade();
 
         if (request == null) {

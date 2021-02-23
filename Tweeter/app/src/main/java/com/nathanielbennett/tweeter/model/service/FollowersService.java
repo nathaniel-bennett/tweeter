@@ -4,6 +4,8 @@ import com.nathanielbennett.tweeter.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 
+import java.io.IOException;
+
 public class FollowersService extends Service {
 
     /**
@@ -14,8 +16,9 @@ public class FollowersService extends Service {
      *
      * @param request contains the data required to fulfill the request.
      * @return the followers.
+     * @throws IOException if an error occurred in sending/receiving the action.
      */
-    public FollowResponse fetchFollowers(FollowRequest request) {
+    public FollowResponse fetchFollowers(FollowRequest request) throws IOException {
         ServerFacade serverFacade = getServerFacade();
 
         if (request == null) {

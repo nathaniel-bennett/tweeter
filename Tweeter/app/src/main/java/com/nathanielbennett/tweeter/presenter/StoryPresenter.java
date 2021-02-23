@@ -31,7 +31,7 @@ public class StoryPresenter implements TemplatePresenter {
      *
      * @param request the request to be made to the service.
      * @return the response from the service.
-     * @throws IOException
+     * @throws IOException if an error occurred in sending/receiving the action.
      */
     public StatusResponse getStory(StatusRequest request) throws IOException {
         StoryService storyService = getStoryService();

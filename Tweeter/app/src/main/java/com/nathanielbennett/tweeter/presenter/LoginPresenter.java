@@ -35,6 +35,8 @@ public class LoginPresenter {
      * Makes a login request.
      *
      * @param loginRequest the request.
+     * @return user credentials if a login is successful, or an error message on failure.
+     * @throws IOException if an error occurred in sending/receiving the action.
      */
     public LoginResponse login(LoginRequest loginRequest) throws IOException {
         Log.e("login username", loginRequest.getUsername());

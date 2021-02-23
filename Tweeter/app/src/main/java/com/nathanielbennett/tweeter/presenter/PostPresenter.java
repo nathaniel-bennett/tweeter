@@ -32,7 +32,7 @@ public class PostPresenter implements TemplatePresenter {
      *
      * @param request the request to be made to the service.
      * @return the response from the service.
-     * @throws IOException
+     * @throws IOException if an error occurred in sending/receiving the action.
      */
     public PostResponse post(PostRequest request) throws IOException {
         PostService postService = getPostService();
