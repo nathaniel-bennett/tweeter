@@ -103,10 +103,10 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
         userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(loggedInUser.getImageBytes()));
 
         TextView followeeCount = findViewById(R.id.followeeCount);
-        followeeCount.setText(getString(R.string.followeeCount, 42));
+        followeeCount.setText("Following: " + Integer.toString(loggedInUser.getFolloweeCount()));
 
         TextView followerCount = findViewById(R.id.followerCount);
-        followerCount.setText(getString(R.string.followerCount, 27));
+        followerCount.setText("Followers: " + Integer.toString(loggedInUser.getFollowerCount()));
     }
 
     @Override

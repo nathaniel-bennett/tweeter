@@ -15,6 +15,14 @@ public class User implements Comparable<User>, Serializable {
     private final String alias;
     private final String imageUrl;
     private byte [] imageBytes;
+    private int followerCount;
+    private int followeeCount;
+
+    public User(String firstName, String lastName, String alias, String imageURL, int followerCount, int followeeCount) {
+        this(firstName, lastName, alias, imageURL);
+        this.followerCount = followerCount;
+        this.followeeCount = followeeCount;
+    }
 
     public User(String firstName, String lastName, String imageURL) {
         this(firstName, lastName, String.format("@%s%s", firstName, lastName), imageURL);
@@ -25,6 +33,8 @@ public class User implements Comparable<User>, Serializable {
         this.lastName = lastName;
         this.alias = alias;
         this.imageUrl = imageURL;
+        this.followerCount = 0;
+        this.followeeCount = 0;
     }
 
     public String getFirstName() {
@@ -53,6 +63,22 @@ public class User implements Comparable<User>, Serializable {
 
     public void setImageBytes(byte[] imageBytes) {
         this.imageBytes = imageBytes;
+    }
+
+    public int getFollowerCount() {
+        return followerCount;
+    }
+
+    public void setFollowerCount(int followerCount) {
+        this.followerCount = followerCount;
+    }
+
+    public int getFolloweeCount() {
+        return followeeCount;
+    }
+
+    public void setFolloweeCount(int followeeCount) {
+        this.followeeCount = followeeCount;
     }
 
     @Override

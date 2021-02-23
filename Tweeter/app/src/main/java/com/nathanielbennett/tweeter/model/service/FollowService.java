@@ -2,8 +2,10 @@ package com.nathanielbennett.tweeter.model.service;
 
 import com.nathanielbennett.tweeter.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
+import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
+import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 
 public class FollowService extends Service {
@@ -63,6 +65,29 @@ public class FollowService extends Service {
         }
 
         return serverFacade.unfollow(request);
+    }
+
+
+    public CheckFollowingResponse checkFollowStatus(CheckFollowingRequest request) {
+        ServerFacade serverFacade = getServerFacade();
+
+        if (request == null) {
+            throw new NullPointerException("Null IsFollowingRequest passed into FollowService");
+        }
+
+        if (request.getUsername() == null || request.getUsername().isEmpty()) {
+            throw new NullPointerException("Username field of IsFollowingRequest not filled (FollowService)");
+        }
+
+        if (request.getOtherUser() == null || request.getOtherUser().isEmpty()) {
+            throw new NullPointerException("Other User field of IsFollowingRequest not filled (FollowService)");
+        }
+
+        if (request.getAuthToken() == null) {
+            throw new NullPointerException("Auth Token field of IsFollowingRequest not filled (FollowService");
+        }
+
+        return serverFacade.isFollowing(request);
     }
 
 }
