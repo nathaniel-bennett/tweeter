@@ -5,8 +5,8 @@ package com.nathanielbennett.tweeter.model.service.response;
  */
 public abstract class TweeterAPIResponse {
 
-    private final boolean success;
-    private final String message;
+    protected boolean success;
+    protected String message;
 
     /**
      * Creates a response to a successful request.

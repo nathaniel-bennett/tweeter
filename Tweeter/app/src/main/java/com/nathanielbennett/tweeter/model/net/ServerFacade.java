@@ -10,6 +10,7 @@ import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
+import com.nathanielbennett.tweeter.model.service.request.PostRequest;
 import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
@@ -17,12 +18,12 @@ import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
+import com.nathanielbennett.tweeter.model.service.response.PostResponse;
 import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -31,62 +32,9 @@ import java.util.List;
  * this class.
  */
 public class ServerFacade {
-    // This is the hard coded followee data returned by the 'getFollowees()' method
-    private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
-    private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
-
-    private final User user1 = new User("Allen", "Anderson", MALE_IMAGE_URL);
-    private final User user2 = new User("Amy", "Ames", FEMALE_IMAGE_URL);
-    private final User user3 = new User("Bob", "Bobson", MALE_IMAGE_URL);
-    private final User user4 = new User("Bonnie", "Beatty", FEMALE_IMAGE_URL);
-    private final User user5 = new User("Chris", "Colston", MALE_IMAGE_URL);
-    private final User user6 = new User("Cindy", "Coats", FEMALE_IMAGE_URL);
-    private final User user7 = new User("Dan", "Donaldson", MALE_IMAGE_URL);
-    private final User user8 = new User("Dee", "Dempsey", FEMALE_IMAGE_URL);
-    private final User user9 = new User("Elliott", "Enderson", MALE_IMAGE_URL);
-    private final User user10 = new User("Elizabeth", "Engle", FEMALE_IMAGE_URL);
-    private final User user11 = new User("Frank", "Frandson", MALE_IMAGE_URL);
-    private final User user12 = new User("Fran", "Franklin", FEMALE_IMAGE_URL);
-    private final User user13 = new User("Gary", "Gilbert", MALE_IMAGE_URL);
-    private final User user14 = new User("Giovanna", "Giles", FEMALE_IMAGE_URL);
-    private final User user15 = new User("Henry", "Henderson", MALE_IMAGE_URL);
-    private final User user16 = new User("Helen", "Hopwell", FEMALE_IMAGE_URL);
-    private final User user17 = new User("Igor", "Isaacson", MALE_IMAGE_URL);
-    private final User user18 = new User("Isabel", "Isaacson", FEMALE_IMAGE_URL);
-    private final User user19 = new User("Justin", "Jones", MALE_IMAGE_URL);
-    private final User user20 = new User("Jill", "Johnson", FEMALE_IMAGE_URL);
-
-    private final User dummyUser = new User("Dummy", "User", "dummyUser", MALE_IMAGE_URL);
-    private final Status dummyUserStatus1 = new Status(dummyUser, "Hello Status!", "Feburary 17 2021 9:16 PM", new ArrayList<User>());
-    private final Status dummyUserStatus2 = new Status(dummyUser, "Goodbye Status!", "Feburary 17 2021 9:17 PM", new ArrayList<User>());
-    private final Status dummyUserStatus3 = new Status(dummyUser, "I would like to mention @AllenAnderson and @HelenHopwell", "February 17 2021 9:18 PM", Arrays.asList(user1, user16));
-    private final Status dummyUserStatus4 = new Status(dummyUser, "1Hello Status!", "Feburary 17 2021 9:19 PM", new ArrayList<User>());
-    private final Status dummyUserStatus5 = new Status(dummyUser, "1Goodbye Status!", "Feburary 17 2021 9:20 PM", new ArrayList<User>());
-    private final Status dummyUserStatus6 = new Status(dummyUser, "1I would like to mention @AllenAnderson and @HelenHopwell", "February 17 2021 9:21 PM", Arrays.asList(user1, user16));
-    private final Status dummyUserStatus7 = new Status(dummyUser, "2Hello Status!", "Feburary 17 2021 9:22 PM", new ArrayList<User>());
-    private final Status dummyUserStatus8 = new Status(dummyUser, "2Goodbye Status!", "Feburary 17 2021 9:23 PM", new ArrayList<User>());
-    private final Status dummyUserStatus9 = new Status(dummyUser, "2I would like to mention @AllenAnderson and @HelenHopwell", "February 17 2021 9:24 PM", Arrays.asList(user1, user16));
-    private final Status dummyUserStatus10 = new Status(dummyUser, "3Hello Status!", "Feburary 17 2021 9:25 PM", new ArrayList<User>());
-    private final Status dummyUserStatus11 = new Status(dummyUser, "3Goodbye Status!", "Feburary 17 2021 9:26 PM", new ArrayList<User>());
-    private final Status dummyUserStatus12 = new Status(dummyUser, "3I would like to mention @AllenAnderson and @HelenHopwell", "February 17 2021 9:27 PM", Arrays.asList(user1, user16));
-
-    private final Status user1Status = new Status(user1, "I miss coding at work.", "Feburary 18 2021 9:11 PM", new ArrayList<>());
-    private final Status user2Status = new Status(user2, "I really don't like fake news.", "Feburary 18 2021 9:12 PM", new ArrayList<>());
-    private final Status user3Status = new Status(user3, "I hope @ChrisColston is doing well.", "Feburary 18 2021 9:13 PM", Arrays.asList(user5));
-    private final Status user4Status = new Status(user4, "I hate using google.com.", "Feburary 18 2021 9:14 PM", new ArrayList<>());
-    private final Status user5Status = new Status(user5, "Hello world.", "Feburary 18 2021 9:15 PM", new ArrayList<>());
-    private final Status user6Status = new Status(user6, "Visit csmcclain.com for an awesome video.", "Feburary 18 2021 9:16 PM", new ArrayList<>());
-    private final Status user7Status = new Status(user7, "It's snowing outside right now.", "Feburary 18 2021 9:17 PM", new ArrayList<>());
-    private final Status user8Status = new Status(user8, "Amazing Time at the beach.", "Feburary 18 2021 9:18 PM", new ArrayList<>());
-    private final Status user9Status = new Status(user9, "@JillJohnson is awesome.", "Feburary 18 2021 9:19 PM", Arrays.asList(user20));
-    private final Status user10Status = new Status(user10, "Missing swimming.", "Feburary 18 2021 9:20 PM", new ArrayList<>());
-    private final Status user11Status = new Status(user11, "Live, Laugh, Love.", "Feburary 18 2021 9:21 PM", new ArrayList<>());
-    private final Status user12Status = new Status(user12, "I enjoy the outdoors.", "Feburary 18 2021 9:22 PM", new ArrayList<>());
-    private final Status user13Status = new Status(user13, "The programmers of this app did an amazing job.", "Feburary 18 2021 9:23 PM", new ArrayList<>());
-    private final Status user14Status = new Status(user14, "I hope that tomorrow will be snowy.", "Feburary 18 2021 9:24 PM", new ArrayList<>());
-    private final Status user15Status = new Status(user15, "Wake me up, when september ends!", "Feburary 18 2021 9:25 PM", new ArrayList<>());
 
     private static final AuthToken authToken1 = new AuthToken();
+    private static final DataCache dc = DataCache.getInstance();
 
     /*
      ***********************************************************************************************
@@ -122,9 +70,10 @@ public class ServerFacade {
      * @return the login response.
      */
     public LoginResponse login(LoginRequest request) {
-        if (request.getPassword().equals("dummyPassword") && request.getUsername().equals("dummyUserName")){
-            User user = new User("Test", "User", "helloWorld",
-                    "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
+        if (request.getPassword().equals("dummyUser") && request.getUsername().equals("dummyUser")){
+//            User user = new User("Test", "User", "helloWorld", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
+            User user = dc.getUser("dummyUser");
+
             return new LoginResponse(user, authToken1);
         }
         else{
@@ -164,7 +113,7 @@ public class ServerFacade {
     public FollowResponse getFollowing(FollowRequest request) {
 
         // Used in place of assert statements because Android does not support them
-        if(BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             if(request.getLimit() < 0) {
                 throw new AssertionError();
             }
@@ -174,7 +123,7 @@ public class ServerFacade {
             }
         }
 
-        List<User> allFollowing = getDummyFollowees();
+        List<User> allFollowing = getFollowingFromUserName(request.getFollowAlias());
         List<User> responseFollowing = new ArrayList<>(request.getLimit());
 
         boolean hasMorePages = false;
@@ -213,7 +162,7 @@ public class ServerFacade {
             }
         }
 
-        List<User> allFollowers = getDummyFollowers();
+        List<User> allFollowers = getFollowersByUserName(request.getFollowAlias());
         List<User> responseFollowers = new ArrayList<>(request.getLimit());
 
         boolean hasMorePages = false;
@@ -229,6 +178,16 @@ public class ServerFacade {
         }
 
         return new FollowResponse(responseFollowers, hasMorePages);
+    }
+
+    public PostResponse addToStory(PostRequest request) {
+        if (BuildConfig.DEBUG) {
+            if (request.getUser() == null) {
+                throw new AssertionError("No user object provided");
+            }
+        }
+
+        return new PostResponse(true, "Status added successfully!");
     }
 
     /**
@@ -251,7 +210,7 @@ public class ServerFacade {
             }
         }
 
-        List<Status> allStatuses = getDummyStory();
+        List<Status> allStatuses = getStory(request.getUserToGet());
         List<Status> responseStatuses = new ArrayList<>(request.getLimit());
 
         boolean hasMorePages = false;
@@ -280,7 +239,7 @@ public class ServerFacade {
             }
         }
 
-        List<Status> allStatuses = getDummyFeed();
+        List<Status> allStatuses = getFeedFromDC(request.getUserToGet());
         List<Status> responseStatuses = new ArrayList<>(request.getLimit());
 
         boolean hasMorePages = false;
@@ -395,10 +354,23 @@ public class ServerFacade {
      *
      * @return the dummy feed.
      */
-    List<Status> getDummyFeed() {
-        return Arrays.asList(user1Status, user2Status,  user3Status,  user4Status,  user5Status,
-                user6Status,  user7Status,  user8Status,  user9Status,  user10Status,  user11Status,
-                user12Status,  user13Status,  user14Status,  user15Status);
+    List<Status> getFeedFromDC(User user) {
+        ArrayList<User> followers = dc.getFollowing(user);
+        ArrayList<Status> feed = new ArrayList<>();
+        for (int i = 0; i < followers.size(); i++){
+            ArrayList<Status> statuses = dc.getStatuses(user);
+            feed.addAll(statuses);
+        }
+//        Collections.sort(feed, new Comparator<Status>() {
+//            @Override
+//            public int compare(Status o1, Status o2) {
+//                String date1 = o1.getDatePosted();
+//                String date2 = o2.getDatePosted();
+//                Date d1 =
+//                if (o1.getDatePosted()
+//            }
+//        });
+        return feed;
     }
 
     /**
@@ -407,10 +379,8 @@ public class ServerFacade {
      *
      * @return the dummy story.
      */
-    List<Status> getDummyStory() {
-        return Arrays.asList(dummyUserStatus1, dummyUserStatus2, dummyUserStatus3, dummyUserStatus4,
-                dummyUserStatus5, dummyUserStatus6, dummyUserStatus7, dummyUserStatus8, dummyUserStatus9,
-                dummyUserStatus10, dummyUserStatus11, dummyUserStatus12);
+    List<Status> getStory(User user) {
+        return dc.getStatuses(user);
     }
 
     /**
@@ -419,10 +389,9 @@ public class ServerFacade {
      *
      * @return the followees.
      */
-    List<User> getDummyFollowees() {
-        return Arrays.asList(user1, user2, user3, user4, user5, user6, user7,
-                user8, user9, user10, user11, user12, user13, user14, user15, user16, user17, user18,
-                user19, user20);
+    List<User> getFollowingFromUserName(String username) {
+        User user = dc.getUser(username);
+        return dc.getFollowing(user);
     }
 
     /**
@@ -431,7 +400,8 @@ public class ServerFacade {
      *
      * @return the followers.
      */
-    List<User> getDummyFollowers() {
-        return Arrays.asList(user1, user3, user6, user9, user12, user15, user18, user20);
+    List<User> getFollowersByUserName(String username) {
+        User user = dc.getUser(username);
+        return dc.getFollowers(user);
     }
 }

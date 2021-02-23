@@ -8,6 +8,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+<<<<<<< Updated upstream
+=======
+import android.view.View;
+import android.widget.EditText;
+>>>>>>> Stashed changes
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,10 +25,16 @@ import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
+import com.nathanielbennett.tweeter.model.service.request.PostRequest;
+import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 import com.nathanielbennett.tweeter.presenter.MainPresenter;
+import com.nathanielbennett.tweeter.presenter.PostPresenter;
+import com.nathanielbennett.tweeter.presenter.StoryPresenter;
 import com.nathanielbennett.tweeter.view.admission.AdmissionActivity;
+import com.nathanielbennett.tweeter.view.asyncTasks.GetStoryTask;
 import com.nathanielbennett.tweeter.view.asyncTasks.LogoutTask;
+import com.nathanielbennett.tweeter.view.asyncTasks.PostTask;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
 
 /**
@@ -61,6 +72,7 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
 
         // We should use a Java 8 lambda function for the listener (and all other listeners), but
         // they would be unfamiliar to many students who use this code.
+<<<<<<< Updated upstream
         fab.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             LayoutInflater inflater = MainActivity.this.getLayoutInflater();
@@ -81,6 +93,35 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
                         }
                     });
             builder.show();
+=======
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+
+                // Inflate and set the layout for the dialog
+                // Pass null as the parent view because its going in the dialog layout
+                builder.setView(inflater.inflate(R.layout.fragment_newpost, null))
+                        // Add action buttons
+                        .setPositiveButton(R.string.post, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                EditText et = view.findViewById(R.id.newPost);
+                                String post = et.getText().toString();
+                                PostTask postTask = new PostTask();
+                                PostRequest request = new PostRequest(post, user);
+                                postTask.execute(request);
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.show();
+            }
+>>>>>>> Stashed changes
         });
 
         TextView userName = findViewById(R.id.userName);

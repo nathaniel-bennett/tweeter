@@ -1,0 +1,76 @@
+package com.nathanielbennett.tweeter.view.asyncTasks;
+
+import com.nathanielbennett.tweeter.model.service.request.PostRequest;
+import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
+import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
+import com.nathanielbennett.tweeter.model.service.response.PostResponse;
+import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
+import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
+import com.nathanielbennett.tweeter.presenter.PostPresenter;
+import com.nathanielbennett.tweeter.presenter.StoryPresenter;
+
+import java.io.IOException;
+
+public class PostTask extends TemplateTask {
+
+    /**
+     * An observer interface to be implemented by observers who want to be notified when this task
+     * completes.
+     */
+    public interface Observer {
+        void storyRetrieved(StatusResponse response);
+        void storyNotRetrieved(StatusResponse response);
+        void handleException(Exception exception);
+    }
+
+    private final PostPresenter presenter;
+    private final Observer observer;
+
+    public PostTask() {
+        this.presenter = new PostPresenter(null);
+        this.observer = null;
+    }
+
+    /**
+     * Method called to make request to backend.
+     *
+     * @param request the story request.
+     * @return The response from the backend.
+     * @throws IOException
+     */
+    @Override
+    protected TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
+        PostResponse response = presenter.post((PostRequest) request);
+        return response;
+    }
+
+    /**
+     * Method called when the task was successful.
+     *
+     * @param response The response from the backend.
+     */
+    @Override
+    protected void taskSuccessful(TweeterAPIResponse response) {
+
+    }
+
+    /**
+     * Method called when the task was unsuccessful.
+     *
+     * @param response The response from the backend.
+     */
+    @Override
+    protected void taskUnsuccessful(TweeterAPIResponse response) {
+
+    }
+
+    /**
+     * Method called when the task threw an exception.
+     *
+     * @param ex The exception thrown.
+     */
+    @Override
+    protected void handleException(Exception ex) {
+        observer.handleException(ex);
+    }
+}
