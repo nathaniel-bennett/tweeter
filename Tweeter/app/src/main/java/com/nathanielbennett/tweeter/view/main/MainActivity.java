@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,30 +31,32 @@ import com.nathanielbennett.tweeter.view.util.ImageUtils;
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
  */
-public class MainActivity extends AppCompatActivity implements MainPresenter.View, LogoutTask.Observer {
+public class MainActivity extends LoggedInActivityTemplate implements MainPresenter.View, LogoutTask.Observer {
 
-    public static final String CURRENT_USER_KEY = "CurrentUser";
-    public static final String AUTH_TOKEN_KEY = "AuthTokenKey";
-    private AuthToken authToken;
     private MainPresenter mainPresenter;
-    private User user;
+    private User loggedInUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainPresenter = new MainPresenter(this);
-
-        user = (User) getIntent().getSerializableExtra(CURRENT_USER_KEY);
-        if(user == null) {
-            throw new RuntimeException("User not passed to activity");
+        loggedInUser = (User) getIntent().getSerializableExtra(CURRENT_USER_KEY);
+        if (loggedInUser == null) {
+            throw new RuntimeException("User not passed to MainActivity");
         }
 
         authToken = (AuthToken) getIntent().getSerializableExtra(AUTH_TOKEN_KEY);
+        /*
+        if (authToken == null) {
+            throw new RuntimeException("Auth Token not passed to MainActivity");
+        }
+         */
+
+        mainPresenter = new MainPresenter(this);
 
 
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(), user, authToken);
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(), loggedInUser, authToken);
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
@@ -91,13 +92,13 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
         });
 
         TextView userName = findViewById(R.id.userName);
-        userName.setText(user.getName());
+        userName.setText(loggedInUser.getName());
 
         TextView userAlias = findViewById(R.id.userAlias);
-        userAlias.setText(user.getAlias());
+        userAlias.setText(loggedInUser.getAlias());
 
         ImageView userImageView = findViewById(R.id.userImage);
-        userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(user.getImageBytes()));
+        userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(loggedInUser.getImageBytes()));
 
         TextView followeeCount = findViewById(R.id.followeeCount);
         followeeCount.setText(getString(R.string.followeeCount, 42));
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Vie
         int id = item.getItemId();
         if (id == R.id.logoutMenu){
             LogoutTask logoutTask = new LogoutTask(this, mainPresenter);
-            AsyncTask<LogoutRequest, Void, LogoutResponse> execute = logoutTask.execute(new LogoutRequest(user.getAlias(), authToken));
+            AsyncTask<LogoutRequest, Void, LogoutResponse> execute = logoutTask.execute(new LogoutRequest(loggedInUser.getAlias(), authToken));
         }
         return super.onOptionsItemSelected(item);
     }
