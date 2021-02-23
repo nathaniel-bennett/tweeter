@@ -73,8 +73,9 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             // Get the text
-                            // Make the Post Task
-                            // Execute the post task.
+                            // Get Post Task
+                            // Get PostRequest
+                            // execute post request.
                         }
                     })
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
