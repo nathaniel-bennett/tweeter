@@ -58,6 +58,8 @@ public abstract class AdmissionTabFragment extends Fragment {
         intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
         intent.putExtra(MainActivity.AUTH_TOKEN_KEY, authToken);
 
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         admissionToast.cancel();
         startActivity(intent);
     }
