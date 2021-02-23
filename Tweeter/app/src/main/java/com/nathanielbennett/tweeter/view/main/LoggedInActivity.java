@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
 
-public abstract class LoggedInActivityTemplate extends AppCompatActivity {
+public abstract class LoggedInActivity extends AppCompatActivity {
     public static final String AUTH_TOKEN_KEY = "AuthTokenKey";
-    public static final String CURRENT_USER_KEY = "CurrentUser";
+    public static final String LOGGED_IN_USER_KEY = "LoggedInUser";
 
     protected AuthToken authToken;
     protected User loggedInUser;

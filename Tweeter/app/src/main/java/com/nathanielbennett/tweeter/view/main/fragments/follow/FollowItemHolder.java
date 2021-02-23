@@ -5,13 +5,12 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.view.main.MainActivity;
+import com.nathanielbennett.tweeter.view.main.LoggedInActivity;
 import com.nathanielbennett.tweeter.view.main.UserActivity;
 import com.nathanielbennett.tweeter.view.main.fragments.TemplateItemHolder;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
@@ -37,13 +36,17 @@ public class FollowItemHolder extends TemplateItemHolder<User> {
             userAlias = itemView.findViewById(R.id.userAlias);
             userName = itemView.findViewById(R.id.userName);
 
-            itemView.setOnClickListener( new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, UserActivity.class);
-                    intent.putExtra("user", associatedUser);
-                    context.startActivity(intent);
-                }
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, UserActivity.class);
+                intent.putExtra("user", associatedUser);
+
+                LoggedInActivity activity = (LoggedInActivity) context;
+
+                intent.putExtra(LoggedInActivity.AUTH_TOKEN_KEY, activity.getAuthToken());
+                intent.putExtra(LoggedInActivity.LOGGED_IN_USER_KEY, activity.getLoggedInUser());
+
+                activity.startActivity(intent);
+                activity.finish();
             });
         } else {
             userImage = null;

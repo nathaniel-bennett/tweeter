@@ -20,6 +20,7 @@ import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.presenter.FeedPresenter;
 import com.nathanielbennett.tweeter.view.asyncTasks.GetFeedTask;
+import com.nathanielbennett.tweeter.view.main.LoggedInActivity;
 import com.nathanielbennett.tweeter.view.main.fragments.TemplateFragment;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class FeedFragment extends TemplateFragment<Status> implements FeedPresen
 
         Bundle args = new Bundle(2);
         args.putSerializable(USER_KEY, user);
-        args.putSerializable(AUTH_TOKEN_KEY, authToken);
+        args.putSerializable(LoggedInActivity.AUTH_TOKEN_KEY, authToken);
 
         fragment.setArguments(args);
         return fragment;
@@ -70,13 +71,13 @@ public class FeedFragment extends TemplateFragment<Status> implements FeedPresen
 
         this.feedRecyclerView = view.findViewById(R.id.feedRecyclerView);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
         feedRecyclerView.setLayoutManager(layoutManager);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(feedRecyclerView.getContext(), layoutManager.getOrientation());
         this.feedRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        recyclerViewAdapter = new FeedRecyclerViewAdapter(this.getContext(), (FeedPresenter) presenter, "", this, user);
+        recyclerViewAdapter = new FeedRecyclerViewAdapter((LoggedInActivity) this.getActivity(), (FeedPresenter) presenter, "", this, user);
         feedRecyclerView.setAdapter(recyclerViewAdapter);
         feedRecyclerView.addOnScrollListener(getOnScrollListener(layoutManager));
 

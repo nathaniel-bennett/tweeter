@@ -1,12 +1,12 @@
 package com.nathanielbennett.tweeter.view.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.viewpager.widget.ViewPager;
 
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,37 +14,50 @@ import android.widget.TextView;
 import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.presenter.MainPresenter;
+import com.nathanielbennett.tweeter.presenter.UserPresenter;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
 
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
  */
-public class UserActivity extends LoggedInActivityTemplate implements MainPresenter.View {
+public class UserActivity extends LoggedInActivity implements UserPresenter.View {
 
     public static final String SELECTED_USER_KEY = "user";
 
     User selectedUser;
 
-    private MainPresenter mainPresenter;
+    private UserPresenter userPresenter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+
+
+        loggedInUser = (User) getIntent().getSerializableExtra(LOGGED_IN_USER_KEY);
+        if (loggedInUser == null) {
+            throw new RuntimeException("User not passed to UserActivity");
+        }
+
+        authToken = (AuthToken) getIntent().getSerializableExtra(AUTH_TOKEN_KEY);
+        if (authToken == null) {
+            throw new RuntimeException("Auth Token not passed to UserActivity");
+        }
+
+
+
+
         selectedUser = (User) getIntent().getSerializableExtra(SELECTED_USER_KEY);
         if(selectedUser == null) {
             throw new RuntimeException("User not passed to activity");
         }
 
-        authToken = (AuthToken) getIntent().getSerializableExtra(AUTH_TOKEN_KEY);
-        /*
-        if (authToken == null) {
-            throw new RuntimeException("Auth Token not passed to activity");
-        }
-         */
-        mainPresenter = new MainPresenter(this);
+
+
+        userPresenter = new UserPresenter(this);
 
 
 
@@ -80,5 +93,18 @@ public class UserActivity extends LoggedInActivityTemplate implements MainPresen
 
         TextView followerCount = findViewById(R.id.followerCount);
         followerCount.setText(getString(R.string.followerCount, 27));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(this, MainActivity.class);
+
+        intent.putExtra(LOGGED_IN_USER_KEY, getLoggedInUser());
+        intent.putExtra(AUTH_TOKEN_KEY, getAuthToken());
+
+        startActivity(intent);
+        finish();
     }
 }

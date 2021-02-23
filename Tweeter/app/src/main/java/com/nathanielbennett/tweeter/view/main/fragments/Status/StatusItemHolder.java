@@ -6,6 +6,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.Status;
 import com.nathanielbennett.tweeter.model.domain.User;
+import com.nathanielbennett.tweeter.view.main.LoggedInActivity;
 import com.nathanielbennett.tweeter.view.main.UserActivity;
 import com.nathanielbennett.tweeter.view.main.fragments.TemplateItemHolder;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
@@ -50,8 +52,14 @@ public class StatusItemHolder extends TemplateItemHolder<Status> {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, UserActivity.class);
+
+                    LoggedInActivity activity = (LoggedInActivity) context;
+
                     intent.putExtra("user", associatedUser);
+                    intent.putExtra(LoggedInActivity.LOGGED_IN_USER_KEY, activity.getLoggedInUser());
+                    intent.putExtra(LoggedInActivity.AUTH_TOKEN_KEY, activity.getAuthToken());
                     context.startActivity(intent);
+                    activity.finish();
                 }
             });
 
@@ -104,8 +112,15 @@ public class StatusItemHolder extends TemplateItemHolder<Status> {
                         }
 
                         Intent intent = new Intent(associatedContext, UserActivity.class);
+
+                        LoggedInActivity activity = (LoggedInActivity) associatedContext;
+
                         intent.putExtra("user", userForNextActivity);
+                        intent.putExtra(LoggedInActivity.LOGGED_IN_USER_KEY, activity.getLoggedInUser());
+                        intent.putExtra(LoggedInActivity.AUTH_TOKEN_KEY, activity.getAuthToken());
+
                         associatedContext.startActivity(intent);
+                        activity.finish();
 
 
                     }

@@ -3,13 +3,11 @@ package com.nathanielbennett.tweeter.view.main;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,27 +29,24 @@ import com.nathanielbennett.tweeter.view.util.ImageUtils;
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
  */
-public class MainActivity extends LoggedInActivityTemplate implements MainPresenter.View, LogoutTask.Observer {
+public class MainActivity extends LoggedInActivity implements MainPresenter.View, LogoutTask.Observer {
 
     private MainPresenter mainPresenter;
-    private User loggedInUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loggedInUser = (User) getIntent().getSerializableExtra(CURRENT_USER_KEY);
+        loggedInUser = (User) getIntent().getSerializableExtra(LOGGED_IN_USER_KEY);
         if (loggedInUser == null) {
             throw new RuntimeException("User not passed to MainActivity");
         }
 
         authToken = (AuthToken) getIntent().getSerializableExtra(AUTH_TOKEN_KEY);
-        /*
         if (authToken == null) {
             throw new RuntimeException("Auth Token not passed to MainActivity");
         }
-         */
 
         mainPresenter = new MainPresenter(this);
 
@@ -116,7 +111,7 @@ public class MainActivity extends LoggedInActivityTemplate implements MainPresen
         int id = item.getItemId();
         if (id == R.id.logoutMenu){
             LogoutTask logoutTask = new LogoutTask(this, mainPresenter);
-            AsyncTask<LogoutRequest, Void, LogoutResponse> execute = logoutTask.execute(new LogoutRequest(loggedInUser.getAlias(), authToken));
+            logoutTask.execute(new LogoutRequest(loggedInUser.getAlias(), authToken));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -124,8 +119,8 @@ public class MainActivity extends LoggedInActivityTemplate implements MainPresen
     @Override
     public void logoutSuccessful(LogoutResponse logoutResponse) {
         Intent intent = new Intent(MainActivity.this, AdmissionActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -134,8 +129,8 @@ public class MainActivity extends LoggedInActivityTemplate implements MainPresen
 
         // Silently fail--still go back to login page
         Intent intent = new Intent(MainActivity.this, AdmissionActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -144,7 +139,7 @@ public class MainActivity extends LoggedInActivityTemplate implements MainPresen
 
         // Silently fail--still go back to login page
         Intent intent = new Intent(MainActivity.this, AdmissionActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 }

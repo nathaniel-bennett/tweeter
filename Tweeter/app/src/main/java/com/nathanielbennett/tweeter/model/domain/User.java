@@ -1,5 +1,7 @@
 package com.nathanielbennett.tweeter.model.domain;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -63,11 +65,11 @@ public class User implements Comparable<User>, Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(alias);
+        return alias.hashCode();
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "User{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
