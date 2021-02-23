@@ -355,22 +355,7 @@ public class ServerFacade {
      * @return the dummy feed.
      */
     List<Status> getFeedFromDC(User user) {
-        ArrayList<User> followers = dc.getFollowing(user);
-        ArrayList<Status> feed = new ArrayList<>();
-        for (int i = 0; i < followers.size(); i++){
-            ArrayList<Status> statuses = dc.getStatuses(user);
-            feed.addAll(statuses);
-        }
-//        Collections.sort(feed, new Comparator<Status>() {
-//            @Override
-//            public int compare(Status o1, Status o2) {
-//                String date1 = o1.getDatePosted();
-//                String date2 = o2.getDatePosted();
-//                Date d1 =
-//                if (o1.getDatePosted()
-//            }
-//        });
-        return feed;
+        return dc.getStatuses(user);
     }
 
     /**
@@ -380,7 +365,15 @@ public class ServerFacade {
      * @return the dummy story.
      */
     List<Status> getStory(User user) {
-        return dc.getStatuses(user);
+
+        List<Status> story = new ArrayList<>();
+        List<User> following = dc.getFollowing(user);
+
+        for (User amFollowing : following) {
+            story.addAll(dc.getStatuses(amFollowing));
+        }
+
+        return story;
     }
 
     /**
