@@ -32,6 +32,10 @@
             android:name=".view.main.UserActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".view.main.CameraActivity"
+            android:label="@string/title_activity_main"></activity>
     </application>
+
+    <uses-feature android:name="android.hardware.camera"></uses-feature>
 
 </manifest>
