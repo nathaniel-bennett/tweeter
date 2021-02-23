@@ -8,6 +8,7 @@ import com.nathanielbennett.tweeter.model.domain.Status;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
+import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
 import com.nathanielbennett.tweeter.model.service.request.PostRequest;
@@ -16,6 +17,7 @@ import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
+import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
@@ -95,6 +97,14 @@ public class ServerFacade {
 
     public UnfollowUserResponse unfollow(UnfollowUserRequest request) {
         return new UnfollowUserResponse();
+    }
+
+
+
+    public CheckFollowingResponse isFollowing(CheckFollowingRequest request) {
+        // TODO: implement this
+
+        return new CheckFollowingResponse(false);
     }
 
 

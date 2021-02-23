@@ -3,8 +3,10 @@ package com.nathanielbennett.tweeter.presenter;
 
 import com.nathanielbennett.tweeter.model.service.FollowService;
 import com.nathanielbennett.tweeter.model.service.FollowingService;
+import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
+import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
 import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 
@@ -34,6 +36,10 @@ public class UserPresenter {
 
     public UnfollowUserResponse unfollowUser(UnfollowUserRequest request) {
         return getFollowService().unfollowUser(request);
+    }
+
+    public CheckFollowingResponse checkFollowing(CheckFollowingRequest request) {
+        return getFollowService().checkFollowStatus(request);
     }
 
 
