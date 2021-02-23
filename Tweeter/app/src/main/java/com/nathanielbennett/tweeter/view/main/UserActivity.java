@@ -170,7 +170,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
     @Override
     public void followUserSuccessful(FollowUserResponse followUserResponse) {
         setFollowing();
-        loggedInUser.setFolloweeCount(loggedInUser.getFollowerCount()+1);
+        loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount()+1);
         selectedUser.setFollowerCount(selectedUser.getFollowerCount()+1);
         userFollowerCount.setText("Followers: " + Integer.toString(selectedUser.getFollowerCount()));
     }
@@ -190,7 +190,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
     @Override
     public void unfollowUserSuccessful(UnfollowUserResponse followUserResponse) {
         setNotFollowing();
-        loggedInUser.setFolloweeCount(loggedInUser.getFollowerCount()-1);
+        loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount()-1);
         selectedUser.setFollowerCount(selectedUser.getFollowerCount()-1);
         userFollowerCount.setText("Followers: " + Integer.toString(selectedUser.getFollowerCount()));
     }
