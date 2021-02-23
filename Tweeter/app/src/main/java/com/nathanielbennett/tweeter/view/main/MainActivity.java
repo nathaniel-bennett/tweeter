@@ -22,18 +22,23 @@ import com.nathanielbennett.tweeter.R;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
+import com.nathanielbennett.tweeter.model.service.request.PostRequest;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
+import com.nathanielbennett.tweeter.model.service.response.PostResponse;
 import com.nathanielbennett.tweeter.presenter.MainPresenter;
+import com.nathanielbennett.tweeter.presenter.PostPresenter;
 import com.nathanielbennett.tweeter.view.admission.AdmissionActivity;
 import com.nathanielbennett.tweeter.view.asyncTasks.LogoutTask;
+import com.nathanielbennett.tweeter.view.asyncTasks.PostTask;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
 
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
  */
-public class MainActivity extends LoggedInActivity implements MainPresenter.View, LogoutTask.Observer {
+public class MainActivity extends LoggedInActivity implements MainPresenter.View, LogoutTask.Observer, PostPresenter.View, PostTask.Observer {
 
     private MainPresenter mainPresenter;
+    private MainActivity self;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +85,12 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
                             // Get the text
                             EditText text = v.findViewById(R.id.newPost);
 
-                            // Get Post Task
-                            // Get PostRequest
-                            // execute post request.
+                            PostPresenter presenter = new PostPresenter(self);
+
+                            PostRequest request = new PostRequest(text.getText().toString(), loggedInUser);
+                            PostTask postTask = new PostTask(presenter, self);
+
+                            postTask.execute(request);
                                                     }
                     })
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -107,6 +115,8 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
 
         TextView followerCount = findViewById(R.id.followerCount);
         followerCount.setText("Followers: " + Integer.toString(loggedInUser.getFollowerCount()));
+
+        self = this;
     }
 
     @Override
@@ -141,6 +151,16 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
         Intent intent = new Intent(MainActivity.this, AdmissionActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void postSuccessful(PostResponse response) {
+        Toast.makeText(this, "Post Successful!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void postNotSuccessful(PostResponse response) {
+        Toast.makeText(this, "Post unsuccessful...", Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -171,4 +171,8 @@ public class DataCache {
         followerMap.put(userToRegister, new ArrayList<>());
     }
 
+    public void postStatus(User user, Status status) {
+        statusMap.get(allUsers.get(user.getAlias())).add(status);
+    }
+
 }

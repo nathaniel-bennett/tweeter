@@ -1,13 +1,10 @@
 package com.nathanielbennett.tweeter.view.asyncTasks;
 
 import com.nathanielbennett.tweeter.model.service.request.PostRequest;
-import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
-import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 import com.nathanielbennett.tweeter.presenter.PostPresenter;
-import com.nathanielbennett.tweeter.presenter.StoryPresenter;
 
 import java.io.IOException;
 
@@ -18,17 +15,17 @@ public class PostTask extends TemplateTask {
      * completes.
      */
     public interface Observer {
-        void storyRetrieved(StatusResponse response);
-        void storyNotRetrieved(StatusResponse response);
+        void postSuccessful(PostResponse response);
+        void postNotSuccessful(PostResponse response);
         void handleException(Exception exception);
     }
 
     private final PostPresenter presenter;
     private final Observer observer;
 
-    public PostTask() {
-        this.presenter = new PostPresenter(null);
-        this.observer = null;
+    public PostTask(PostPresenter presenter, Observer observer) {
+        this.presenter = presenter;
+        this.observer = observer;
     }
 
     /**
@@ -51,7 +48,7 @@ public class PostTask extends TemplateTask {
      */
     @Override
     protected void taskSuccessful(TweeterAPIResponse response) {
-
+        observer.postSuccessful((PostResponse) response);
     }
 
     /**
@@ -61,7 +58,7 @@ public class PostTask extends TemplateTask {
      */
     @Override
     protected void taskUnsuccessful(TweeterAPIResponse response) {
-
+        observer.postNotSuccessful((PostResponse) response);
     }
 
     /**

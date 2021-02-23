@@ -40,7 +40,7 @@ public class PostPresenter implements TemplatePresenter {
     }
 
     /**
-     * retusn an instance of {@link StoryService}. Allows mocking of the StoryService class for
+     * returns an instance of {@link StoryService}. Allows mocking of the StoryService class for
      * testing purposes. All usages of StoryService should get their StoryService instance from this
      * method to allow for mocking of the instance.
      *

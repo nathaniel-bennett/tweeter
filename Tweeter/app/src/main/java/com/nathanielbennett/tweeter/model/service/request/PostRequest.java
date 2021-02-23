@@ -2,7 +2,7 @@ package com.nathanielbennett.tweeter.model.service.request;
 
 import com.nathanielbennett.tweeter.model.domain.User;
 
-public class PostRequest implements TweeterAPIRequest{
+public class PostRequest implements TweeterAPIRequest {
     private String status;
     private User user;
 

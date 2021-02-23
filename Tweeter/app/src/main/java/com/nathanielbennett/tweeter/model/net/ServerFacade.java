@@ -1,23 +1,26 @@
 package com.nathanielbennett.tweeter.model.net;
 
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.nathanielbennett.tweeter.BuildConfig;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.Status;
 import com.nathanielbennett.tweeter.model.domain.User;
+import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
-import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
 import com.nathanielbennett.tweeter.model.service.request.PostRequest;
 import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
+import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
-import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
@@ -26,6 +29,8 @@ import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -192,12 +197,20 @@ public class ServerFacade {
         return new FollowResponse(responseFollowers, hasMorePages);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public PostResponse addToStory(PostRequest request) {
         if (BuildConfig.DEBUG) {
             if (request.getUser() == null) {
                 throw new AssertionError("No user object provided");
             }
         }
+
+        Date date = Calendar.getInstance().getTime();
+
+        Status newStatus = new Status(request.getUser(), request.getStatus(), date.toString(),
+                getMentions(request.getStatus()));
+
+        dc.postStatus(request.getUser(), newStatus);
 
         return new PostResponse(true, "Status added successfully!");
     }
@@ -301,6 +314,25 @@ public class ServerFacade {
      */
 
 
+    private List<User> getMentions(String message) {
+        List<User> mentions = new ArrayList<>();
+        int atSymbol = -1;
+        for (int i = 0; i < message.length(); i++) {
+            if (message.charAt(i) == '@') {
+                atSymbol = i;
+            } else if ((message.charAt(i) == ' ' || i == message.length() - 1) && atSymbol != -1) {
+                int start = atSymbol;
+                int end = (i == message.length() - 1) ? i + 1 : i;
+                String username = message.substring(start, end);
+                User mentioned = dc.getUser(username);
+                if (mentioned != null) {
+                    mentions.add(mentioned);
+                }
+            }
+        }
+
+        return mentions;
+    }
 
     /**
      * Determines the index for the first status in the specified 'allStatuses' list that should be
