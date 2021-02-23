@@ -55,17 +55,14 @@ public class UserActivity extends LoggedInActivityTemplate implements MainPresen
         tabs.setupWithViewPager(viewPager);
 
         Button button = findViewById(R.id.followButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                if (button.getText() == getResources().getString(R.string.followButton)) {
-                    button.setText(R.string.unfollowButton);
-                    button.setBackgroundColor(getResources().getColor(R.color.red));
-                }
-                else{
-                    button.setText(R.string.followButton);
-                    button.setBackgroundColor(getResources().getColor(R.color.green));
-                }
+        button.setOnClickListener(view -> {
+            if (button.getText() == getResources().getString(R.string.followButton)) {
+                button.setText(R.string.unfollowButton);
+                button.setBackgroundColor(getResources().getColor(R.color.red));
+            }
+            else{
+                button.setText(R.string.followButton);
+                button.setBackgroundColor(getResources().getColor(R.color.green));
             }
         });
 
