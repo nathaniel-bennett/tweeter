@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,18 +67,23 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             LayoutInflater inflater = MainActivity.this.getLayoutInflater();
 
+            View v = inflater.inflate(R.layout.fragment_newpost, null);
+
+
             // Inflate and set the layout for the dialog
             // Pass null as the parent view because its going in the dialog layout
-            builder.setView(inflater.inflate(R.layout.fragment_newpost, null))
+            builder.setView(v)
                     // Add action buttons
                     .setPositiveButton(R.string.post, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             // Get the text
+                            EditText text = v.findViewById(R.id.newPost);
+
                             // Get Post Task
                             // Get PostRequest
                             // execute post request.
-                        }
+                                                    }
                     })
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {

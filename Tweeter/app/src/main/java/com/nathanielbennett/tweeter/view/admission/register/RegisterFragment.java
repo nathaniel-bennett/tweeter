@@ -79,7 +79,7 @@ public class RegisterFragment extends AdmissionTabFragment implements RegisterPr
 
         String firstName = firstNameField.getText().toString();
         String lastName = lastNameField.getText().toString();
-        String username = usernameField.getText().toString();   //TODO: MAKE SURE THE OBJECT IS NOT NULL (CONSTRUCT USERNAME IF NONE PROVIDED)
+        String username = usernameField.getText().toString();
         String password = passwordField.getText().toString();
 
         RegisterRequest request = new RegisterRequest(firstName, lastName, username, password, picture);
