@@ -19,6 +19,7 @@ public class FeedServiceTest {
 
     private StatusRequest validRequest;
     private StatusRequest invalidRequest;
+    private StatusRequest otherInvalidRequest;
 
     private StatusResponse successResponse;
     private StatusResponse failureResponse;
@@ -43,6 +44,7 @@ public class FeedServiceTest {
         // Setup request objects to use in the tests
         validRequest = new StatusRequest(currentUser, 1, null);
         invalidRequest = new StatusRequest(null, 10, null);
+        otherInvalidRequest = new StatusRequest(resultUser2, 3, null);
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new StatusResponse(true, Arrays.asList(hisStatus));
@@ -50,7 +52,7 @@ public class FeedServiceTest {
         Mockito.when(mockServerFacade.getFeed(validRequest)).thenReturn(successResponse);
 
         failureResponse = new StatusResponse("Bad data passed in");
-        Mockito.when(mockServerFacade.getFeed(invalidRequest)).thenReturn(failureResponse);
+        Mockito.when(mockServerFacade.getFeed(otherInvalidRequest)).thenReturn(failureResponse);
 
         // Create a FeedService instance and wrap it with a spy that will use the mock service.
         feedServiceSpy = Mockito.spy(new FeedService());
@@ -82,6 +84,16 @@ public class FeedServiceTest {
         Assertions.assertThrows(NullPointerException.class, () -> {
             feedServiceSpy.fetchFeed(invalidRequest);
         });
+    }
+
+    /**
+     * Verify that for failed requsts the {@link FeedService#fetchFeed(StatusRequest)} returns the
+     * bad response from the server.
+     */
+    @Test
+    public void testFetchFeed_invalidRequest__correctRespoinse() throws IOException {
+        StatusResponse response = feedServiceSpy.fetchFeed(otherInvalidRequest);
+        Assertions.assertEquals(failureResponse, response);
     }
 
 }
