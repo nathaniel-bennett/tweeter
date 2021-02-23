@@ -80,6 +80,7 @@ public class DataCache {
         for (String name : allUsers.keySet()) {
             followerMap.get(allUsers.get("dummyUser")).add(allUsers.get(name));
         }
+        allUsers.get("dummyUser").setFollowerCount(allUsers.size() - 1);
 
 
         // Add other Users followers
@@ -110,6 +111,13 @@ public class DataCache {
                 users = groupOne;
             }
             followerMap.get(allUsers.get(s)).addAll(users);
+
+            // Set follower, followee count
+            allUsers.get(s).setFollowerCount(allUsers.get(s).getFollowerCount() + users.size());
+            for (User user : users) {
+                user.setFolloweeCount(user.getFolloweeCount() + 1);
+            }
+
             factor++;
         }
 
@@ -117,6 +125,8 @@ public class DataCache {
         for (String name : allUsers.keySet()) {
             followingMap.get(allUsers.get("dummyUser")).add(allUsers.get(name));
         }
+
+        allUsers.get("dummyUser").setFolloweeCount(allUsers.size() - 1);
 
         factor = 3;
 
@@ -130,6 +140,12 @@ public class DataCache {
                 users = groupThree;
             }
             followingMap.get(allUsers.get(s)).addAll(users);
+
+            allUsers.get(s).setFolloweeCount(allUsers.get(s).getFolloweeCount() + users.size());
+            for (User user : users) {
+                user.setFollowerCount(user.getFollowerCount() + 1);
+            }
+
             factor++;
         }
 

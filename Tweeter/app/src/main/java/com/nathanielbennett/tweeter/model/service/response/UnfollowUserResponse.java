@@ -16,7 +16,7 @@ public class UnfollowUserResponse extends TweeterAPIResponse {
      *
      * @param message an error message describing why the UnfollowUser request was unsuccessful.
      */
-    UnfollowUserResponse(String message) {
+    public UnfollowUserResponse(String message) {
         super(message);
     }
 }

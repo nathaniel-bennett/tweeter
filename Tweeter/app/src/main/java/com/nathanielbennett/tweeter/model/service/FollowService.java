@@ -35,6 +35,10 @@ public class FollowService extends Service {
             throw new NullPointerException("userToFollow username missing from FollowUser request (FollowService)");
         }
 
+        if (request.getUserToFollow().equals(request.getUsername())) {
+            return new FollowUserResponse("You can't follow yourself! They don't call you 'Dummy User' for nothing, do they...");
+        }
+
         return serverFacade.follow(request);
     }
 

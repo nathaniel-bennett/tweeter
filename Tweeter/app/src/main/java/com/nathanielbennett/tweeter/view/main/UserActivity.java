@@ -49,6 +49,8 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
     User selectedUser;
     TextView userFollowerCount;
 
+    Toast toast = null;
+
 
     private UserPresenter userPresenter;
 
@@ -92,7 +94,11 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
                         followTask = new CheckFollowingTask(this, userPresenter);
                         followTask.execute(new CheckFollowingRequest(loggedInUser.getAlias(), authToken, selectedUser.getAlias()));
                     }
-                    Toast.makeText(this, "Fetching user relationship...", Toast.LENGTH_SHORT).show();
+                    if (toast != null) {
+                        toast.cancel();
+                    }
+                    toast = Toast.makeText(this, "Fetching user relationship...", Toast.LENGTH_SHORT);
+                    toast.show();
                     break;
 
                 case FOLLOWING:
@@ -100,7 +106,11 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
                         followTask = new UnfollowTask(this, userPresenter);
                         followTask.execute(new UnfollowUserRequest(loggedInUser.getAlias(), authToken, selectedUser.getAlias()));
                     }
-                    Toast.makeText(this, "Unfollowing user...", Toast.LENGTH_SHORT).show();
+                    if (toast != null) {
+                        toast.cancel();
+                    }
+                    toast = Toast.makeText(this, "Unfollowing user...", Toast.LENGTH_SHORT);
+                    toast.show();
                     break;
 
                 case NOT_FOLLOWING:
@@ -108,7 +118,11 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
                         followTask = new FollowTask(this, userPresenter);
                         followTask.execute(new FollowUserRequest(loggedInUser.getAlias(), authToken, selectedUser.getAlias()));
                     }
-                    Toast.makeText(this, "Following user...", Toast.LENGTH_SHORT).show();
+                    if (toast != null) {
+                        toast.cancel();
+                    }
+                    toast = Toast.makeText(this, "Following user...", Toast.LENGTH_SHORT);
+                    toast.show();
             }
         });
 
@@ -170,7 +184,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
     @Override
     public void followUserSuccessful(FollowUserResponse followUserResponse) {
         setFollowing();
-        loggedInUser.setFolloweeCount(loggedInUser.getFollowerCount()+1);
+        loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount()+1);
         selectedUser.setFollowerCount(selectedUser.getFollowerCount()+1);
         userFollowerCount.setText("Followers: " + Integer.toString(selectedUser.getFollowerCount()));
     }
@@ -190,7 +204,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
     @Override
     public void unfollowUserSuccessful(UnfollowUserResponse followUserResponse) {
         setNotFollowing();
-        loggedInUser.setFolloweeCount(loggedInUser.getFollowerCount()-1);
+        loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount()-1);
         selectedUser.setFollowerCount(selectedUser.getFollowerCount()-1);
         userFollowerCount.setText("Followers: " + Integer.toString(selectedUser.getFollowerCount()));
     }
@@ -223,7 +237,11 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
     }
 
     private void setFollowError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        if (toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        toast.show();
         followTask = null;
     }
 
