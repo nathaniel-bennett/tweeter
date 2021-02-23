@@ -29,8 +29,6 @@ public class StoryFragment extends TemplateFragment<Status> implements StoryPres
 
     private static final String LOG_TAG = "StoryFragment";
 
-    private RecyclerView storyRecyclerView;
-
     /**
      * Called to create a new instance.
      *
@@ -68,15 +66,15 @@ public class StoryFragment extends TemplateFragment<Status> implements StoryPres
 
         presenter = new StoryPresenter(this);
 
-        this.storyRecyclerView = view.findViewById(R.id.storyRecyclerView);
+        RecyclerView storyRecyclerView = view.findViewById(R.id.storyRecyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         storyRecyclerView.setLayoutManager(layoutManager);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(storyRecyclerView.getContext(), layoutManager.getOrientation());
-        this.storyRecyclerView.addItemDecoration(dividerItemDecoration);
+        storyRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        recyclerViewAdapter = new StoryRecyclerViewAdapter(this.getContext(), (StoryPresenter) presenter, "", this, user);
+        recyclerViewAdapter = new StoryRecyclerViewAdapter(this.getContext(), presenter, "", this, user);
         storyRecyclerView.setAdapter(recyclerViewAdapter);
         storyRecyclerView.addOnScrollListener(getOnScrollListener(layoutManager));
 

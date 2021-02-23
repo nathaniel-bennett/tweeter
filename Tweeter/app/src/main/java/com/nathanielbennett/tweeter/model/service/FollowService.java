@@ -11,7 +11,7 @@ import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 public class FollowService extends Service {
 
     /**
-     *
+     * Attempts to assign one user as following another user.
      *
      * @param request contains the data required to fulfill the request.
      * @return a response indicating either success or failure.
@@ -36,7 +36,7 @@ public class FollowService extends Service {
         }
 
         if (request.getUserToFollow().equals(request.getUsername())) {
-            return new FollowUserResponse("You can't follow yourself! They don't call you 'Dummy User' for nothing, do they...");
+            return new FollowUserResponse("Error - too much vanity (you can't follow yourself)");
         }
 
         return serverFacade.follow(request);

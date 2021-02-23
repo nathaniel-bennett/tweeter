@@ -13,6 +13,7 @@ public class LogoutService extends Service {
     /**
      * Attempts to log a user out given the information in the passed in {@link LogoutRequest}.
      * Returns a response that either indicates success or reports failure with a reason message.
+     *
      * @param request The information of the user being logged out.
      * @return A response indicating either success or failure.
      */

@@ -43,7 +43,7 @@ public class FollowersPresenter implements TemplatePresenter {
     /**
      * Returns an instance of {@link FollowersService}. Allows mocking of the FollowingService class
      * for testing purposes.
-     * @return
+     * @return a FeedService that can be used.
      */
     FollowersService getFollowersService() {
         return new FollowersService();

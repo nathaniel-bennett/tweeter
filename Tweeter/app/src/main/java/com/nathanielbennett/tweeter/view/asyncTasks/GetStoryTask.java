@@ -25,8 +25,8 @@ public class GetStoryTask extends TemplateTask {
 
     /**
      * Creates an instance.
-     * @param presenter
-     * @param observer
+     * @param presenter The presenter to query for story information.
+     * @param observer The view to notify on completion of request or error.
      */
     public GetStoryTask(StoryPresenter presenter, Observer observer) {
         this.presenter = presenter;

@@ -4,8 +4,6 @@ import com.nathanielbennett.tweeter.model.service.FeedService;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
-import java.io.IOException;
-
 public class FeedPresenter implements TemplatePresenter {
 
     private final View view;
@@ -31,9 +29,8 @@ public class FeedPresenter implements TemplatePresenter {
      *
      * @param request the request to be made to the service.
      * @return the response from the service.
-     * @throws IOException
      */
-    public StatusResponse getFeed(StatusRequest request) throws IOException {
+    public StatusResponse getFeed(StatusRequest request) {
         FeedService feedService = getFeedService();
         return feedService.fetchFeed(request);
     }
@@ -42,7 +39,7 @@ public class FeedPresenter implements TemplatePresenter {
      * Returns an instance of {@link FeedService}. Allows mocking of the StoryService class for
      * purposes. All usages of StoryService should get their StoryService instance from this method
      * to allow for mocking of the instance.
-     * @return
+     * @return a FeedService object that can be used.
      */
     FeedService getFeedService() {
         return new FeedService();

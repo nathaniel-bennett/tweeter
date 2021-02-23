@@ -16,6 +16,8 @@ import com.nathanielbennett.tweeter.view.main.fragments.Status.Story.StoryFragme
 import com.nathanielbennett.tweeter.view.main.fragments.follow.followers.FollowersFragment;
 import com.nathanielbennett.tweeter.view.main.fragments.follow.following.FollowingFragment;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to one of the sections/tabs/pages
  * of the Main Activity.
@@ -41,7 +43,7 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public @NotNull Fragment getItem(int position) {
         if (position == FOLLOWING_FRAGMENT_POSITION) {
             return FollowingFragment.newInstance(user, authToken);
         } else if (position == FOLLOWER_FRAGMENT_POSITION) {

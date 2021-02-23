@@ -17,7 +17,7 @@ public class AdmissionPagerAdapter extends FragmentPagerAdapter {
     private static final int[] TAB_TITLES = new int[]{R.string.login_label, R.string.register_label};
     private static final int SIGNIN_FRAGMENT_POSITION = 0;
     // private static final int REGISTER_FRAGMENT_POSITION = 1;
-    private Context mContext;
+    private final Context mContext;
 
     public AdmissionPagerAdapter(@NonNull FragmentManager fm, Context context) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);

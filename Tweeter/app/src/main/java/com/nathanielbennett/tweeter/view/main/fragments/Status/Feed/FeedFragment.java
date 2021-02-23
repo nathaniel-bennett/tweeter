@@ -30,8 +30,6 @@ public class FeedFragment extends TemplateFragment<Status> implements FeedPresen
 
     private static final String LOG_TAG = "FeedFragment";
 
-    private RecyclerView feedRecyclerView;
-
     /**
      * Called to create a new instance.
      *
@@ -69,15 +67,15 @@ public class FeedFragment extends TemplateFragment<Status> implements FeedPresen
 
         presenter = new FeedPresenter(this);
 
-        this.feedRecyclerView = view.findViewById(R.id.feedRecyclerView);
+        RecyclerView feedRecyclerView = view.findViewById(R.id.feedRecyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
         feedRecyclerView.setLayoutManager(layoutManager);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(feedRecyclerView.getContext(), layoutManager.getOrientation());
-        this.feedRecyclerView.addItemDecoration(dividerItemDecoration);
+        feedRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        recyclerViewAdapter = new FeedRecyclerViewAdapter((LoggedInActivity) this.getActivity(), (FeedPresenter) presenter, "", this, user);
+        recyclerViewAdapter = new FeedRecyclerViewAdapter(this.getActivity(), presenter, "", this, user);
         feedRecyclerView.setAdapter(recyclerViewAdapter);
         feedRecyclerView.addOnScrollListener(getOnScrollListener(layoutManager));
 

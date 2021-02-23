@@ -1,7 +1,6 @@
 package com.nathanielbennett.tweeter.view.main;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,6 +30,8 @@ import com.nathanielbennett.tweeter.view.admission.AdmissionActivity;
 import com.nathanielbennett.tweeter.view.asyncTasks.LogoutTask;
 import com.nathanielbennett.tweeter.view.asyncTasks.PostTask;
 import com.nathanielbennett.tweeter.view.util.ImageUtils;
+
+import java.text.MessageFormat;
 
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
@@ -79,25 +80,18 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
             // Pass null as the parent view because its going in the dialog layout
             builder.setView(v)
                     // Add action buttons
-                    .setPositiveButton(R.string.post, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            // Get the text
-                            EditText text = v.findViewById(R.id.newPost);
+                    .setPositiveButton(R.string.post, (dialog, id) -> {
+                        // Get the text
+                        EditText text = v.findViewById(R.id.newPost);
 
-                            PostPresenter presenter = new PostPresenter(self);
+                        PostPresenter presenter = new PostPresenter(self);
 
-                            PostRequest request = new PostRequest(text.getText().toString(), loggedInUser);
-                            PostTask postTask = new PostTask(presenter, self);
+                        PostRequest request = new PostRequest(text.getText().toString(), loggedInUser);
+                        PostTask postTask = new PostTask(presenter, self);
 
-                            postTask.execute(request);
-                                                    }
-                    })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
+                        postTask.execute(request);
+                                                })
+                    .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.cancel());
             builder.show();
         });
 
@@ -111,10 +105,10 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
         userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(loggedInUser.getImageBytes()));
 
         TextView followeeCount = findViewById(R.id.followeeCount);
-        followeeCount.setText("Following: " + Integer.toString(loggedInUser.getFolloweeCount()));
+        followeeCount.setText(MessageFormat.format("Following: {0}", Integer.toString(loggedInUser.getFolloweeCount())));
 
         TextView followerCount = findViewById(R.id.followerCount);
-        followerCount.setText("Followers: " + Integer.toString(loggedInUser.getFollowerCount()));
+        followerCount.setText(MessageFormat.format("Followers: {0}", Integer.toString(loggedInUser.getFollowerCount())));
 
         self = this;
     }
@@ -160,11 +154,16 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
 
     @Override
     public void postNotSuccessful(PostResponse response) {
-        Toast.makeText(this, "Post unsuccessful...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Post unsuccessful: " + response.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void handleException(Exception ex) {
+    public void postException(Exception exception) {
+        Toast.makeText(this, "Exception occurred while posting: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void logoutException(Exception ex) {
         Toast.makeText(this, "Logout failed: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 
         // Silently fail--still go back to login page

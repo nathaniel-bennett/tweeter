@@ -6,7 +6,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,12 +29,12 @@ public class StatusItemHolder extends TemplateItemHolder<Status> {
     private final TextView statusMessage;
     private User associatedUser;
     private Status associatedStatus;
-    private Context associatedContext;
+    private final Context associatedContext;
 
     /**
      * Creates an instance.
      *
-     * @param itemView
+     * @param itemView The view to contain the item.
      */
     public StatusItemHolder(@NonNull View itemView, int viewType, Context context) {
         super(itemView);
@@ -48,19 +47,16 @@ public class StatusItemHolder extends TemplateItemHolder<Status> {
             postDateInfo = itemView.findViewById(R.id.postDateInfo);
             statusMessage = itemView.findViewById(R.id.statusMessage);
 
-            itemView.setOnClickListener( new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, UserActivity.class);
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, UserActivity.class);
 
-                    LoggedInActivity activity = (LoggedInActivity) context;
+                LoggedInActivity activity = (LoggedInActivity) context;
 
-                    intent.putExtra("user", associatedUser);
-                    intent.putExtra(LoggedInActivity.LOGGED_IN_USER_KEY, activity.getLoggedInUser());
-                    intent.putExtra(LoggedInActivity.AUTH_TOKEN_KEY, activity.getAuthToken());
-                    context.startActivity(intent);
-                    activity.finish();
-                }
+                intent.putExtra("user", associatedUser);
+                intent.putExtra(LoggedInActivity.LOGGED_IN_USER_KEY, activity.getLoggedInUser());
+                intent.putExtra(LoggedInActivity.AUTH_TOKEN_KEY, activity.getAuthToken());
+                context.startActivity(intent);
+                activity.finish();
             });
 
         } else {

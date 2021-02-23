@@ -17,7 +17,7 @@ public class PostTask extends TemplateTask {
     public interface Observer {
         void postSuccessful(PostResponse response);
         void postNotSuccessful(PostResponse response);
-        void handleException(Exception exception);
+        void postException(Exception exception);
     }
 
     private final PostPresenter presenter;
@@ -37,8 +37,7 @@ public class PostTask extends TemplateTask {
      */
     @Override
     protected TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
-        PostResponse response = presenter.post((PostRequest) request);
-        return response;
+        return presenter.post((PostRequest) request);
     }
 
     /**
@@ -68,6 +67,6 @@ public class PostTask extends TemplateTask {
      */
     @Override
     protected void handleException(Exception ex) {
-        observer.handleException(ex);
+        observer.postException(ex);
     }
 }

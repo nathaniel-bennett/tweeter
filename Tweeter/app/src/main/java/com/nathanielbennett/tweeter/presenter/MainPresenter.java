@@ -30,7 +30,7 @@ public class MainPresenter {
     /**
      * Makes a login request.
      *
-     * @param logoutRequest
+     * @param logoutRequest The user authentication details needed to log one out.
      * @return LogoutResponse
      * @throws IOException
      */

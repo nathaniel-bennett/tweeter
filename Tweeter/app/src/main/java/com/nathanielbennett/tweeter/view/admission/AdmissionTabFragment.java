@@ -1,6 +1,5 @@
 package com.nathanielbennett.tweeter.view.admission;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;

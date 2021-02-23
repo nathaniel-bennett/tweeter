@@ -1,7 +1,6 @@
 package com.nathanielbennett.tweeter.view.asyncTasks;
 
 import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
-import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;

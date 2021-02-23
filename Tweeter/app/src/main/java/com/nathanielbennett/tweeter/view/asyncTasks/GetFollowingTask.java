@@ -30,8 +30,8 @@ public class GetFollowingTask extends TemplateTask {
     /**
      * Creates an instance.
      *
-     * @param presenter
-     * @param observer
+     * @param presenter The presenter to query for following information.
+     * @param observer The view to notify on completion of request or error.
      */
     public GetFollowingTask(FollowingPresenter presenter, Observer observer) {
         this.presenter = presenter;
