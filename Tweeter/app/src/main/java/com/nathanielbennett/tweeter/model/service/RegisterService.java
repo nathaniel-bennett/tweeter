@@ -28,6 +28,8 @@ public class RegisterService extends Service {
             return new RegisterResponse("A Username is required to register (please enter)");
         } else if (request.getPassword() == null || request.getPassword().isEmpty()) {
             return new RegisterResponse("A password is required to register (please enter)");
+        } else if (request.getImage() == null) {
+            return new RegisterResponse("A profile picture is required to register");
         }
 
         return serverFacade.register(request);
