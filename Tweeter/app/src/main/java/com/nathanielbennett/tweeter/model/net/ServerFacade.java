@@ -7,15 +7,19 @@ import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.Status;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
+import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
 import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
+import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
+import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
+import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -127,6 +131,25 @@ public class ServerFacade {
             return new LoginResponse("Failed to authenticate user on login");
         }
     }
+
+
+
+    /**
+     * TODO: document lol
+     * @param request
+     * @return
+     */
+    public FollowUserResponse follow(FollowUserRequest request) {
+        return new FollowUserResponse();
+    }
+
+
+    public UnfollowUserResponse unfollow(UnfollowUserRequest request) {
+        return new UnfollowUserResponse();
+    }
+
+
+
 
     /**
      * Returns the users that the user specified in the request is following. Uses information in
