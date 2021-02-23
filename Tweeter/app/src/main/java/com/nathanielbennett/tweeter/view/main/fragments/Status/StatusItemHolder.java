@@ -9,7 +9,6 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -95,21 +94,18 @@ public class StatusItemHolder extends TemplateItemHolder<Status> {
                     @Override
                     public void onClick(@NonNull View widget) {
 
-                        boolean activityMade = false;
+                        User userForNextActivity = null;
 
                         for (User user : associatedStatus.getMentions()) {
                             if (user.getAlias().equals(status.substring(start, end))) {
-                                Intent intent = new Intent(associatedContext, UserActivity.class);
-                                intent.putExtra("user", user);
-                                associatedContext.startActivity(intent);
-                                activityMade = true;
+                                userForNextActivity = user;
                                 break;
                             }
                         }
 
-                        if (!activityMade) {
-                            Toast.makeText(associatedContext, "Cannot find associatedUser", Toast.LENGTH_SHORT).show();
-                        }
+                        Intent intent = new Intent(associatedContext, UserActivity.class);
+                        intent.putExtra("user", userForNextActivity);
+                        associatedContext.startActivity(intent);
 
 
                     }

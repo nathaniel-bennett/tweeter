@@ -1,9 +1,9 @@
 package com.nathanielbennett.tweeter.view.asyncTasks;
 
-import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
-import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
+import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
+import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 import com.nathanielbennett.tweeter.presenter.FeedPresenter;
 
 import java.io.IOException;
@@ -46,6 +46,9 @@ public class GetFeedTask extends TemplateTask {
         StatusResponse response = presenter.getFeed((StatusRequest) request);
         if (response.isSuccess()) {
             loadStatusImages(response.getStatuses());
+            for (com.nathanielbennett.tweeter.model.domain.Status status : response.getStatuses()) {
+                loadUserImages(status.getMentions());
+            }
         }
 
         return response;
