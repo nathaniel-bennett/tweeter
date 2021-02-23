@@ -276,7 +276,7 @@ public class ServerFacade {
             }
         }
 
-        List<Status> allStatuses = getStory(request.getUserToGet());
+        List<Status> allStatuses = getStoryFromDC(request.getUserToGet());
         List<Status> responseStatuses = new ArrayList<>(request.getLimit());
 
         boolean hasMorePages = false;
@@ -440,17 +440,6 @@ public class ServerFacade {
      * @return the dummy feed.
      */
     List<Status> getFeedFromDC(User user) {
-        return dc.getStatuses(user);
-    }
-
-    /**
-     * Returns the list of dummy status for the story. This is written as a separate method to allow
-     * mocking of the story.
-     *
-     * @return the dummy story.
-     */
-    List<Status> getStory(User user) {
-
         List<Status> story = new ArrayList<>();
         List<User> following = dc.getFollowing(user);
 
@@ -459,6 +448,16 @@ public class ServerFacade {
         }
 
         return story;
+    }
+
+    /**
+     * Returns the list of dummy status for the story. This is written as a separate method to allow
+     * mocking of the story.
+     *
+     * @return the dummy story.
+     */
+    List<Status> getStoryFromDC(User user) {
+        return dc.getStatuses(user);
     }
 
     /**
