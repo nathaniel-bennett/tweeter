@@ -1,12 +1,8 @@
 package com.nathanielbennett.tweeter.presenter;
 
-import com.nathanielbennett.tweeter.model.domain.Status;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.FeedService;
-import com.nathanielbennett.tweeter.model.service.FollowingService;
-import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
-import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
 import org.junit.jupiter.api.Assertions;
@@ -16,8 +12,6 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class FeedPresenterTest {
 
