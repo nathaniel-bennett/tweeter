@@ -1,10 +1,9 @@
 package com.nathanielbennett.tweeter.presenter;
 
-import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.model.service.PostService;
-import com.nathanielbennett.tweeter.model.service.request.PostRequest;
-import com.nathanielbennett.tweeter.model.service.response.PostResponse;
+import com.nathanielbennett.tweeter.model.service.StoryService;
+import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
+import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,15 +11,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class PostPresenterTest {
+public class StoryPresenterTest {
 
-    private PostRequest request;
-    private PostResponse response;
-    private PostService mockPostService;
-    private PostPresenter presenter;
-    private PostRequest badRequest;
-    private PostResponse badResponse;
+    private StatusRequest request;
+    private StatusResponse response;
+    private StoryService mockStoryService;
+    private StoryPresenter presenter;
+    private StatusRequest badRequest;
+    private StatusResponse badResponse;
 
     @BeforeEach
     public void setup() throws IOException {
@@ -33,21 +33,21 @@ public class PostPresenterTest {
         User resultUser3 = new User("FirstName3", "LastName3",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
 
-        request = new PostRequest("This is a status", "FirstNameLastName", new AuthToken());
-        response = new PostResponse();
+        request = new StatusRequest(currentUser, 3, "I like to play Mario Bros.");
+        response = new StatusResponse(false, new ArrayList<>());
 
-        badRequest = new PostRequest(null, null, null);
-        badResponse = new PostResponse("error");
+        badRequest = new StatusRequest(resultUser1, -1, null);
+        badResponse = new StatusResponse(true, null);
 
         // Create a mock FollowingService
-        mockPostService = Mockito.mock(PostService.class);
-        Mockito.when(mockPostService.addPost(request)).thenReturn(response);
+        mockStoryService = Mockito.mock(StoryService.class);
+        Mockito.when(mockStoryService.fetchStory(request)).thenReturn(response);
 
-        Mockito.when(mockPostService.addPost(badRequest)).thenReturn(badResponse);
+        Mockito.when(mockStoryService.fetchStory(badRequest)).thenReturn(badResponse);
 
         // Wrap a FollowingPresenter in a spy that will use the mock service.
-        presenter = Mockito.spy(new PostPresenter(new PostPresenter.View() {}));
-        Mockito.when(presenter.getPostService()).thenReturn(mockPostService);
+        presenter = Mockito.spy(new StoryPresenter(new StoryPresenter.View() {}));
+        Mockito.when(presenter.getStoryService()).thenReturn(mockStoryService);
     }
 
     @Test
@@ -55,11 +55,11 @@ public class PostPresenterTest {
 
         // Assert that the presenter returns the same response as the service (it doesn't do
         // anything else, so there's nothing else to test).
-        Assertions.assertEquals(response, presenter.post(request));
+        Assertions.assertEquals(response, presenter.getStory(request));
     }
 
     @Test
     public void testGetFollowing_returnBadResult() throws IOException {
-        Assertions.assertEquals(badResponse, presenter.post(badRequest));
+        Assertions.assertEquals(badResponse, presenter.getStory(badRequest));
     }
 }
