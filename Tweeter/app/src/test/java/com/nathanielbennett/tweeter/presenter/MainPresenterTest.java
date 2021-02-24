@@ -2,11 +2,8 @@ package com.nathanielbennett.tweeter.presenter;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.model.service.LoginService;
 import com.nathanielbennett.tweeter.model.service.LogoutService;
-import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
-import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 
 import org.junit.jupiter.api.Assertions;
@@ -20,7 +17,7 @@ public class MainPresenterTest {
 
     private LogoutRequest request;
     private LogoutResponse response;
-    private LogoutService mockLoginService;
+    private LogoutService mockLogoutService;
     private MainPresenter presenter;
     private LogoutRequest missingUsernameRequest;
     private LogoutResponse missingUsernameResponse;
@@ -40,18 +37,18 @@ public class MainPresenterTest {
         missingUsernameResponse = new LogoutResponse("Username missing");
 
         // Create a mock FollowingService
-        mockLoginService = Mockito.mock(LogoutService.class);
-        Mockito.when(mockLoginService.logout(request)).thenReturn(response);
+        mockLogoutService = Mockito.mock(LogoutService.class);
+        Mockito.when(mockLogoutService.logout(request)).thenReturn(response);
 
-        Mockito.when(mockLoginService.logout(missingUsernameRequest)).thenReturn(missingUsernameResponse);
+        Mockito.when(mockLogoutService.logout(missingUsernameRequest)).thenReturn(missingUsernameResponse);
 
         // Wrap a FollowingPresenter in a spy that will use the mock service.
         presenter = Mockito.spy(new MainPresenter(new MainPresenter.View() {}));
-        Mockito.when(presenter.getLogoutService()).thenReturn(mockLoginService);
+        Mockito.when(presenter.getLogoutService()).thenReturn(mockLogoutService);
     }
 
     @Test
-    public void testGetFollowing_returnsServiceResult() throws IOException {
+    public void testLogout_returnsServiceResult() throws IOException {
 
         // Assert that the presenter returns the same response as the service (it doesn't do
         // anything else, so there's nothing else to test).
@@ -59,7 +56,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void testGetFollowing_returnBadResult() throws IOException {
+    public void testLogout_returnBadResult() throws IOException {
         Assertions.assertEquals(missingUsernameResponse, presenter.logout(missingUsernameRequest));
     }
 }
