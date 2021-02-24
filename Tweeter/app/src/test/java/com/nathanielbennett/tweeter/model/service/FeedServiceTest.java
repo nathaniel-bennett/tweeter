@@ -72,6 +72,10 @@ public class FeedServiceTest {
         Assertions.assertEquals(successResponse, response);
     }
 
+    /**
+     * Verify that for a null request the {@link FeedService#fetchFeed(StatusRequest)} throws a
+     * null pointer exception.
+     */
     @Test
     public void testFetchFeed_nullRequest_throwsException() {
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -79,6 +83,10 @@ public class FeedServiceTest {
         });
     }
 
+    /**
+     * Verify that for a bad request the {@link FeedService#fetchFeed(StatusRequest)} throws a
+     * null pointer exception.
+     */
     @Test
     public void testFetchFeed_invalidRequest_throwsException() throws IOException {
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -87,7 +95,7 @@ public class FeedServiceTest {
     }
 
     /**
-     * Verify that for failed requsts the {@link FeedService#fetchFeed(StatusRequest)} returns the
+     * Verify that for failed request the {@link FeedService#fetchFeed(StatusRequest)} returns the
      * bad response from the server.
      */
     @Test
