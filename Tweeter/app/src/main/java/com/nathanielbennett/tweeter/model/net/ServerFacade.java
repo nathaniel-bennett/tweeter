@@ -58,7 +58,6 @@ public class ServerFacade {
      * @return the register response.
      */
     public RegisterResponse register(RegisterRequest request) {
-//        if (request.getUsername().equals("dummyUser")) {
         if (dc.getUser(request.getUsername()) != null){
             return new RegisterResponse("Username taken; please try another username");
         } else {
