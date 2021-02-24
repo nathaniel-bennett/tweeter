@@ -53,7 +53,7 @@ public class LoginServiceTest {
 
     /**
      * Verifies that when a request with a null username is passed into {@link LoginService#login(LoginRequest)}
-     * a Null Pointer Exception is thrown.
+     * a correct response is returned.
      */
     @Test
     public void testLogin_nullUsername_correctResponse() throws IOException {
@@ -63,7 +63,7 @@ public class LoginServiceTest {
 
     /**
      * Verifies that when a request with a null password is passed into {@link LoginService#login(LoginRequest)}
-     * a Null Pointer Exception is thrown.
+     * the correct response is returned.
      */
     @Test
     public void testLogin_nullPassword_correctResponse() throws IOException {
