@@ -2,7 +2,6 @@ package com.nathanielbennett.tweeter.presenter;
 
 
 import com.nathanielbennett.tweeter.model.service.FollowService;
-import com.nathanielbennett.tweeter.model.service.FollowingService;
 import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
@@ -41,7 +40,7 @@ public class UserPresenter {
      * @throws IOException if an error occurred in sending/receiving the action.
      */
     public FollowUserResponse followUser(FollowUserRequest request) throws IOException {
-        return getFollowService().followUser(request);
+        return getFollowService().follow(request);
     }
 
     /**
@@ -53,7 +52,7 @@ public class UserPresenter {
      * @throws IOException if an error occurred in sending/receiving the action.
      */
     public UnfollowUserResponse unfollowUser(UnfollowUserRequest request) throws IOException {
-        return getFollowService().unfollowUser(request);
+        return getFollowService().unfollow(request);
     }
 
     /**
@@ -76,7 +75,7 @@ public class UserPresenter {
      *
      * @return the instance.
      */
-    FollowService getFollowService() {
+    protected FollowService getFollowService() {
         return new FollowService();
     }
 }

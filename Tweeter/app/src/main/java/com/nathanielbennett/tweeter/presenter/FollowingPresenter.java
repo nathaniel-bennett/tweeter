@@ -51,7 +51,7 @@ public class FollowingPresenter implements TemplatePresenter {
      *
      * @return the instance.
      */
-    FollowingService getFollowingService() {
+    protected FollowingService getFollowingService() {
         return new FollowingService();
     }
 }

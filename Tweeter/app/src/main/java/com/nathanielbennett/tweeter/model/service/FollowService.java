@@ -19,7 +19,7 @@ public class FollowService extends Service {
      * @return a response indicating either success or failure.
      * @throws IOException if an error occurred in sending/receiving the action.
      */
-    public FollowUserResponse followUser(FollowUserRequest request) throws IOException {
+    public FollowUserResponse follow(FollowUserRequest request) throws IOException {
         ServerFacade serverFacade = getServerFacade();
 
         if (request == null) {
@@ -51,7 +51,7 @@ public class FollowService extends Service {
      * @return a response indicating either success or failure.
      * @throws IOException if an error occurred in sending/receiving the action.
      */
-    public UnfollowUserResponse unfollowUser(UnfollowUserRequest request) throws IOException {
+    public UnfollowUserResponse unfollow(UnfollowUserRequest request) throws IOException {
         ServerFacade serverFacade = getServerFacade();
 
         if (request == null) {

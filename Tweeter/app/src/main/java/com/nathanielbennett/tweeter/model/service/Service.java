@@ -12,7 +12,7 @@ public abstract class Service {
      *
      * @return the instance.
      */
-    ServerFacade getServerFacade() {
+    protected ServerFacade getServerFacade() {
         return new ServerFacade();
     }
 }

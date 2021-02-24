@@ -86,7 +86,7 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
 
                         PostPresenter presenter = new PostPresenter(self);
 
-                        PostRequest request = new PostRequest(text.getText().toString(), loggedInUser);
+                        PostRequest request = new PostRequest(text.getText().toString(), loggedInUser.getAlias(), authToken);
                         PostTask postTask = new PostTask(presenter, self);
 
                         postTask.execute(request);

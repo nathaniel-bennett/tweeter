@@ -24,8 +24,12 @@ public class PostService extends Service {
             throw new NullPointerException("Null status request passed into PostService");
         }
 
-        if (request.getUser() == null) {
-            throw new NullPointerException("User missing in post request (PostService)");
+        if (request.getUsername() == null || request.getUsername().isEmpty()) {
+            throw new NullPointerException("Username missing in post request (PostService)");
+        }
+
+        if (request.getAuthToken() == null) {
+            throw new NullPointerException("Auth token missing in post request (PostService)");
         }
 
         return serverFacade.addToStory(request);

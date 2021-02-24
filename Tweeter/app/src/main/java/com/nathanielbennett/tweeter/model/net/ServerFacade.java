@@ -240,17 +240,21 @@ public class ServerFacade {
 
     public PostResponse addToStory(PostRequest request) {
         if (BuildConfig.DEBUG) {
-            if (request.getUser() == null) {
+            if (request.getUsername() == null) {
                 throw new AssertionError("No user object provided");
             }
         }
 
+        if (dc.getUser(request.getUsername()) == null) {
+            throw new AssertionError("User not found in database");
+        }
+
         Date date = Calendar.getInstance().getTime();
 
-        Status newStatus = new Status(request.getUser(), request.getStatus(), date.toString(),
+        Status newStatus = new Status(dc.getUser(request.getUsername()), request.getStatus(), date.toString(),
                 getMentions(request.getStatus()));
 
-        dc.postStatus(request.getUser(), newStatus);
+        dc.postStatus(dc.getUser(request.getUsername()), newStatus);
 
         return new PostResponse();
     }

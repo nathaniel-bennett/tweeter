@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.IOException;
 
 import com.nathanielbennett.tweeter.model.service.LoginService;
+import com.nathanielbennett.tweeter.model.service.PostService;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 
@@ -43,5 +44,16 @@ public class LoginPresenter {
         Log.e("login password", loginRequest.getPassword());
         LoginService loginService = new LoginService();
         return loginService.login(loginRequest);
+    }
+
+    /**
+     * returns an instance of {@link LoginService}. Allows mocking of the LoginService class for
+     * testing purposes. All usages of LoginService should get their LoginService instance from this
+     * method to allow for mocking of the instance.
+     *
+     * @return the instance.
+     */
+    protected LoginService getLoginService() {
+        return new LoginService();
     }
 }
