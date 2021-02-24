@@ -4,8 +4,6 @@ import com.nathanielbennett.tweeter.model.service.FollowingService;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 
-import java.io.IOException;
-
 /**
  * The presenter for the "following" functionality of the application.
  */
@@ -38,7 +36,7 @@ public class FollowingPresenter implements TemplatePresenter {
      * @param request contains the data required to fulfill the request.
      * @return the followees.
      */
-    public FollowResponse getFollowing(FollowRequest request) throws IOException {
+    public FollowResponse getFollowing(FollowRequest request) {
         FollowingService followingService = getFollowingService();
         return followingService.fetchFollowing(request);
     }
