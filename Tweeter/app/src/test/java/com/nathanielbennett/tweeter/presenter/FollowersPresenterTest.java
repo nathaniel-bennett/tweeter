@@ -52,7 +52,7 @@ public class FollowersPresenterTest {
     }
 
     @Test
-    public void testGetFollowing_returnsServiceResult() throws IOException {
+    public void testGetFollowers_returnsServiceResult() throws IOException {
 
         // Assert that the presenter returns the same response as the service (it doesn't do
         // anything else, so there's nothing else to test).
@@ -60,7 +60,7 @@ public class FollowersPresenterTest {
     }
 
     @Test
-    public void testGetFollowing_returnBadResult() throws IOException {
+    public void testGetFollowers_returnBadResult() throws IOException {
         Assertions.assertEquals(badResponse, presenter.getFollowers(badRequest));
     }
 
