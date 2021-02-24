@@ -4,6 +4,8 @@ import com.nathanielbennett.tweeter.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
+import java.io.IOException;
+
 
 public class FeedService extends Service {
 
@@ -13,8 +15,9 @@ public class FeedService extends Service {
      *
      * @param request the request to be made to the backend.
      * @return response from the backend.
+     * @throws IOException if an error occurred in sending/receiving the action.
      */
-    public StatusResponse fetchFeed(StatusRequest request) {
+    public StatusResponse fetchFeed(StatusRequest request) throws IOException {
         ServerFacade serverFacade = getServerFacade();
 
         if (request == null) {

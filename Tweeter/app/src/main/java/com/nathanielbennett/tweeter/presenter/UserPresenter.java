@@ -2,13 +2,14 @@ package com.nathanielbennett.tweeter.presenter;
 
 
 import com.nathanielbennett.tweeter.model.service.FollowService;
-import com.nathanielbennett.tweeter.model.service.FollowingService;
 import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
 import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
+
+import java.io.IOException;
 
 public class UserPresenter {
 
@@ -30,15 +31,39 @@ public class UserPresenter {
         this.view = view;
     }
 
-    public FollowUserResponse followUser(FollowUserRequest request) {
-        return getFollowService().followUser(request);
+    /**
+     * Attempts to have the logged-in user follow a given user.
+     *
+     * @param request A request containing the logged-in user's credentials and the username of
+     *                a user to follow.
+     * @return A response indicating success, or a response containing an error message on failure.
+     * @throws IOException if an error occurred in sending/receiving the action.
+     */
+    public FollowUserResponse followUser(FollowUserRequest request) throws IOException {
+        return getFollowService().follow(request);
     }
 
-    public UnfollowUserResponse unfollowUser(UnfollowUserRequest request) {
-        return getFollowService().unfollowUser(request);
+    /**
+     * Attempts to have the logged-in user unfollow a given user.
+     *
+     * @param request A request containing the logged-in user's credentials and the username of
+     *                a user to unfollow.
+     * @return A response indicating success, or a response containing an error message on failure.
+     * @throws IOException if an error occurred in sending/receiving the action.
+     */
+    public UnfollowUserResponse unfollowUser(UnfollowUserRequest request) throws IOException {
+        return getFollowService().unfollow(request);
     }
 
-    public CheckFollowingResponse checkFollowing(CheckFollowingRequest request) {
+    /**
+     * Checks to see whether a given user is being followed by the logged-in user or not.
+     *
+     * @param request A request containing the logged-in user and another user to check.
+     * @return A response indicating whether the user is being followed on success, or an error
+     * message on failure.
+     * @throws IOException if an error occurred in sending/receiving the action.
+     */
+    public CheckFollowingResponse checkFollowing(CheckFollowingRequest request) throws IOException {
         return getFollowService().checkFollowStatus(request);
     }
 
@@ -50,7 +75,7 @@ public class UserPresenter {
      *
      * @return the instance.
      */
-    FollowService getFollowService() {
+    protected FollowService getFollowService() {
         return new FollowService();
     }
 }

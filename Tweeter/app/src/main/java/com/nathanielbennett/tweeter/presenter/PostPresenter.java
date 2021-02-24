@@ -32,7 +32,7 @@ public class PostPresenter implements TemplatePresenter {
      *
      * @param request the request to be made to the service.
      * @return the response from the service.
-     * @throws IOException
+     * @throws IOException if an error occurred in sending/receiving the action.
      */
     public PostResponse post(PostRequest request) throws IOException {
         PostService postService = getPostService();
@@ -40,13 +40,13 @@ public class PostPresenter implements TemplatePresenter {
     }
 
     /**
-     * returns an instance of {@link StoryService}. Allows mocking of the StoryService class for
-     * testing purposes. All usages of StoryService should get their StoryService instance from this
+     * returns an instance of {@link PostService}. Allows mocking of the PostService class for
+     * testing purposes. All usages of PostService should get their PostService instance from this
      * method to allow for mocking of the instance.
      *
      * @return the instance.
      */
-    PostService getPostService() {
+    protected PostService getPostService() {
         return new PostService();
     }
 }

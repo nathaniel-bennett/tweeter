@@ -25,8 +25,8 @@ public class RegisterTask extends TemplateTask {
     }
 
     @Override
-    public TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
-        RegisterResponse response = presenter.performRegistration((RegisterRequest) request);
+    protected TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
+        RegisterResponse response = presenter.register((RegisterRequest) request);
 
         if (response.isSuccess()) {
             loadUserImage(response.getUser());
@@ -36,17 +36,17 @@ public class RegisterTask extends TemplateTask {
     }
 
     @Override
-    public void taskSuccessful(TweeterAPIResponse response) {
+    protected void taskSuccessful(TweeterAPIResponse response) {
         observer.registrationSuccessful((RegisterResponse) response);
     }
 
     @Override
-    public void taskUnsuccessful(TweeterAPIResponse response) {
+    protected void taskUnsuccessful(TweeterAPIResponse response) {
         observer.registrationUnsuccessful((RegisterResponse) response);
     }
 
     @Override
-    public void handleException(Exception ex) {
+    protected void handleException(Exception ex) {
         observer.registrationException(ex);
     }
 }

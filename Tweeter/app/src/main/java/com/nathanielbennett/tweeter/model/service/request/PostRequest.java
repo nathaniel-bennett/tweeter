@@ -1,22 +1,16 @@
 package com.nathanielbennett.tweeter.model.service.request;
 
-import com.nathanielbennett.tweeter.model.domain.User;
+import com.nathanielbennett.tweeter.model.domain.AuthToken;
 
-public class PostRequest implements TweeterAPIRequest {
+public class PostRequest extends AuthorizedRequest {
     private final String status;
-    private final User user;
-    // TODO: we need an Auth Token in this request...
 
-    public PostRequest(String status, User user){
+    public PostRequest(String status, String username, AuthToken authToken) {
+        super(username, authToken);
         this.status = status;
-        this.user = user;
     }
 
     public String getStatus() {
         return status;
-    }
-
-    public User getUser() {
-        return user;
     }
 }

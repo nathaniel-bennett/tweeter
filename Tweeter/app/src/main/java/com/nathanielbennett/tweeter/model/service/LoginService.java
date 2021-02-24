@@ -4,12 +4,21 @@ import com.nathanielbennett.tweeter.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 
+import java.io.IOException;
+
 /**
  * Contains the business logic to support the login operation.
  */
 public class LoginService extends Service {
 
-    public LoginResponse login(LoginRequest request) {
+    /**
+     *
+     * @param request The username and password of the user that intends to be logged in.
+     * @return Authorization and user information if the login succeeded, or an error message
+     * otherwise.
+     * @throws IOException if an error occurred in sending/receiving the action.
+     */
+    public LoginResponse login(LoginRequest request) throws IOException {
         ServerFacade serverFacade = getServerFacade();
 
         if (request == null) {

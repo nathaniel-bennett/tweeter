@@ -34,6 +34,7 @@ public class FollowersPresenter implements TemplatePresenter {
      *
      * @param request contains the data required to fulfill the request.
      * @return the followers.
+     * @throws IOException if an error occurred in sending/receiving the action.
      */
     public FollowResponse getFollowers(FollowRequest request) throws IOException {
         FollowersService followersService = getFollowersService();
@@ -43,9 +44,9 @@ public class FollowersPresenter implements TemplatePresenter {
     /**
      * Returns an instance of {@link FollowersService}. Allows mocking of the FollowingService class
      * for testing purposes.
-     * @return a FeedService that can be used.
+     * @return a FollowersService that can be used.
      */
-    FollowersService getFollowersService() {
+    protected FollowersService getFollowersService() {
         return new FollowersService();
     }
 }
