@@ -32,6 +32,9 @@ public class LoginServiceTest {
         badRequest = new LoginRequest("Bad", "password");
         goodRequest = new LoginRequest("Good", "password");
 
+        badResponse = new LoginResponse("Bad User");
+        badResponse = new LoginResponse("Good user");
+
         mockServerFacade = Mockito.mock(ServerFacade.class);
         loginServiceSpy = Mockito.spy(new LoginService());
 

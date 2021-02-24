@@ -1,7 +1,6 @@
 package com.nathanielbennett.tweeter.model.service;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
-import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.PostRequest;
@@ -19,6 +18,7 @@ public class PostServiceTest {
     private PostRequest validRequest;
     private PostRequest invalidRequest;
     private PostRequest otherInvalidRequest;
+    private PostRequest nullAuthToken;
 
     private PostResponse successResponse;
     private PostResponse failureResponse;
@@ -32,19 +32,11 @@ public class PostServiceTest {
      */
     @BeforeEach
     public void setup() {
-        User currentUser = new User("FirstName", "LastName", null);
-
-        User resultUser1 = new User("FirstName1", "LastName1",
-                "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
-        User resultUser2 = new User("FirstName2", "LastName2",
-                "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
-        User resultUser3 = new User("FirstName3", "LastName3",
-                "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
-
         // Setup request objects to use in the tests
         validRequest = new PostRequest("THis is a status", "FirstNameLastName", new AuthToken());
         invalidRequest = new PostRequest(null, null, null);
         otherInvalidRequest = new PostRequest("abcdefg", "philberta", new AuthToken());
+        nullAuthToken = new PostRequest("hello", "philberta", null);
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new PostResponse();
@@ -99,6 +91,18 @@ public class PostServiceTest {
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             postServiceSpy.addPost(invalidRequest);
+        });
+    }
+
+    /**
+     * Verify that for failed requests the {@link FollowingService#fetchFollowing(FollowRequest)}
+     * method throws an exception.
+     */
+    @Test
+    public void testAddPost_invalidRequest_missingAuthToken_throwsException() {
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            postServiceSpy.addPost(nullAuthToken);
         });
     }
 
