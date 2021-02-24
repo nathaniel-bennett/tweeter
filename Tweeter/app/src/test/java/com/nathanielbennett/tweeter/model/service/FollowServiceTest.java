@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.IOException;
+
 public class FollowServiceTest {
 
     private FollowService followServiceSpy;
@@ -57,75 +59,75 @@ public class FollowServiceTest {
 
 
         /**
-         * Verifies that when a null request is passed into {@link FollowService#followUser(FollowUserRequest)}
+         * Verifies that when a null request is passed into {@link FollowService#follow(FollowUserRequest)}
          * a Null Pointer Exception is thrown.
          */
         @Test
         public void testFollowUser_nullRequest_throwsException() {
             Assertions.assertThrows(NullPointerException.class, () -> {
-                followServiceSpy.followUser(null);
+                followServiceSpy.follow(null);
             });
         }
 
         /**
          * Verifies that when a request with a null username is passed into
-         * {@link FollowService#followUser(FollowUserRequest)} a Null Pointer Exception is thrown.
+         * {@link FollowService#follow(FollowUserRequest)} a Null Pointer Exception is thrown.
          */
         @Test
         public void testFollowUser_nullUserNameRequest_throwsException() {
             Assertions.assertThrows(NullPointerException.class, () -> {
-                followServiceSpy.followUser(nullUserName);
+                followServiceSpy.follow(nullUserName);
             });
         }
 
         /**
          * Verifies that when a request with a null authToken is passed into
-         * {@link FollowService#followUser(FollowUserRequest)} a Null Pointer Exception is thrown.
+         * {@link FollowService#follow(FollowUserRequest)} a Null Pointer Exception is thrown.
          */
         @Test
         public void testFollowUser_nullAuthTokenRequest_throwsException() {
             Assertions.assertThrows(NullPointerException.class, () -> {
-                followServiceSpy.followUser(nullAuthToken);
+                followServiceSpy.follow(nullAuthToken);
             });
         }
 
         /**
          * Verifies that when a request with a null userToFollow is passed into
-         * {@link FollowService#followUser(FollowUserRequest)} a Null Pointer Exception is thrown.
+         * {@link FollowService#follow(FollowUserRequest)} a Null Pointer Exception is thrown.
          */
         @Test
         public void testFollowUser_nullUserToFollowRequest_throwsException() {
             Assertions.assertThrows(NullPointerException.class, () -> {
-                followServiceSpy.followUser(nullUserToFollow);
+                followServiceSpy.follow(nullUserToFollow);
             });
         }
 
         /**
-         * Verifies that when a bad request is passed into {@link FollowService#followUser(FollowUserRequest)}
+         * Verifies that when a bad request is passed into {@link FollowService#follow(FollowUserRequest)}
          * the correct response is passed back.
          */
         @Test
-        public void testFollowUser_badRequest_tryToFollowSelf_correctResponse() {
+        public void testFollowUser_badRequest_tryToFollowSelf_correctResponse() throws IOException {
             Assertions.assertEquals("Error - too much vanity (you can't follow yourself)",
-                    followServiceSpy.followUser(followSelfRequest).getMessage());
+                    followServiceSpy.follow(followSelfRequest).getMessage());
         }
 
         /**
-         * Verifies that when a bad request is passed into {@link FollowService#followUser(FollowUserRequest)}
+         * Verifies that when a bad request is passed into {@link FollowService#follow(FollowUserRequest)}
          * the response from the server is passed back.
          */
         @Test
-        public void testFollowUser_badRequest_correctResponse() {
-            Assertions.assertEquals(failureResponse, followServiceSpy.followUser(badRequest));
+        public void testFollowUser_badRequest_correctResponse() throws IOException {
+            Assertions.assertEquals(failureResponse, followServiceSpy.follow(badRequest));
         }
 
         /**
-         * Verifies that when a valid request is passed into {@link FollowService#followUser(FollowUserRequest)}
+         * Verifies that when a valid request is passed into {@link FollowService#follow(FollowUserRequest)}
          * the response from the server is passed back.
          */
         @Test
-        public void testFollowUser_validRequest_correctResponse() {
-            Assertions.assertEquals(successResponse, followServiceSpy.followUser(validRequest));
+        public void testFollowUser_validRequest_correctResponse() throws IOException {
+            Assertions.assertEquals(successResponse, followServiceSpy.follow(validRequest));
         }
 
     }

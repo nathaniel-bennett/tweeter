@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class FollowersServiceTest {
@@ -84,7 +85,7 @@ public class FollowersServiceTest {
      * returns the response from the server facade.
      */
     @Test
-    public void testGetFollowers_badRequest_correctResponse() {
+    public void testGetFollowers_badRequest_correctResponse() throws IOException {
         Assertions.assertEquals(failureResponse, followersService.fetchFollowers(otherInvalidRequest));
     }
 
@@ -93,7 +94,7 @@ public class FollowersServiceTest {
      * returns the response from the server facade.
      */
     @Test
-    public void testGetFollowers_goodRequest_correctResponse() {
+    public void testGetFollowers_goodRequest_correctResponse() throws IOException {
         Assertions.assertEquals(successResponse, followersService.fetchFollowers(validRequest));
     }
 }
