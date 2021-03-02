@@ -16,7 +16,7 @@
             android:label="@string/title_activity_user"
             android:theme="@style/Theme.Tweeter.NoActionBar"></activity>
         <activity
-            android:name=".view.admission.AdmissionActivity"
+            android:name=".client.view.admission.AdmissionActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -26,13 +26,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.main.MainActivity"
+            android:name=".client.view.main.MainActivity"
             android:label="@string/title_activity_main"></activity>
         <activity
-            android:name=".view.main.UserActivity"
+            android:name=".client.view.main.UserActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".view.main.CameraActivity"
+        <activity android:name=".client.view.main.CameraActivity"
             android:label="@string/title_activity_main"></activity>
     </application>
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.main.fragments.Status.Story.StoryFragment"
+    tools:context=".client.view.main.fragments.Status.Story.StoryFragment"
     android:orientation="vertical">
 
     <ImageView
