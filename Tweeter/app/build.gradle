@@ -29,6 +29,8 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':shared')
+
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
     implementation 'androidx.navigation:navigation-ui:2.2.2'
 
