@@ -3,14 +3,14 @@ package com.nathanielbennett.tweeter.server.lambda;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
-import com.nathanielbennett.tweeter.model.service.request.FollowingRequest;
-import com.nathanielbennett.tweeter.model.service.response.FollowingResponse;
+import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
+import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.server.service.FollowingServiceImpl;
 
 /**
  * An AWS lambda function that returns the users a user is following.
  */
-public class GetFollowingHandler implements RequestHandler<FollowingRequest, FollowingResponse> {
+public class GetFollowingHandler implements RequestHandler<FollowRequest, FollowResponse> {
 
     /**
      * Returns the users that the user specified in the request is following. Uses information in
@@ -22,7 +22,7 @@ public class GetFollowingHandler implements RequestHandler<FollowingRequest, Fol
      * @return the followees.
      */
     @Override
-    public FollowingResponse handleRequest(FollowingRequest request, Context context) {
+    public FollowResponse handleRequest(FollowRequest request, Context context) {
         FollowingServiceImpl service = new FollowingServiceImpl();
         return service.getFollowees(request);
     }

@@ -3,18 +3,26 @@ package com.nathanielbennett.tweeter.model.service.response;
 /**
  * A response that can indicate whether there is more data available from the server.
  */
-public class PagedResponse extends Response {
+public class PagedResponse extends TweeterAPIResponse {
 
     private final boolean hasMorePages;
 
-    PagedResponse(boolean success, boolean hasMorePages) {
-        super(success);
+    /**
+     * creates a response indicating that the page request was successful.
+     * @param hasMorePages indicator of whether pages are available or not.
+     */
+    PagedResponse(boolean hasMorePages) {
+        super();
         this.hasMorePages = hasMorePages;
     }
 
-    PagedResponse(boolean success, String message, boolean hasMorePages) {
-        super(success, message);
-        this.hasMorePages = hasMorePages;
+    /**
+     * creates a response indicating that the paged request failed.
+     * @param message an error message indicating why the page request was unsuccessful.
+     */
+    PagedResponse(String message) {
+        super(message);
+        hasMorePages = false;
     }
 
     /**

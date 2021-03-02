@@ -10,14 +10,14 @@ import java.util.Arrays;
 
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.net.TweeterRemoteException;
-import com.nathanielbennett.tweeter.model.service.request.FollowingRequest;
-import com.nathanielbennett.tweeter.model.service.response.FollowingResponse;
+import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
+import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.server.dao.FollowingDAO;
 
 public class FollowingServiceImplTest {
 
-    private FollowingRequest request;
-    private FollowingResponse expectedResponse;
+    private FollowRequest request;
+    private FollowResponse expectedResponse;
     private FollowingDAO mockFollowingDAO;
     private FollowingServiceImpl followingServiceImplSpy;
 
@@ -33,10 +33,10 @@ public class FollowingServiceImplTest {
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
 
         // Setup a request object to use in the tests
-        request = new FollowingRequest(currentUser.getAlias(), 3, null);
+        request = new FollowRequest(currentUser.getAlias(), 3, null);
 
         // Setup a mock FollowingDAO that will return known responses
-        expectedResponse = new FollowingResponse(Arrays.asList(resultUser1, resultUser2, resultUser3), false);
+        expectedResponse = new FollowResponse(Arrays.asList(resultUser1, resultUser2, resultUser3), false);
         mockFollowingDAO = Mockito.mock(FollowingDAO.class);
         Mockito.when(mockFollowingDAO.getFollowees(request)).thenReturn(expectedResponse);
 
@@ -45,12 +45,12 @@ public class FollowingServiceImplTest {
     }
 
     /**
-     * Verify that the {@link FollowingServiceImpl#getFollowees(FollowingRequest)}
+     * Verify that the {@link FollowingServiceImpl#getFollowees(FollowRequest)}
      * method returns the same result as the {@link FollowingDAO} class.
      */
     @Test
     public void testGetFollowees_validRequest_correctResponse() throws IOException, TweeterRemoteException {
-        FollowingResponse response = followingServiceImplSpy.getFollowees(request);
+        FollowResponse response = followingServiceImplSpy.getFollowees(request);
         Assertions.assertEquals(expectedResponse, response);
     }
 }

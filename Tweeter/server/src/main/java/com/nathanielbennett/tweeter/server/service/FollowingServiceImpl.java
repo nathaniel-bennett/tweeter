@@ -1,8 +1,8 @@
 package com.nathanielbennett.tweeter.server.service;
 
 import com.nathanielbennett.tweeter.model.service.FollowingService;
-import com.nathanielbennett.tweeter.model.service.request.FollowingRequest;
-import com.nathanielbennett.tweeter.model.service.response.FollowingResponse;
+import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
+import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.server.dao.FollowingDAO;
 
 /**
@@ -20,7 +20,7 @@ public class FollowingServiceImpl implements FollowingService {
      * @return the followees.
      */
     @Override
-    public FollowingResponse getFollowees(FollowingRequest request) {
+    public FollowResponse getFollowees(FollowRequest request) {
         return getFollowingDAO().getFollowees(request);
     }
 

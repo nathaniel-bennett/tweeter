@@ -3,8 +3,8 @@ package com.nathanielbennett.tweeter.model.service;
 import java.io.IOException;
 
 import com.nathanielbennett.tweeter.model.net.TweeterRemoteException;
-import com.nathanielbennett.tweeter.model.service.request.FollowingRequest;
-import com.nathanielbennett.tweeter.model.service.response.FollowingResponse;
+import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
+import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 
 /**
  * Defines the interface for the 'following' service.
@@ -19,6 +19,6 @@ public interface FollowingService {
      * @param request contains the data required to fulfill the request.
      * @return the followees.
      */
-    FollowingResponse getFollowees(FollowingRequest request)
+    FollowResponse getFollowees(FollowRequest request)
             throws IOException, TweeterRemoteException;
 }
