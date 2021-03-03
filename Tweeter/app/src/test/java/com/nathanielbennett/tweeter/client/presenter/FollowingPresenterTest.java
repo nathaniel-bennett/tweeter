@@ -1,7 +1,7 @@
 package com.nathanielbennett.tweeter.client.presenter;
 
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.client.model.service.FollowingService;
+import com.nathanielbennett.tweeter.client.model.service.FollowingServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 
@@ -17,7 +17,7 @@ public class FollowingPresenterTest {
 
     private FollowRequest request;
     private FollowResponse response;
-    private FollowingService mockFollowingService;
+    private FollowingServiceProxy mockFollowingService;
     private FollowingPresenter presenter;
     private FollowRequest badRequest;
     private FollowResponse badResponse;
@@ -40,10 +40,10 @@ public class FollowingPresenterTest {
         badResponse = new FollowResponse(null, true);
 
         // Create a mock FollowingService
-        mockFollowingService = Mockito.mock(FollowingService.class);
-        Mockito.when(mockFollowingService.fetchFollowing(request)).thenReturn(response);
+        mockFollowingService = Mockito.mock(FollowingServiceProxy.class);
+        Mockito.when(mockFollowingService.getFollowees(request)).thenReturn(response);
 
-        Mockito.when(mockFollowingService.fetchFollowing(badRequest)).thenReturn(badResponse);
+        Mockito.when(mockFollowingService.getFollowees(badRequest)).thenReturn(badResponse);
 
         // Wrap a FollowingPresenter in a spy that will use the mock service.
         presenter = Mockito.spy(new FollowingPresenter(new FollowingPresenter.View() {}));

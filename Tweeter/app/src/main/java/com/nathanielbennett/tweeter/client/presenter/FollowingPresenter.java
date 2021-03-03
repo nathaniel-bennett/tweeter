@@ -1,6 +1,6 @@
 package com.nathanielbennett.tweeter.client.presenter;
 
-import com.nathanielbennett.tweeter.client.model.service.FollowingService;
+import com.nathanielbennett.tweeter.client.model.service.FollowingServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 
@@ -40,18 +40,18 @@ public class FollowingPresenter implements TemplatePresenter {
      * @throws IOException if an error occurred in sending/receiving the action.
      */
     public FollowResponse getFollowing(FollowRequest request) throws IOException {
-        FollowingService followingService = getFollowingService();
-        return followingService.fetchFollowing(request);
+        FollowingServiceProxy followingService = getFollowingService();
+        return followingService.getFollowees(request);
     }
 
     /**
-     * Returns an instance of {@link FollowingService}. Allows mocking of the FollowingService class
+     * Returns an instance of {@link FollowingServiceProxy}. Allows mocking of the FollowingService class
      * for testing purposes. All usages of FollowingService should get their FollowingService
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
      */
-    protected FollowingService getFollowingService() {
-        return new FollowingService();
+    protected FollowingServiceProxy getFollowingService() {
+        return new FollowingServiceProxy();
     }
 }

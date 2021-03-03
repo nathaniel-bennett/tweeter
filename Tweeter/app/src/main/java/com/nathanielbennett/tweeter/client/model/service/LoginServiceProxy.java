@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.client.model.service;
 
 import com.nathanielbennett.tweeter.client.model.net.ServerFacade;
+import com.nathanielbennett.tweeter.model.service.LoginService;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 
@@ -9,7 +10,7 @@ import java.io.IOException;
 /**
  * Contains the business logic to support the login operation.
  */
-public class LoginService extends Service {
+public class LoginServiceProxy extends Service implements LoginService {
 
     /**
      *

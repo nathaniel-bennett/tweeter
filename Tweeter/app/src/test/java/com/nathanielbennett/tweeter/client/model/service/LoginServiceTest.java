@@ -1,7 +1,6 @@
 package com.nathanielbennett.tweeter.client.model.service;
 
 import com.nathanielbennett.tweeter.client.model.net.ServerFacade;
-import com.nathanielbennett.tweeter.client.model.service.LoginService;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 
@@ -22,7 +21,7 @@ public class LoginServiceTest {
     private LoginResponse badResponse;
     private LoginResponse goodResponse;
 
-    private LoginService loginServiceSpy;
+    private LoginServiceProxy loginServiceSpy;
     private ServerFacade mockServerFacade;
 
     @BeforeEach
@@ -37,7 +36,7 @@ public class LoginServiceTest {
         badResponse = new LoginResponse("Good user");
 
         mockServerFacade = Mockito.mock(ServerFacade.class);
-        loginServiceSpy = Mockito.spy(new LoginService());
+        loginServiceSpy = Mockito.spy(new LoginServiceProxy());
 
         Mockito.when(mockServerFacade.login(badRequest)).thenReturn(badResponse);
         Mockito.when(mockServerFacade.login(goodRequest)).thenReturn(goodResponse);
@@ -45,7 +44,7 @@ public class LoginServiceTest {
     }
 
     /**
-     * Verifies that when a null request is passed into {@link LoginService#login(LoginRequest)}
+     * Verifies that when a null request is passed into {@link LoginServiceProxy#login(LoginRequest)}
      * a Null Pointer Exception is thrown.
      */
     @Test
@@ -56,7 +55,7 @@ public class LoginServiceTest {
     }
 
     /**
-     * Verifies that when a request with a null username is passed into {@link LoginService#login(LoginRequest)}
+     * Verifies that when a request with a null username is passed into {@link LoginServiceProxy#login(LoginRequest)}
      * a correct response is returned.
      */
     @Test
@@ -66,7 +65,7 @@ public class LoginServiceTest {
     }
 
     /**
-     * Verifies that when a request with a null password is passed into {@link LoginService#login(LoginRequest)}
+     * Verifies that when a request with a null password is passed into {@link LoginServiceProxy#login(LoginRequest)}
      * the correct response is returned.
      */
     @Test
@@ -76,7 +75,7 @@ public class LoginServiceTest {
     }
 
     /**
-     * Verifies that when a bad request is passed into {@link LoginService#login(LoginRequest)}
+     * Verifies that when a bad request is passed into {@link LoginServiceProxy#login(LoginRequest)}
      * the correct response is returned.
      */
     @Test
@@ -85,7 +84,7 @@ public class LoginServiceTest {
     }
 
     /**
-     * Verifies that when a bad request is passed into {@link LoginService#login(LoginRequest)}
+     * Verifies that when a bad request is passed into {@link LoginServiceProxy#login(LoginRequest)}
      * the correct response is returned.
      */
     @Test

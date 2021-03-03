@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.client.model.service;
 
 import com.nathanielbennett.tweeter.client.model.net.ServerFacade;
+import com.nathanielbennett.tweeter.model.service.FollowingService;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 
@@ -9,7 +10,7 @@ import java.io.IOException;
 /**
  * Contains the business logic for getting the users a user is following.
  */
-public class FollowingService extends Service {
+public class FollowingServiceProxy extends Service implements FollowingService {
 
     /**
      * Returns the users that the user specified in the request is following. Uses information in
@@ -21,7 +22,7 @@ public class FollowingService extends Service {
      * @return the followees
      * @throws IOException if an error occurred in sending/receiving the action.
      */
-    public FollowResponse fetchFollowing(FollowRequest request) throws IOException {
+    public FollowResponse getFollowees(FollowRequest request) throws IOException {
         ServerFacade serverFacade = getServerFacade();
 
         if (request == null) {
