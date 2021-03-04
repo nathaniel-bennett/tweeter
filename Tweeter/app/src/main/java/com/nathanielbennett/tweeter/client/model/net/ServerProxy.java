@@ -6,8 +6,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.service.request.*;
 import com.nathanielbennett.tweeter.model.service.response.*;
 
@@ -16,12 +18,25 @@ import com.google.gson.GsonBuilder;
 
 public class ServerProxy {
 
-    private String serverHost;
-    private String serverPort;
+    private final String serverHost = "192.168.1.71";
+    private final String serverPort = "4040";
 
-    ServerProxy(String serverHost, String serverPort){
-        this.serverHost = serverHost;
-        this.serverPort = serverPort;
+    private WebRequestStrategy webRequestStrategy;
+
+    public interface WebRequestStrategy {
+
+        String getRequestPath();
+
+        String getRequestMethod();
+
+        TweeterAPIResponse formResponse(String serializedResponse);
+
+        TweeterAPIResponse formFailureResponse(int httpResponseCode);
+
+    }
+
+    public ServerProxy(WebRequestStrategy strategy) {
+        this.webRequestStrategy = strategy;
     }
 
     private String readString(InputStream is) throws IOException {
@@ -40,6 +55,42 @@ public class ServerProxy {
         sw.write(str);
         sw.flush();
     }
+
+    public TweeterAPIResponse doWebRequest(TweeterAPIRequest request) {
+        try {
+            URL url = new URL("http://" + serverHost + ":" + serverPort + webRequestStrategy.getRequestPath());
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(webRequestStrategy.getRequestMethod());
+            connection.setDoOutput(true); // TODO: add this to strategy pattern! True if request has body
+            connection.connect();
+
+            String serializedRequest = "put gson serializer here with APIRequest";
+
+            OutputStream os = connection.getOutputStream();
+            writeString(serializedRequest, os);
+            os.close();
+
+
+            switch (connection.getResponseCode()) {
+                case HttpURLConnection.HTTP_OK:
+                    InputStream responseBody = connection.getInputStream();
+                    String responseData = readString(responseBody);
+                    responseBody.close(); // TODO: should we actually do this???
+
+                    return webRequestStrategy.formResponse(responseData);
+
+                default: // TODO: add additional responses for various HTTP responses?
+                    return webRequestStrategy.formFailureResponse(connection.getResponseCode());
+            }
+        } catch (MalformedURLException e) {
+            return null; // TODO: change this!!!
+        } catch (IOException e) {
+            return null; // TODO: change this!!!!
+        }
+    }
+
+
 
     public TweeterAPIResponse Register(TweeterAPIRequest rr){
         try{
@@ -127,13 +178,12 @@ public class ServerProxy {
         return null;
     }
 
-    public FollowResponse getFollowing(String authToken, String username){
+    public FollowResponse getFollowing(String username){
         try{
             URL url = new URL("http://" + serverHost + ":" + serverPort + "/user/" + username + "/following");
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod("GET");
             http.setDoOutput(false);
-            http.addRequestProperty("Authorization", authToken);
             http.connect();
             if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -151,13 +201,12 @@ public class ServerProxy {
         return null;
     }
 
-    public FollowResponse getFollowers(String authToken, String username){
+    public FollowResponse getFollowers(String username){
         try{
             URL url = new URL("http://" + serverHost + ":" + serverPort + "/user/" + username + "/followers");
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod("GET");
             http.setDoOutput(false);
-            http.addRequestProperty("Authorization", authToken);
             http.connect();
             if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -175,13 +224,12 @@ public class ServerProxy {
         return null;
     }
 
-    public StatusResponse getStory(String authToken, String username){
+    public StatusResponse getStory(String username){
         try{
             URL url = new URL("http://" + serverHost + ":" + serverPort + "/user/" + username + "/story");
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod("GET");
             http.setDoOutput(false);
-            http.addRequestProperty("Authorization", authToken);
             http.connect();
             if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -199,4 +247,75 @@ public class ServerProxy {
         return null;
     }
 
+    public TweeterAPIResponse post(String authToken, String status, String username){
+        try{
+            URL url = new URL("http://" + serverHost + ":" + serverPort + "/user/" + username + "/post");
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            http.setRequestMethod("GET");
+            http.setDoOutput(false);
+            http.addRequestProperty("Authorization", authToken);
+            http.connect();
+            if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                InputStream respBody = http.getInputStream();
+                String respData = readString(respBody);
+                return gson.fromJson(respData, FollowResponse.class);
+            }
+            else{
+                System.out.println("ERROR: " + http.getResponseMessage());
+            }
+        } catch (IOException e){
+            System.out.println("Error occurred while posting " + username + "'s status");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public FollowUserResponse follow(String authToken, String currentUser, String userToFollow){
+        try{
+            URL url = new URL("http://" + serverHost + ":" + serverPort + "/user/" + userToFollow + "/following/add/" + currentUser);
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            http.setRequestMethod("GET");
+            http.setDoOutput(false);
+            http.addRequestProperty("Authorization", authToken);
+            http.connect();
+            if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                InputStream respBody = http.getInputStream();
+                String respData = readString(respBody);
+                return gson.fromJson(respData, FollowUserResponse.class);
+            }
+            else{
+                System.out.println("ERROR: " + http.getResponseMessage());
+            }
+        } catch (IOException e){
+            System.out.println("Error occurred when " + currentUser + " tried to follow" + userToFollow);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public FollowUserResponse unfollow(String authToken, String currentUser, String userToUnfollow){
+        try{
+            URL url = new URL("http://" + serverHost + ":" + serverPort + "/user/" + userToUnfollow + "/following/add/" + currentUser);
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            http.setRequestMethod("GET");
+            http.setDoOutput(false);
+            http.addRequestProperty("Authorization", authToken);
+            http.connect();
+            if (http.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                InputStream respBody = http.getInputStream();
+                String respData = readString(respBody);
+                return gson.fromJson(respData, FollowUserResponse.class);
+            }
+            else{
+                System.out.println("ERROR: " + http.getResponseMessage());
+            }
+        } catch (IOException e){
+            System.out.println("Error occurred when " + currentUser + " tried to unfollow" + userToUnfollow);
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

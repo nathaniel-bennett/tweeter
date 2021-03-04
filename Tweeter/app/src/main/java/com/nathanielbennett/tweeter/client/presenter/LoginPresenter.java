@@ -1,6 +1,6 @@
 package com.nathanielbennett.tweeter.client.presenter;
 
-import com.nathanielbennett.tweeter.client.model.service.LoginService;
+import com.nathanielbennett.tweeter.client.model.service.LoginServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 
@@ -39,18 +39,18 @@ public class LoginPresenter {
     public LoginResponse login(LoginRequest loginRequest) throws IOException {
         //Log.e("login username", loginRequest.getUsername());
         //Log.e("login password", loginRequest.getPassword());
-        LoginService loginService = getLoginService();
+        LoginServiceProxy loginService = getLoginService();
         return loginService.login(loginRequest);
     }
 
     /**
-     * returns an instance of {@link LoginService}. Allows mocking of the LoginService class for
+     * returns an instance of {@link LoginServiceProxy}. Allows mocking of the LoginService class for
      * testing purposes. All usages of LoginService should get their LoginService instance from this
      * method to allow for mocking of the instance.
      *
      * @return the instance.
      */
-    protected LoginService getLoginService() {
-        return new LoginService();
+    protected LoginServiceProxy getLoginService() {
+        return new LoginServiceProxy();
     }
 }

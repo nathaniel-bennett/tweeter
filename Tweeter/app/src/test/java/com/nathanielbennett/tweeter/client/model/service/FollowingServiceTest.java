@@ -1,6 +1,5 @@
 package com.nathanielbennett.tweeter.client.model.service;
 
-import com.nathanielbennett.tweeter.client.model.service.FollowingService;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.client.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
@@ -23,7 +22,7 @@ public class FollowingServiceTest {
     private FollowResponse successResponse;
     private FollowResponse failureResponse;
 
-    private FollowingService followingServiceSpy;
+    private FollowingServiceProxy followingServiceSpy;
 
 
     /**
@@ -55,12 +54,12 @@ public class FollowingServiceTest {
         Mockito.when(mockServerFacade.getFollowing(otherInvalidRequest)).thenReturn(failureResponse);
 
         // Create a FollowingService instance and wrap it with a spy that will use the mock service
-        followingServiceSpy = Mockito.spy(new FollowingService());
+        followingServiceSpy = Mockito.spy(new FollowingServiceProxy());
         Mockito.when(followingServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 
     /**
-     * Verify that for successful requests the {@link FollowingService#fetchFollowing(FollowRequest)}
+     * Verify that for successful requests the {@link FollowingServiceProxy#getFollowees(FollowRequest)}
      * method returns the same result as the {@link ServerFacade}.
      * .
      *
@@ -69,7 +68,7 @@ public class FollowingServiceTest {
 
     @Test
     public void testGetFollowees_validRequest_correctResponse() throws IOException {
-        FollowResponse response = followingServiceSpy.fetchFollowing(validRequest);
+        FollowResponse response = followingServiceSpy.getFollowees(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
 
@@ -77,7 +76,7 @@ public class FollowingServiceTest {
 
 
     /**
-     * Verify that for failed requests the {@link FollowingService#fetchFollowing(FollowRequest)}
+     * Verify that for failed requests the {@link FollowingServiceProxy#getFollowees(FollowRequest)}
      * method returns the same result as the {@link ServerFacade}.
      *
      * @throws IOException if an IO error occurs.
@@ -86,29 +85,29 @@ public class FollowingServiceTest {
     public void testFetchFollowing_nullRequest_throwsException() throws IOException {
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            followingServiceSpy.fetchFollowing(null);
+            followingServiceSpy.getFollowees(null);
         });
     }
 
     /**
-     * Verify that for failed requests the {@link FollowingService#fetchFollowing(FollowRequest)}
+     * Verify that for failed requests the {@link FollowingServiceProxy#getFollowees(FollowRequest)}
      * method throws an exception.
      */
     @Test
     public void testFetchFollowing_invalidRequest_missingAlias_throwsException() {
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            followingServiceSpy.fetchFollowing(invalidRequest);
+            followingServiceSpy.getFollowees(invalidRequest);
         });
     }
 
     /**
-     * Verify that for failed requests the {@link FollowingService#fetchFollowing(FollowRequest)}
+     * Verify that for failed requests the {@link FollowingServiceProxy#getFollowees(FollowRequest)}
      * method returns a bad response..
      */
     @Test
     public void testFetchFollowing_invalidRequest_returnsResponse() throws IOException {
 
-        Assertions.assertEquals(failureResponse, followingServiceSpy.fetchFollowing(otherInvalidRequest));
+        Assertions.assertEquals(failureResponse, followingServiceSpy.getFollowees(otherInvalidRequest));
     }
 }

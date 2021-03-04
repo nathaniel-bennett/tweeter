@@ -1,7 +1,5 @@
 package com.nathanielbennett.tweeter.client.model.service;
 
-import com.nathanielbennett.tweeter.client.model.service.FollowingService;
-import com.nathanielbennett.tweeter.client.model.service.PostService;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.client.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
@@ -54,7 +52,7 @@ public class PostServiceTest {
     }
 
     /**
-     * Verify that for successful requests the {@link FollowingService#fetchFollowing(FollowRequest)}
+     * Verify that for successful requests the {@link FollowingServiceProxy#getFollowees(FollowRequest)}
      * method returns the same result as the {@link ServerFacade}.
      * .
      *
@@ -71,7 +69,7 @@ public class PostServiceTest {
 
 
     /**
-     * Verify that for failed requests the {@link FollowingService#fetchFollowing(FollowRequest)}
+     * Verify that for failed requests the {@link FollowingServiceProxy#getFollowees(FollowRequest)}
      * method returns the same result as the {@link ServerFacade}.
      *
      * @throws IOException if an IO error occurs.
@@ -85,7 +83,7 @@ public class PostServiceTest {
     }
 
     /**
-     * Verify that for failed requests the {@link FollowingService#fetchFollowing(FollowRequest)}
+     * Verify that for failed requests the {@link FollowingServiceProxy#getFollowees(FollowRequest)}
      * method throws an exception.
      */
     @Test
@@ -97,7 +95,7 @@ public class PostServiceTest {
     }
 
     /**
-     * Verify that for failed requests the {@link FollowingService#fetchFollowing(FollowRequest)}
+     * Verify that for failed requests the {@link FollowingServiceProxy#getFollowees(FollowRequest)}
      * method throws an exception.
      */
     @Test
@@ -109,7 +107,7 @@ public class PostServiceTest {
     }
 
     /**
-     * Verify that for failed requests the {@link FollowingService#fetchFollowing(FollowRequest)}
+     * Verify that for failed requests the {@link FollowingServiceProxy#getFollowees(FollowRequest)}
      * method returns a bad response..
      */
     @Test

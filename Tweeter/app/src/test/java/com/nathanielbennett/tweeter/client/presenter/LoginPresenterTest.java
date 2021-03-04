@@ -2,7 +2,7 @@ package com.nathanielbennett.tweeter.client.presenter;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.client.model.service.LoginService;
+import com.nathanielbennett.tweeter.client.model.service.LoginServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 
@@ -18,7 +18,7 @@ public class LoginPresenterTest {
 
     private LoginRequest request;
     private LoginResponse response;
-    private LoginService mockLoginService;
+    private LoginServiceProxy mockLoginService;
     private LoginPresenter presenter;
     private LoginRequest missingUsernameRequest;
     private LoginResponse missingUsernameResponse;
@@ -38,7 +38,7 @@ public class LoginPresenterTest {
         missingUsernameResponse = new LoginResponse("Username missing");
 
         // Create a mock FollowingService
-        mockLoginService = Mockito.mock(LoginService.class);
+        mockLoginService = Mockito.mock(LoginServiceProxy.class);
         Mockito.when(mockLoginService.login(request)).thenReturn(response);
 
         Mockito.when(mockLoginService.login(missingUsernameRequest)).thenReturn(missingUsernameResponse);
