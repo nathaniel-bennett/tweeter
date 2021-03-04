@@ -1,4 +1,4 @@
-package com.example.familymapclient;
+package com.nathanielbennett.tweeter.client.model.net;
 
 import java.io.IOException;
 import java.io.InputStream;
