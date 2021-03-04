@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import Request.*;
@@ -16,12 +17,22 @@ import com.google.gson.GsonBuilder;
 
 public class ServerProxy {
 
-    private String serverHost;
-    private String serverPort;
+    private final String serverHost = "192.168.1.71";
+    private final String serverPort = "4040";
 
-    ServerProxy(String serverHost, String serverPort){
-        this.serverHost = serverHost;
-        this.serverPort = serverPort;
+    private WebRequestStrategy webRequestStrategy;
+
+    public interface WebRequestStrategy {
+
+        String getRequestPath();
+
+        String getRequestMethod();
+
+
+    }
+
+    public ServerProxy(WebRequestStrategy strategy) {
+        this.webRequestStrategy = strategy;
     }
 
     private String readString(InputStream is) throws IOException {
@@ -41,9 +52,40 @@ public class ServerProxy {
         sw.flush();
     }
 
+    public TweeterAPIResponse doWebRequest(TweeterAPIRequest request) {
+        try {
+            URL url = new URL("http://" + serverHost + ":" + serverPort + webRequestStrategy.getRequestPath());
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(webRequestStrategy.getRequestMethod());
+            connection.setDoOutput(true); // TODO: add this to strategy pattern! True if request has body
+            connection.connect();
+
+            String serializedRequest = "put gson serializer here with APIRequest";
+
+            OutputStream os = connection.getOutputStream();
+            writeString(serializedRequest, os);
+            os.close();
+
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+
+            } else {
+
+            }
+
+
+        } catch (MalformedURLException e) {
+            return null; // TODO: change this!!!
+        } catch (IOException e) {
+            return null; // TODO: change this!!!!
+        }
+
+        return null;
+    }
+
     public Response Register(Request rr){
         try{
-            URL url = new URL("http://" + serverHost + ":" + serverPort + "/user/register");
+            URL url = new URL("http://" + serverHost + ":" + serverPort + webRequestStrategy.getRequestPath());
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod("POST");
             http.setDoOutput(true);
