@@ -8,8 +8,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import Request.*;
-import Response.*;
+import com.nathanielbennett.tweeter.model.service.request.*;
+import com.nathanielbennett.tweeter.model.service.response.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,7 +41,7 @@ public class ServerProxy {
         sw.flush();
     }
 
-    public Response Register(Request rr){
+    public TweeterAPIResponse Register(TweeterAPIRequest rr){
         try{
             URL url = new URL("http://" + serverHost + ":" + serverPort + "/user/register");
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -61,7 +61,7 @@ public class ServerProxy {
             else if (http.getResponseCode() == HttpURLConnection.HTTP_ACCEPTED){
                 InputStream respBody = http.getInputStream();
                 String respData = readString(respBody);
-                return gson.fromJson(respData, MessageResponse.class);
+                return gson.fromJson(respData, TweeterAPIResponse.class);
             }
             else{
                 System.out.println("ERROR: " + http.getResponseMessage());
@@ -73,7 +73,7 @@ public class ServerProxy {
         return null;
     }
 
-    public Response Login(Request lr){
+    public TweeterAPIResponse Login(TweeterAPIRequest lr){
         try{
             URL url = new URL("http://" + serverHost + ":" + serverPort + "/user/login");
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -93,7 +93,7 @@ public class ServerProxy {
             else if (http.getResponseCode() == HttpURLConnection.HTTP_ACCEPTED){
                 InputStream respBody = http.getInputStream();
                 String respData = readString(respBody);
-                return gson.fromJson(respData, MessageResponse.class);
+                return gson.fromJson(respData, TweeterAPIResponse.class);
             }
             else{
                 System.out.println("ERROR: " + http.getResponseMessage());
@@ -105,7 +105,7 @@ public class ServerProxy {
         return null;
     }
 
-    public MessageResponse clear(){
+    public TweeterAPIResponse clear(){
         try{
             URL url = new URL("http://" + serverHost + ":" + serverPort + "/clear");
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -115,7 +115,7 @@ public class ServerProxy {
             if (http.getResponseCode() == HttpURLConnection.HTTP_OK){
                 InputStream respBody = http.getInputStream();
                 String respData = readString(respBody);
-                return gson.fromJson(respData, MessageResponse.class);
+                return gson.fromJson(respData, TweeterAPIResponse.class);
             }
             else{
                 System.out.println("ERROR: " + http.getResponseMessage());
@@ -127,9 +127,9 @@ public class ServerProxy {
         return null;
     }
 
-    public GetPersonFromIDResponse getPersonByID(String authToken, String personID){
+    public FollowResponse getFollowing(String authToken, String username){
         try{
-            URL url = new URL("http://" + serverHost + ":" + serverPort + "/person/" + personID);
+            URL url = new URL("http://" + serverHost + ":" + serverPort + "/user/" + username + "/following");
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod("GET");
             http.setDoOutput(false);
@@ -139,21 +139,21 @@ public class ServerProxy {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 InputStream respBody = http.getInputStream();
                 String respData = readString(respBody);
-                return gson.fromJson(respData, GetPersonFromIDResponse.class);
+                return gson.fromJson(respData, FollowResponse.class);
             }
             else{
                 System.out.println("ERROR: " + http.getResponseMessage());
             }
         } catch (IOException e){
-            System.out.println("Error occurred while retrieving the current user's person info");
+            System.out.println("Error occurred while retrieving " + username + "'s following info");
             e.printStackTrace();
         }
         return null;
     }
 
-    public GetAllFamilyMembersResponse getAllPersonsForCurrentUser(String authToken){
+    public FollowResponse getFollowers(String authToken, String username){
         try{
-            URL url = new URL("http://" + serverHost + ":" + serverPort + "/person");
+            URL url = new URL("http://" + serverHost + ":" + serverPort + "/user/" + username + "/followers");
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod("GET");
             http.setDoOutput(false);
@@ -163,21 +163,21 @@ public class ServerProxy {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 InputStream respBody = http.getInputStream();
                 String respData = readString(respBody);
-                return gson.fromJson(respData, GetAllFamilyMembersResponse.class);
+                return gson.fromJson(respData, FollowResponse.class);
             }
             else{
                 System.out.println("ERROR: " + http.getResponseMessage());
             }
         } catch (IOException e){
-            System.out.println("Error occurred while retrieving username-associated people");
+            System.out.println("Error occurred while retrieving " + username + "'s followers info");
             e.printStackTrace();
         }
         return null;
     }
 
-    public GetAllEventsForAllFamilyMembersResponse getAllEventsForCurrentUser(String authToken){
+    public StatusResponse getStory(String authToken, String username){
         try{
-            URL url = new URL("http://" + serverHost + ":" + serverPort + "/event");
+            URL url = new URL("http://" + serverHost + ":" + serverPort + "/user/" + username + "/story");
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod("GET");
             http.setDoOutput(false);
@@ -187,13 +187,13 @@ public class ServerProxy {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 InputStream respBody = http.getInputStream();
                 String respData = readString(respBody);
-                return gson.fromJson(respData, GetAllEventsForAllFamilyMembersResponse.class);
+                return gson.fromJson(respData, StatusResponse.class);
             }
             else{
                 System.out.println("ERROR: " + http.getResponseMessage());
             }
         } catch (IOException e){
-            System.out.println("Error occurred while retrieving username-associated events");
+            System.out.println("Error occurred while retrieving " + username + "'s story");
             e.printStackTrace();
         }
         return null;
