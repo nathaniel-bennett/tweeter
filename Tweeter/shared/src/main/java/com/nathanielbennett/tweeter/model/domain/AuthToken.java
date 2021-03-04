@@ -17,6 +17,11 @@ public class AuthToken implements Serializable {
         return authTokenID;
     }
 
+    @Override
+    public String toString() {
+        return authTokenID;
+    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
@@ -34,6 +33,8 @@ public class ClientCommunicator {
         TweeterAPIResponse formResponse(String serializedResponse);
 
         TweeterAPIResponse formFailureResponse(int httpResponseCode);
+
+        TweeterAPIResponse formIOErrorResponse(String message);
     }
 
     public ClientCommunicator(WebRequestStrategy strategy) {
@@ -58,14 +59,20 @@ public class ClientCommunicator {
     }
 
 
-    public TweeterAPIResponse doWebRequest(TweeterAPIRequest request) {
+    public TweeterAPIResponse doWebRequest(TweeterAPIRequest request, AuthToken authToken) {
         try {
             URL url = new URL("http://" + serverHost + ":" + serverPort + webRequestStrategy.getRequestPath());
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
             connection.setRequestMethod(webRequestStrategy.getRequestMethod());
             connection.setDoOutput(webRequestStrategy.hasRequestBody());
+            if (authToken != null) {
+                connection.addRequestProperty("Authorization", authToken.toString());
+            }
+
             connection.connect();
+
 
             if (webRequestStrategy.hasRequestBody()) {
                 String serializedRequest = "put Gson serializer here with APIRequest";
@@ -78,17 +85,15 @@ public class ClientCommunicator {
                 case HttpURLConnection.HTTP_OK:
                     InputStream responseBody = connection.getInputStream();
                     String responseData = readString(responseBody);
-                    responseBody.close(); // TODO: should we actually do this???
+                    responseBody.close();
 
                     return webRequestStrategy.formResponse(responseData);
 
                 default: // TODO: add additional responses for various HTTP responses?
                     return webRequestStrategy.formFailureResponse(connection.getResponseCode());
             }
-        } catch (MalformedURLException e) {
-            return null; // TODO: change this!!!
         } catch (IOException e) {
-            return null; // TODO: change this!!!!
+            return webRequestStrategy.formIOErrorResponse(e.getMessage());
         }
     }
 
