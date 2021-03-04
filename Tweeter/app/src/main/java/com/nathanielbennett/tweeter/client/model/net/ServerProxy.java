@@ -24,6 +24,8 @@ public class ServerProxy {
 
     public interface WebRequestStrategy {
 
+        boolean hasRequestBody();
+
         String getRequestPath();
 
         String getRequestMethod();
@@ -31,7 +33,6 @@ public class ServerProxy {
         TweeterAPIResponse formResponse(String serializedResponse);
 
         TweeterAPIResponse formFailureResponse(int httpResponseCode);
-
     }
 
     public ServerProxy(WebRequestStrategy strategy) {
@@ -55,21 +56,22 @@ public class ServerProxy {
         sw.flush();
     }
 
+
     public TweeterAPIResponse doWebRequest(TweeterAPIRequest request) {
         try {
             URL url = new URL("http://" + serverHost + ":" + serverPort + webRequestStrategy.getRequestPath());
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(webRequestStrategy.getRequestMethod());
-            connection.setDoOutput(true); // TODO: add this to strategy pattern! True if request has body
+            connection.setDoOutput(webRequestStrategy.hasRequestBody());
             connection.connect();
 
-            String serializedRequest = "put gson serializer here with APIRequest";
-
-            OutputStream os = connection.getOutputStream();
-            writeString(serializedRequest, os);
-            os.close();
-
+            if (webRequestStrategy.hasRequestBody()) {
+                String serializedRequest = "put Gson serializer here with APIRequest";
+                OutputStream os = connection.getOutputStream();
+                writeString(serializedRequest, os);
+                os.close();
+            }
 
             switch (connection.getResponseCode()) {
                 case HttpURLConnection.HTTP_OK:
