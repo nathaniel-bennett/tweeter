@@ -16,7 +16,7 @@ import com.nathanielbennett.tweeter.model.service.response.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class ServerProxy {
+public class ClientCommunicator {
 
     private final String serverHost = "192.168.1.71";
     private final String serverPort = "4040";
@@ -36,7 +36,7 @@ public class ServerProxy {
         TweeterAPIResponse formFailureResponse(int httpResponseCode);
     }
 
-    public ServerProxy(WebRequestStrategy strategy) {
+    public ClientCommunicator(WebRequestStrategy strategy) {
         this.webRequestStrategy = strategy;
     }
 
