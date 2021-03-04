@@ -28,6 +28,9 @@ public class ServerProxy {
 
         String getRequestMethod();
 
+        TweeterAPIResponse formResponse(String serializedResponse);
+
+        TweeterAPIResponse formFailureResponse(int httpResponseCode);
 
     }
 
@@ -67,23 +70,28 @@ public class ServerProxy {
             writeString(serializedRequest, os);
             os.close();
 
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
 
-            } else {
+            switch (connection.getResponseCode()) {
+                case HttpURLConnection.HTTP_OK:
+                    InputStream responseBody = connection.getInputStream();
+                    String responseData = readString(responseBody);
+                    responseBody.close(); // TODO: should we actually do this???
 
+                    return webRequestStrategy.formResponse(responseData);
+
+                default: // TODO: add additional responses for various HTTP responses?
+                    return webRequestStrategy.formFailureResponse(connection.getResponseCode());
             }
-
-
         } catch (MalformedURLException e) {
             return null; // TODO: change this!!!
         } catch (IOException e) {
             return null; // TODO: change this!!!!
         }
-
-        return null;
     }
 
-    public Response Register(Request rr){
+
+
+    public TweeterAPIResponse Register(TweeterAPIRequest rr){
         try{
             URL url = new URL("http://" + serverHost + ":" + serverPort + "/user/register");
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
