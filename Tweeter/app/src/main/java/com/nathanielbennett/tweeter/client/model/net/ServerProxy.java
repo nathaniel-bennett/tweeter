@@ -16,8 +16,8 @@ import com.google.gson.GsonBuilder;
 
 public class ServerProxy {
 
-    private String serverHost;
-    private String serverPort;
+    private final String serverHost;
+    private final String serverPort;
 
     ServerProxy(String serverHost, String serverPort){
         this.serverHost = serverHost;
