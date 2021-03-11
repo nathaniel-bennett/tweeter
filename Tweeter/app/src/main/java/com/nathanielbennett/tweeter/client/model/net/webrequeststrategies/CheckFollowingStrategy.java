@@ -2,13 +2,22 @@ package com.nathanielbennett.tweeter.client.model.net.webrequeststrategies;
 
 import com.nathanielbennett.tweeter.client.model.net.ClientCommunicator;
 import com.nathanielbennett.tweeter.model.net.Serializer;
+import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
+import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 
-public class CheckFollowingStrategy implements ClientCommunicator.WebRequestStrategy{
+public class CheckFollowingStrategy implements ClientCommunicator.WebRequestStrategy {
+
     @Override
-    public String getRequestPath() {
-        return "/checkFollowing";
+    public boolean hasRequestBody() {
+        return false;
+    }
+
+    @Override
+    public String getRequestPath(TweeterAPIRequest request) {
+        CheckFollowingRequest followingRequest = (CheckFollowingRequest) request;
+        return "/" + followingRequest.getUsername() + "/follows/" + followingRequest.getOtherUser();
     }
 
     @Override

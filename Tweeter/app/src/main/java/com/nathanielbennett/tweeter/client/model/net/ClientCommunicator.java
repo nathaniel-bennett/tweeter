@@ -22,7 +22,9 @@ public class ClientCommunicator {
 
     public interface WebRequestStrategy {
 
-        String getRequestPath();
+        boolean hasRequestBody();
+
+        String getRequestPath(TweeterAPIRequest request);
 
         String getRequestMethod();
 
@@ -54,22 +56,24 @@ public class ClientCommunicator {
 
 
     public TweeterAPIResponse doWebRequest(TweeterAPIRequest request, AuthToken authToken) throws IOException {
-        URL url = new URL("http://" + serverHost + ":" + serverPort + webRequestStrategy.getRequestPath());
+        URL url = new URL("http://" + serverHost + ":" + serverPort + webRequestStrategy.getRequestPath(request));
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         connection.setRequestMethod(webRequestStrategy.getRequestMethod());
-        connection.setDoOutput(true);
+        connection.setDoOutput(webRequestStrategy.hasRequestBody());
         if (authToken != null) {
             connection.addRequestProperty("Authorization", authToken.toString());
         }
 
         connection.connect();
 
-        String serializedRequest = "put Gson serializer here with APIRequest";
-        OutputStream os = connection.getOutputStream();
-        writeString(serializedRequest, os);
-        os.close();
+        if (webRequestStrategy.hasRequestBody()) {
+            String serializedRequest = "put Gson serializer here with APIRequest";
+            OutputStream os = connection.getOutputStream();
+            writeString(serializedRequest, os);
+            os.close();
+        }
 
         if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             InputStream responseBody = connection.getInputStream();

@@ -2,12 +2,19 @@ package com.nathanielbennett.tweeter.client.model.net.webrequeststrategies;
 
 import com.nathanielbennett.tweeter.client.model.net.ClientCommunicator;
 import com.nathanielbennett.tweeter.model.net.Serializer;
+import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 
 public class FollowStrategy implements ClientCommunicator.WebRequestStrategy {
+
     @Override
-    public String getRequestPath() {
+    public boolean hasRequestBody() {
+        return true;
+    }
+
+    @Override
+    public String getRequestPath(TweeterAPIRequest request) {
         return "/follow";
     }
 
