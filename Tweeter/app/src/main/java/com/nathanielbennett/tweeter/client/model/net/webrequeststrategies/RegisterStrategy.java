@@ -23,9 +23,4 @@ public class RegisterStrategy implements ClientCommunicator.WebRequestStrategy{
     public TweeterAPIResponse formFailureResponse(int httpResponseCode) {
         return null;
     }
-
-    @Override
-    public TweeterAPIResponse formIOErrorResponse(String message) {
-        return null;
-    }
 }

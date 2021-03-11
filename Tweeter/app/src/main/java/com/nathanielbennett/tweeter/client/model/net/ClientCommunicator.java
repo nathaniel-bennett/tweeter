@@ -29,8 +29,6 @@ public class ClientCommunicator {
         TweeterAPIResponse formResponse(String serializedResponse);
 
         TweeterAPIResponse formFailureResponse(int httpResponseCode);
-
-        TweeterAPIResponse formIOErrorResponse(String message);
     }
 
     public ClientCommunicator(WebRequestStrategy strategy) {
@@ -55,38 +53,32 @@ public class ClientCommunicator {
     }
 
 
-    public TweeterAPIResponse doWebRequest(TweeterAPIRequest request, AuthToken authToken) {
-        try {
-            URL url = new URL("http://" + serverHost + ":" + serverPort + webRequestStrategy.getRequestPath());
+    public TweeterAPIResponse doWebRequest(TweeterAPIRequest request, AuthToken authToken) throws IOException {
+        URL url = new URL("http://" + serverHost + ":" + serverPort + webRequestStrategy.getRequestPath());
 
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            connection.setRequestMethod(webRequestStrategy.getRequestMethod());
-            connection.setDoOutput(true);
-            if (authToken != null) {
-                connection.addRequestProperty("Authorization", authToken.toString());
-            }
+        connection.setRequestMethod(webRequestStrategy.getRequestMethod());
+        connection.setDoOutput(true);
+        if (authToken != null) {
+            connection.addRequestProperty("Authorization", authToken.toString());
+        }
 
-            connection.connect();
+        connection.connect();
 
-            String serializedRequest = "put Gson serializer here with APIRequest";
-            OutputStream os = connection.getOutputStream();
-            writeString(serializedRequest, os);
-            os.close();
+        String serializedRequest = "put Gson serializer here with APIRequest";
+        OutputStream os = connection.getOutputStream();
+        writeString(serializedRequest, os);
+        os.close();
 
-            switch (connection.getResponseCode()) {
-                case HttpURLConnection.HTTP_OK:
-                    InputStream responseBody = connection.getInputStream();
-                    String responseData = readString(responseBody);
-                    responseBody.close();
+        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            InputStream responseBody = connection.getInputStream();
+            String responseData = readString(responseBody);
+            responseBody.close();
 
-                    return webRequestStrategy.formResponse(responseData);
-
-                default: // TODO: add additional responses for various HTTP responses?
-                    return webRequestStrategy.formFailureResponse(connection.getResponseCode());
-            }
-        } catch (IOException e) {
-            return webRequestStrategy.formIOErrorResponse(e.getMessage());
+            return webRequestStrategy.formResponse(responseData);
+        } else {
+            return webRequestStrategy.formFailureResponse(connection.getResponseCode());
         }
     }
 }

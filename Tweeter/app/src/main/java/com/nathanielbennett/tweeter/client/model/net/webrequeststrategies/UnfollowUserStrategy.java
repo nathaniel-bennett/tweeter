@@ -23,9 +23,4 @@ public class UnfollowUserStrategy implements ClientCommunicator.WebRequestStrate
     public TweeterAPIResponse formFailureResponse(int httpResponseCode) {
         return null;
     }
-
-    @Override
-    public TweeterAPIResponse formIOErrorResponse(String message) {
-        return null;
-    }
 }

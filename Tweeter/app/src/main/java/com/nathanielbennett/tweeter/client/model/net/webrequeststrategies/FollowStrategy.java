@@ -3,7 +3,7 @@ package com.nathanielbennett.tweeter.client.model.net.webrequeststrategies;
 import com.nathanielbennett.tweeter.client.model.net.ClientCommunicator;
 import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 
-public class FollowStrategy implements ClientCommunicator.WebRequestStrategy{
+public class FollowStrategy implements ClientCommunicator.WebRequestStrategy {
     @Override
     public String getRequestPath() {
         return null;
@@ -21,11 +21,6 @@ public class FollowStrategy implements ClientCommunicator.WebRequestStrategy{
 
     @Override
     public TweeterAPIResponse formFailureResponse(int httpResponseCode) {
-        return null;
-    }
-
-    @Override
-    public TweeterAPIResponse formIOErrorResponse(String message) {
         return null;
     }
 }
