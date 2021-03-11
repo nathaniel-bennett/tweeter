@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-public class PostServiceTest {
+public class PostServiceProxyTest {
 
     private PostRequest validRequest;
     private PostRequest invalidRequest;
@@ -23,7 +23,7 @@ public class PostServiceTest {
     private PostResponse successResponse;
     private PostResponse failureResponse;
 
-    private PostService postServiceSpy;
+    private PostServiceProxy postServiceProxySpy;
 
 
     /**
@@ -47,8 +47,8 @@ public class PostServiceTest {
         Mockito.when(mockServerFacade.addToStory(otherInvalidRequest)).thenReturn(failureResponse);
 
         // Create a FollowingService instance and wrap it with a spy that will use the mock service
-        postServiceSpy = Mockito.spy(new PostService());
-        Mockito.when(postServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
+        postServiceProxySpy = Mockito.spy(new PostServiceProxy());
+        Mockito.when(postServiceProxySpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 
     /**
@@ -61,7 +61,7 @@ public class PostServiceTest {
 
     @Test
     public void testAddPost_validRequest_correctResponse() throws IOException {
-        PostResponse response = postServiceSpy.addPost(validRequest);
+        PostResponse response = postServiceProxySpy.addPost(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
 
@@ -78,7 +78,7 @@ public class PostServiceTest {
     public void testAddPost_nullRequest_throwsException() throws IOException {
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            postServiceSpy.addPost(null);
+            postServiceProxySpy.addPost(null);
         });
     }
 
@@ -90,7 +90,7 @@ public class PostServiceTest {
     public void testAddPost_invalidRequest_missingAlias_throwsException() {
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            postServiceSpy.addPost(invalidRequest);
+            postServiceProxySpy.addPost(invalidRequest);
         });
     }
 
@@ -102,7 +102,7 @@ public class PostServiceTest {
     public void testAddPost_invalidRequest_missingAuthToken_throwsException() {
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            postServiceSpy.addPost(nullAuthToken);
+            postServiceProxySpy.addPost(nullAuthToken);
         });
     }
 
@@ -112,6 +112,6 @@ public class PostServiceTest {
      */
     @Test
     public void testAddPost_invalidRequest_returnsResponse() throws IOException {
-        Assertions.assertEquals(failureResponse, postServiceSpy.addPost(otherInvalidRequest));
+        Assertions.assertEquals(failureResponse, postServiceProxySpy.addPost(otherInvalidRequest));
     }
 }

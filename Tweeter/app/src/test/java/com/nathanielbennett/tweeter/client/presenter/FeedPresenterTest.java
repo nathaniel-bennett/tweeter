@@ -1,7 +1,7 @@
 package com.nathanielbennett.tweeter.client.presenter;
 
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.client.model.service.FeedService;
+import com.nathanielbennett.tweeter.client.model.service.FeedServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
@@ -17,7 +17,7 @@ public class FeedPresenterTest {
 
     private StatusRequest request;
     private StatusResponse response;
-    private FeedService mockFeedService;
+    private FeedServiceProxy mockFeedServiceProxy;
     private FeedPresenter presenter;
     private StatusRequest badRequest;
     private StatusResponse badResponse;
@@ -40,14 +40,14 @@ public class FeedPresenterTest {
         badResponse = new StatusResponse(true, null);
 
         // Create a mock FollowingService
-        mockFeedService = Mockito.mock(FeedService.class);
-        Mockito.when(mockFeedService.fetchFeed(request)).thenReturn(response);
+        mockFeedServiceProxy = Mockito.mock(FeedServiceProxy.class);
+        Mockito.when(mockFeedServiceProxy.fetchFeed(request)).thenReturn(response);
 
-        Mockito.when(mockFeedService.fetchFeed(badRequest)).thenReturn(badResponse);
+        Mockito.when(mockFeedServiceProxy.fetchFeed(badRequest)).thenReturn(badResponse);
 
         // Wrap a FollowingPresenter in a spy that will use the mock service.
         presenter = Mockito.spy(new FeedPresenter(new FeedPresenter.View() {}));
-        Mockito.when(presenter.getFeedService()).thenReturn(mockFeedService);
+        Mockito.when(presenter.getFeedService()).thenReturn(mockFeedServiceProxy);
     }
 
     @Test

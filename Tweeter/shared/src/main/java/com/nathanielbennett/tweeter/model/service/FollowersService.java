@@ -1,12 +1,11 @@
-package com.nathanielbennett.tweeter.client.model.service;
+package com.nathanielbennett.tweeter.model.service;
 
-import com.nathanielbennett.tweeter.client.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 
 import java.io.IOException;
 
-public class FollowersService extends Service {
+public interface FollowersService {
 
     /**
      * Returns the users that the user specified in the request. Uses information in the request
@@ -18,17 +17,5 @@ public class FollowersService extends Service {
      * @return the followers.
      * @throws IOException if an error occurred in sending/receiving the action.
      */
-    public FollowResponse fetchFollowers(FollowRequest request) throws IOException {
-        ServerFacade serverFacade = getServerFacade();
-
-        if (request == null) {
-            throw new NullPointerException("Null Follow request passed into FollowersService");
-        }
-
-        if (request.getFollowAlias() == null || request.getFollowAlias().isEmpty()) {
-            throw new NullPointerException("Alias field missing in FollowRequest (FollowersService)");
-        }
-
-        return serverFacade.getFollowers(request);
-    }
+    public FollowResponse fetchFollowers(FollowRequest request) throws IOException;
 }

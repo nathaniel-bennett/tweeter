@@ -2,7 +2,7 @@ package com.nathanielbennett.tweeter.client.presenter;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.client.model.service.LogoutService;
+import com.nathanielbennett.tweeter.client.model.service.LogoutServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 
@@ -17,7 +17,7 @@ public class MainPresenterTest {
 
     private LogoutRequest request;
     private LogoutResponse response;
-    private LogoutService mockLogoutService;
+    private LogoutServiceProxy mockLogoutServiceProxy;
     private MainPresenter presenter;
     private LogoutRequest missingUsernameRequest;
     private LogoutResponse missingUsernameResponse;
@@ -37,14 +37,14 @@ public class MainPresenterTest {
         missingUsernameResponse = new LogoutResponse("Username missing");
 
         // Create a mock FollowingService
-        mockLogoutService = Mockito.mock(LogoutService.class);
-        Mockito.when(mockLogoutService.logout(request)).thenReturn(response);
+        mockLogoutServiceProxy = Mockito.mock(LogoutServiceProxy.class);
+        Mockito.when(mockLogoutServiceProxy.logout(request)).thenReturn(response);
 
-        Mockito.when(mockLogoutService.logout(missingUsernameRequest)).thenReturn(missingUsernameResponse);
+        Mockito.when(mockLogoutServiceProxy.logout(missingUsernameRequest)).thenReturn(missingUsernameResponse);
 
         // Wrap a FollowingPresenter in a spy that will use the mock service.
         presenter = Mockito.spy(new MainPresenter(new MainPresenter.View() {}));
-        Mockito.when(presenter.getLogoutService()).thenReturn(mockLogoutService);
+        Mockito.when(presenter.getLogoutService()).thenReturn(mockLogoutServiceProxy);
     }
 
     @Test

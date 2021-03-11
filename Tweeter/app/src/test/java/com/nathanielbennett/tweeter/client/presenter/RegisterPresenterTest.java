@@ -2,7 +2,7 @@ package com.nathanielbennett.tweeter.client.presenter;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.client.model.service.RegisterService;
+import com.nathanielbennett.tweeter.client.model.service.RegisterServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
 import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
 
@@ -17,7 +17,7 @@ public class RegisterPresenterTest {
 
     private RegisterRequest request;
     private RegisterResponse response;
-    private RegisterService mockRegisterService;
+    private RegisterServiceProxy mockRegisterServiceProxy;
     private RegisterPresenter presenter;
     private RegisterRequest missingUsernameRequest;
     private RegisterResponse missingUsernameResponse;
@@ -38,14 +38,14 @@ public class RegisterPresenterTest {
         missingUsernameResponse = new RegisterResponse("Username missing");
 
         // Create a mock FollowingService
-        mockRegisterService = Mockito.mock(RegisterService.class);
-        Mockito.when(mockRegisterService.register(request)).thenReturn(response);
+        mockRegisterServiceProxy = Mockito.mock(RegisterServiceProxy.class);
+        Mockito.when(mockRegisterServiceProxy.register(request)).thenReturn(response);
 
-        Mockito.when(mockRegisterService.register(missingUsernameRequest)).thenReturn(missingUsernameResponse);
+        Mockito.when(mockRegisterServiceProxy.register(missingUsernameRequest)).thenReturn(missingUsernameResponse);
 
         // Wrap a FollowingPresenter in a spy that will use the mock service.
         presenter = Mockito.spy(new RegisterPresenter(new RegisterPresenter.View() {}));
-        Mockito.when(presenter.getRegisterService()).thenReturn(mockRegisterService);
+        Mockito.when(presenter.getRegisterService()).thenReturn(mockRegisterServiceProxy);
     }
 
     @Test

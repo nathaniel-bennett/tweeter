@@ -1,6 +1,6 @@
 package com.nathanielbennett.tweeter.client.presenter;
 
-import com.nathanielbennett.tweeter.client.model.service.StoryService;
+import com.nathanielbennett.tweeter.client.model.service.StoryServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
@@ -34,18 +34,18 @@ public class StoryPresenter implements TemplatePresenter {
      * @throws IOException if an error occurred in sending/receiving the action.
      */
     public StatusResponse getStory(StatusRequest request) throws IOException {
-        StoryService storyService = getStoryService();
-        return storyService.fetchStory(request);
+        StoryServiceProxy storyServiceProxy = getStoryService();
+        return storyServiceProxy.fetchStory(request);
     }
 
     /**
-     * retusn an instance of {@link StoryService}. Allows mocking of the StoryService class for
+     * retusn an instance of {@link StoryServiceProxy}. Allows mocking of the StoryService class for
      * testing purposes. All usages of StoryService should get their StoryService instance from this
      * method to allow for mocking of the instance.
      *
      * @return the instance.
      */
-    StoryService getStoryService() {
-        return new StoryService();
+    StoryServiceProxy getStoryService() {
+        return new StoryServiceProxy();
     }
 }

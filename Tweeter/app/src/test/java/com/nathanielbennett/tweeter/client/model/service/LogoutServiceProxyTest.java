@@ -1,6 +1,5 @@
 package com.nathanielbennett.tweeter.client.model.service;
 
-import com.nathanielbennett.tweeter.client.model.service.LogoutService;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.client.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
@@ -13,7 +12,7 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-public class LogoutServiceTest {
+public class LogoutServiceProxyTest {
 
     private LogoutRequest nullUsername;
     private LogoutRequest nullAuthToken;
@@ -23,7 +22,7 @@ public class LogoutServiceTest {
     private LogoutResponse badResponse;
     private LogoutResponse goodResponse;
 
-    private LogoutService logoutServiceSpy;
+    private LogoutServiceProxy logoutServiceProxySpy;
     private ServerFacade mockServerFacade;
 
     @BeforeEach
@@ -38,60 +37,60 @@ public class LogoutServiceTest {
         goodResponse = new LogoutResponse();
 
         mockServerFacade = Mockito.mock(ServerFacade.class);
-        logoutServiceSpy = Mockito.spy(new LogoutService());
+        logoutServiceProxySpy = Mockito.spy(new LogoutServiceProxy());
 
         Mockito.when(mockServerFacade.logout(badRequest)).thenReturn(badResponse);
         Mockito.when(mockServerFacade.logout(goodRequest)).thenReturn(goodResponse);
-        Mockito.when(logoutServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
+        Mockito.when(logoutServiceProxySpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 
     /**
-     *  Verifies that when a null request is passed into {@link LogoutService#logout(LogoutRequest)}
+     *  Verifies that when a null request is passed into {@link LogoutServiceProxy#logout(LogoutRequest)}
      *  a Null pointer exception is thrown.
      */
     @Test
     public void testLogout_nullRequest_throwsException() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-           logoutServiceSpy.logout(null);
+           logoutServiceProxySpy.logout(null);
         });
     }
 
     /**
-     *  Verifies that when a request with a null userName is passed into {@link LogoutService#logout(LogoutRequest)}
+     *  Verifies that when a request with a null userName is passed into {@link LogoutServiceProxy#logout(LogoutRequest)}
      *  a Null pointer exception is thrown.
      */
     @Test
     public void testLogout_nullUsername_throwsException() throws IOException {
         Assertions.assertEquals("Username required to log out of session",
-                logoutServiceSpy.logout(nullUsername).getMessage());
+                logoutServiceProxySpy.logout(nullUsername).getMessage());
     }
 
     /**
-     *  Verifies that when a request with a null authToken is passed into {@link LogoutService#logout(LogoutRequest)}
+     *  Verifies that when a request with a null authToken is passed into {@link LogoutServiceProxy#logout(LogoutRequest)}
      *  a Null pointer exception is thrown.
      */
     @Test
     public void testLogout_nullAuthToken_throwsException() throws IOException {
         Assertions.assertEquals("Auth token required to log out of session",
-                logoutServiceSpy.logout(nullAuthToken).getMessage());
+                logoutServiceProxySpy.logout(nullAuthToken).getMessage());
     }
 
     /**
-     *  Verifies that when a bad request is passed into {@link LogoutService#logout(LogoutRequest)}
+     *  Verifies that when a bad request is passed into {@link LogoutServiceProxy#logout(LogoutRequest)}
      *  the correct response is sent.
      */
     @Test
     public void testLogout_badRequest_correctResponse() throws IOException {
-        Assertions.assertEquals(badResponse, logoutServiceSpy.logout(badRequest));
+        Assertions.assertEquals(badResponse, logoutServiceProxySpy.logout(badRequest));
     }
 
     /**
-     *  Verifies that when a good request is passed into {@link LogoutService#logout(LogoutRequest)}
+     *  Verifies that when a good request is passed into {@link LogoutServiceProxy#logout(LogoutRequest)}
      *  a Null pointer exception is thrown.
      */
     @Test
     public void testLogout_goodRequest_correctResponse() throws IOException {
-        Assertions.assertEquals(goodResponse, logoutServiceSpy.logout(goodRequest));
+        Assertions.assertEquals(goodResponse, logoutServiceProxySpy.logout(goodRequest));
     }
 
 

@@ -1,7 +1,7 @@
 package com.nathanielbennett.tweeter.client.presenter;
 
 
-import com.nathanielbennett.tweeter.client.model.service.FollowersService;
+import com.nathanielbennett.tweeter.client.model.service.FollowersServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 
@@ -37,16 +37,16 @@ public class FollowersPresenter implements TemplatePresenter {
      * @throws IOException if an error occurred in sending/receiving the action.
      */
     public FollowResponse getFollowers(FollowRequest request) throws IOException {
-        FollowersService followersService = getFollowersService();
-        return followersService.fetchFollowers(request);
+        FollowersServiceProxy followersServiceProxy = getFollowersService();
+        return followersServiceProxy.fetchFollowers(request);
     }
 
     /**
-     * Returns an instance of {@link FollowersService}. Allows mocking of the FollowingService class
+     * Returns an instance of {@link FollowersServiceProxy}. Allows mocking of the FollowingService class
      * for testing purposes.
      * @return a FollowersService that can be used.
      */
-    protected FollowersService getFollowersService() {
-        return new FollowersService();
+    protected FollowersServiceProxy getFollowersService() {
+        return new FollowersServiceProxy();
     }
 }

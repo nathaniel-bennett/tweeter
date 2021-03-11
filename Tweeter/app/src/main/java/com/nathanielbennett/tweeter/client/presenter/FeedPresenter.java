@@ -1,6 +1,6 @@
 package com.nathanielbennett.tweeter.client.presenter;
 
-import com.nathanielbennett.tweeter.client.model.service.FeedService;
+import com.nathanielbennett.tweeter.client.model.service.FeedServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 
@@ -34,18 +34,18 @@ public class FeedPresenter implements TemplatePresenter {
      * @throws IOException if an error occurred in sending/receiving the action.
      */
     public StatusResponse getFeed(StatusRequest request) throws IOException {
-        FeedService feedService = getFeedService();
-        return feedService.fetchFeed(request);
+        FeedServiceProxy feedServiceProxy = getFeedService();
+        return feedServiceProxy.fetchFeed(request);
     }
 
     /**
-     * Returns an instance of {@link FeedService}. Allows mocking of the StoryService class for
+     * Returns an instance of {@link FeedServiceProxy}. Allows mocking of the StoryService class for
      * purposes. All usages of StoryService should get their StoryService instance from this method
      * to allow for mocking of the instance.
      * @return a FeedService object that can be used.
      */
-    FeedService getFeedService() {
-        return new FeedService();
+    FeedServiceProxy getFeedService() {
+        return new FeedServiceProxy();
     }
 
 }

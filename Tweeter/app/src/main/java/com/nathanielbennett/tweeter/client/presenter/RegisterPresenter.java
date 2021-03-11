@@ -1,7 +1,7 @@
 package com.nathanielbennett.tweeter.client.presenter;
 
 
-import com.nathanielbennett.tweeter.client.model.service.RegisterService;
+import com.nathanielbennett.tweeter.client.model.service.RegisterServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
 import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
 
@@ -37,13 +37,13 @@ public class RegisterPresenter {
     }
 
     /**
-     * Returns an instance of {@link RegisterService}. Allows mocking of the RegisterService class
+     * Returns an instance of {@link RegisterServiceProxy}. Allows mocking of the RegisterService class
      * for testing purposes. All usages of RegisterService should get their RegisterService
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
      */
-    protected RegisterService getRegisterService() {
-        return new RegisterService();
+    protected RegisterServiceProxy getRegisterService() {
+        return new RegisterServiceProxy();
     }
 }

@@ -1,7 +1,7 @@
 package com.nathanielbennett.tweeter.client.presenter;
 
 
-import com.nathanielbennett.tweeter.client.model.service.FollowService;
+import com.nathanielbennett.tweeter.client.model.service.FollowServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
@@ -69,13 +69,13 @@ public class UserPresenter {
 
 
     /**
-     * Returns an instance of {@link FollowService}. Allows mocking of the FollowService class
+     * Returns an instance of {@link FollowServiceProxy}. Allows mocking of the FollowService class
      * for testing purposes. All usages of FollowService should get their FollowService
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
      */
-    protected FollowService getFollowService() {
-        return new FollowService();
+    protected FollowServiceProxy getFollowService() {
+        return new FollowServiceProxy();
     }
 }

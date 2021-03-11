@@ -1,12 +1,13 @@
 package com.nathanielbennett.tweeter.client.model.service;
 
 import com.nathanielbennett.tweeter.client.model.net.ServerFacade;
+import com.nathanielbennett.tweeter.model.service.RegisterService;
 import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
 import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
 
 import java.io.IOException;
 
-public class RegisterService extends Service {
+public class RegisterServiceProxy extends Service implements RegisterService {
 
     /**
      * Attempts to register a new user with the given {@link RegisterRequest} information. Returns a

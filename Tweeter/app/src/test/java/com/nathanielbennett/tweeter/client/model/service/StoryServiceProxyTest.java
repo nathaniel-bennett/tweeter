@@ -1,6 +1,5 @@
 package com.nathanielbennett.tweeter.client.model.service;
 
-import com.nathanielbennett.tweeter.client.model.service.FeedService;
 import com.nathanielbennett.tweeter.model.domain.Status;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.client.model.net.ServerFacade;
@@ -16,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FeedServiceTest {
+public class StoryServiceProxyTest {
 
     private StatusRequest validRequest;
     private StatusRequest invalidRequest;
@@ -25,7 +24,7 @@ public class FeedServiceTest {
     private StatusResponse successResponse;
     private StatusResponse failureResponse;
 
-    private FeedService feedServiceSpy;
+    private StoryServiceProxy storyServiceProxySpy;
 
 
     @BeforeEach
@@ -50,58 +49,58 @@ public class FeedServiceTest {
         // Setup a mock ServerFacade that will return known responses
         successResponse = new StatusResponse(true, Arrays.asList(hisStatus));
         ServerFacade mockServerFacade = Mockito.mock(ServerFacade.class);
-        Mockito.when(mockServerFacade.getFeed(validRequest)).thenReturn(successResponse);
+        Mockito.when(mockServerFacade.getStory(validRequest)).thenReturn(successResponse);
 
         failureResponse = new StatusResponse("Bad data passed in");
-        Mockito.when(mockServerFacade.getFeed(otherInvalidRequest)).thenReturn(failureResponse);
+        Mockito.when(mockServerFacade.getStory(otherInvalidRequest)).thenReturn(failureResponse);
 
-        // Create a FeedService instance and wrap it with a spy that will use the mock service.
-        feedServiceSpy = Mockito.spy(new FeedService());
-        Mockito.when(feedServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
+        // Create a StoryService instance and wrap it with a spy that will use the mock service.
+        storyServiceProxySpy = Mockito.spy(new StoryServiceProxy());
+        Mockito.when(storyServiceProxySpy.getServerFacade()).thenReturn(mockServerFacade);
 
     }
 
     /**
-     * Verify that for successful requests the {@link FeedService#fetchFeed(StatusRequest)} method
-     * returns the saem result as the {@link ServerFacade}
+     * Verify that for successful requests the {@link StoryServiceProxy#fetchStory(StatusRequest)} method
+     * returns the same result as the {@link ServerFacade}
      *
      * @throws IOException
      */
     @Test
-    public void testFetchFeed_validRequest_correctResponse() throws IOException {
-        StatusResponse response = feedServiceSpy.fetchFeed(validRequest);
+    public void testFetchStory_validRequest_correctResponse() throws IOException {
+        StatusResponse response = storyServiceProxySpy.fetchStory(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
 
     /**
-     * Verify that for a null request the {@link FeedService#fetchFeed(StatusRequest)} throws a
+     * Verify that for a null request the {@link StoryServiceProxy#fetchStory(StatusRequest)} throws a
      * null pointer exception.
      */
     @Test
-    public void testFetchFeed_nullRequest_throwsException() {
+    public void testFetchStory_nullRequest_throwsException() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            feedServiceSpy.fetchFeed(null);
+            storyServiceProxySpy.fetchStory(null);
         });
     }
 
     /**
-     * Verify that for a bad request the {@link FeedService#fetchFeed(StatusRequest)} throws a
+     * Verify that for a bad request the {@link StoryServiceProxy#fetchStory(StatusRequest)} throws a
      * null pointer exception.
      */
     @Test
-    public void testFetchFeed_invalidRequest_throwsException() throws IOException {
+    public void testFetchStory_invalidRequest_throwsException() throws IOException {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            feedServiceSpy.fetchFeed(invalidRequest);
+            storyServiceProxySpy.fetchStory(invalidRequest);
         });
     }
 
     /**
-     * Verify that for failed request the {@link FeedService#fetchFeed(StatusRequest)} returns the
+     * Verify that for failed request the {@link StoryServiceProxy#fetchStory(StatusRequest)} returns the
      * bad response from the server.
      */
     @Test
-    public void testFetchFeed_invalidRequest__correctRespoinse() throws IOException {
-        StatusResponse response = feedServiceSpy.fetchFeed(otherInvalidRequest);
+    public void testFetchStory_invalidRequest__correctResponse() throws IOException {
+        StatusResponse response = storyServiceProxySpy.fetchStory(otherInvalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }
 

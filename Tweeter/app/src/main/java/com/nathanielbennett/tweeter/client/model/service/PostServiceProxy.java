@@ -1,13 +1,14 @@
 package com.nathanielbennett.tweeter.client.model.service;
 
 import com.nathanielbennett.tweeter.client.model.net.ServerFacade;
+import com.nathanielbennett.tweeter.model.service.PostService;
 import com.nathanielbennett.tweeter.model.service.request.PostRequest;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
 
 import java.io.IOException;
 
 
-public class PostService extends Service {
+public class PostServiceProxy extends Service implements PostService {
 
     /**
      * Returns the status for the user specified in the request. Uses information in the response

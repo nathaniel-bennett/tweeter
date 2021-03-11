@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.client.model.service;
 
 import com.nathanielbennett.tweeter.client.model.net.ServerFacade;
+import com.nathanielbennett.tweeter.model.service.LogoutService;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 
@@ -10,7 +11,7 @@ import java.io.IOException;
 /**
  * Contains the business logic to support the logout operation.
  */
-public class LogoutService extends Service {
+public class LogoutServiceProxy extends Service implements LogoutService {
 
     /**
      * Attempts to log a user out given the information in the passed in {@link LogoutRequest}.

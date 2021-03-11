@@ -2,14 +2,12 @@ package com.nathanielbennett.tweeter.client.presenter;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.client.model.service.FollowService;
+import com.nathanielbennett.tweeter.client.model.service.FollowServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
-import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
-import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 
 import org.junit.jupiter.api.Assertions;
@@ -27,7 +25,7 @@ public class UserPresenterTest {
     private UnfollowUserResponse unfollowResponse;
     private CheckFollowingRequest checkFollowingRequest;
     private CheckFollowingResponse checkFollowingResponse;
-    private FollowService mockFollowService;
+    private FollowServiceProxy mockFollowServiceProxy;
     private UserPresenter presenter;
     private FollowUserRequest followRequestBad;
     private FollowUserResponse followResponseBad;
@@ -65,19 +63,19 @@ public class UserPresenterTest {
         checkFollowingResponseBad = new CheckFollowingResponse("Username missing");
 
         // Create a mock FollowingService
-        mockFollowService = Mockito.mock(FollowService.class);
-        Mockito.when(mockFollowService.follow(followRequest)).thenReturn(followResponse);
-        Mockito.when(mockFollowService.unfollow(unfollowRequest)).thenReturn(unfollowResponse);
-        Mockito.when(mockFollowService.checkFollowStatus(checkFollowingRequest)).thenReturn(checkFollowingResponse);
+        mockFollowServiceProxy = Mockito.mock(FollowServiceProxy.class);
+        Mockito.when(mockFollowServiceProxy.follow(followRequest)).thenReturn(followResponse);
+        Mockito.when(mockFollowServiceProxy.unfollow(unfollowRequest)).thenReturn(unfollowResponse);
+        Mockito.when(mockFollowServiceProxy.checkFollowStatus(checkFollowingRequest)).thenReturn(checkFollowingResponse);
 
-        Mockito.when(mockFollowService.follow(followRequestBad)).thenReturn(followResponseBad);
-        Mockito.when(mockFollowService.unfollow(unfollowRequestBad)).thenReturn(unfollowResponseBad);
-        Mockito.when(mockFollowService.checkFollowStatus(checkFollowingRequestBad)).thenReturn(checkFollowingResponseBad);
+        Mockito.when(mockFollowServiceProxy.follow(followRequestBad)).thenReturn(followResponseBad);
+        Mockito.when(mockFollowServiceProxy.unfollow(unfollowRequestBad)).thenReturn(unfollowResponseBad);
+        Mockito.when(mockFollowServiceProxy.checkFollowStatus(checkFollowingRequestBad)).thenReturn(checkFollowingResponseBad);
 
         // Wrap a FollowingPresenter in a spy that will use the mock service.
         presenter = Mockito.spy(new UserPresenter(new UserPresenter.View() {
         }));
-        Mockito.when(presenter.getFollowService()).thenReturn(mockFollowService);
+        Mockito.when(presenter.getFollowService()).thenReturn(mockFollowServiceProxy);
     }
 
     @Test

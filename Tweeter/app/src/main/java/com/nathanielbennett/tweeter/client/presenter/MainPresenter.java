@@ -1,7 +1,6 @@
 package com.nathanielbennett.tweeter.client.presenter;
 
-import com.nathanielbennett.tweeter.client.model.service.LogoutService;
-import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
+import com.nathanielbennett.tweeter.client.model.service.LogoutServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 
@@ -39,13 +38,13 @@ public class MainPresenter {
     }
 
     /**
-     * returns an instance of {@link LogoutService}. Allows mocking of the LogoutService class for
+     * returns an instance of {@link LogoutServiceProxy}. Allows mocking of the LogoutService class for
      * testing purposes. All usages of LogoutService should get their LogoutService instance from this
      * method to allow for mocking of the instance.
      *
      * @return the instance.
      */
-    protected LogoutService getLogoutService() {
-        return new LogoutService();
+    protected LogoutServiceProxy getLogoutService() {
+        return new LogoutServiceProxy();
     }
 }

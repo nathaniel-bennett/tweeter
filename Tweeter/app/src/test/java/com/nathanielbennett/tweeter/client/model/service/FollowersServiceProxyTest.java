@@ -1,6 +1,5 @@
 package com.nathanielbennett.tweeter.client.model.service;
 
-import com.nathanielbennett.tweeter.client.model.service.FollowersService;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.client.model.net.ServerFacade;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
@@ -14,7 +13,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class FollowersServiceTest {
+public class FollowersServiceProxyTest {
 
     private FollowRequest validRequest;
     private FollowRequest invalidRequest;
@@ -23,7 +22,7 @@ public class FollowersServiceTest {
     private FollowResponse successResponse;
     private FollowResponse failureResponse;
 
-    private FollowersService followersService;
+    private FollowersServiceProxy followersServiceProxy;
 
 
     /**
@@ -55,47 +54,47 @@ public class FollowersServiceTest {
         Mockito.when(mockServerFacade.getFollowers(otherInvalidRequest)).thenReturn(failureResponse);
 
         // Create a FollowingService instance and wrap it with a spy that will use the mock service
-        followersService = Mockito.spy(new FollowersService());
-        Mockito.when(followersService.getServerFacade()).thenReturn(mockServerFacade);
+        followersServiceProxy = Mockito.spy(new FollowersServiceProxy());
+        Mockito.when(followersServiceProxy.getServerFacade()).thenReturn(mockServerFacade);
     }
 
     /**
-     * Verify that for a null request the {@link FollowersService#fetchFollowers(FollowRequest)}
+     * Verify that for a null request the {@link FollowersServiceProxy#fetchFollowers(FollowRequest)}
      * throws a null pointer exception.
      */
     @Test
     public void testGetFollowers_nullRequest_throwsException() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            followersService.fetchFollowers(null);
+            followersServiceProxy.fetchFollowers(null);
         });
     }
 
     /**
-     * Verify that for an invalid request the {@link FollowersService#fetchFollowers(FollowRequest)}
+     * Verify that for an invalid request the {@link FollowersServiceProxy#fetchFollowers(FollowRequest)}
      * throws a null pointer exception.
      */
     @Test
     public void testGetFollowers_badRequest_throwsException() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-           followersService.fetchFollowers(invalidRequest);
+           followersServiceProxy.fetchFollowers(invalidRequest);
         });
     }
 
     /**
-     * Verify that for a bad request the {@link FollowersService#fetchFollowers(FollowRequest)}
+     * Verify that for a bad request the {@link FollowersServiceProxy#fetchFollowers(FollowRequest)}
      * returns the response from the server facade.
      */
     @Test
     public void testGetFollowers_badRequest_correctResponse() throws IOException {
-        Assertions.assertEquals(failureResponse, followersService.fetchFollowers(otherInvalidRequest));
+        Assertions.assertEquals(failureResponse, followersServiceProxy.fetchFollowers(otherInvalidRequest));
     }
 
     /**
-     * Verify that for a successful request the {@link FollowersService#fetchFollowers(FollowRequest)}
+     * Verify that for a successful request the {@link FollowersServiceProxy#fetchFollowers(FollowRequest)}
      * returns the response from the server facade.
      */
     @Test
     public void testGetFollowers_goodRequest_correctResponse() throws IOException {
-        Assertions.assertEquals(successResponse, followersService.fetchFollowers(validRequest));
+        Assertions.assertEquals(successResponse, followersServiceProxy.fetchFollowers(validRequest));
     }
 }

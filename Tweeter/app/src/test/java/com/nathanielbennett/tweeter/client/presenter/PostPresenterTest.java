@@ -2,7 +2,7 @@ package com.nathanielbennett.tweeter.client.presenter;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.client.model.service.PostService;
+import com.nathanielbennett.tweeter.client.model.service.PostServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.PostRequest;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
 
@@ -17,7 +17,7 @@ public class PostPresenterTest {
 
     private PostRequest request;
     private PostResponse response;
-    private PostService mockPostService;
+    private PostServiceProxy mockPostServiceProxy;
     private PostPresenter presenter;
     private PostRequest badRequest;
     private PostResponse badResponse;
@@ -40,14 +40,14 @@ public class PostPresenterTest {
         badResponse = new PostResponse("error");
 
         // Create a mock FollowingService
-        mockPostService = Mockito.mock(PostService.class);
-        Mockito.when(mockPostService.addPost(request)).thenReturn(response);
+        mockPostServiceProxy = Mockito.mock(PostServiceProxy.class);
+        Mockito.when(mockPostServiceProxy.addPost(request)).thenReturn(response);
 
-        Mockito.when(mockPostService.addPost(badRequest)).thenReturn(badResponse);
+        Mockito.when(mockPostServiceProxy.addPost(badRequest)).thenReturn(badResponse);
 
         // Wrap a FollowingPresenter in a spy that will use the mock service.
         presenter = Mockito.spy(new PostPresenter(new PostPresenter.View() {}));
-        Mockito.when(presenter.getPostService()).thenReturn(mockPostService);
+        Mockito.when(presenter.getPostService()).thenReturn(mockPostServiceProxy);
     }
 
     @Test

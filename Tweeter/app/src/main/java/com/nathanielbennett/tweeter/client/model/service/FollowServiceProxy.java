@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.client.model.service;
 
 import com.nathanielbennett.tweeter.client.model.net.ServerFacade;
+import com.nathanielbennett.tweeter.model.service.FollowService;
 import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
@@ -10,7 +11,7 @@ import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 
 import java.io.IOException;
 
-public class FollowService extends Service {
+public class FollowServiceProxy extends Service implements FollowService {
 
     /**
      * Attempts to assign one user as following another user.

@@ -1,6 +1,6 @@
 package com.nathanielbennett.tweeter.client.presenter;
 
-import com.nathanielbennett.tweeter.client.model.service.PostService;
+import com.nathanielbennett.tweeter.client.model.service.PostServiceProxy;
 import com.nathanielbennett.tweeter.model.service.request.PostRequest;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
 
@@ -34,18 +34,18 @@ public class PostPresenter implements TemplatePresenter {
      * @throws IOException if an error occurred in sending/receiving the action.
      */
     public PostResponse post(PostRequest request) throws IOException {
-        PostService postService = getPostService();
-        return postService.addPost(request);
+        PostServiceProxy postServiceProxy = getPostService();
+        return postServiceProxy.addPost(request);
     }
 
     /**
-     * returns an instance of {@link PostService}. Allows mocking of the PostService class for
+     * returns an instance of {@link PostServiceProxy}. Allows mocking of the PostService class for
      * testing purposes. All usages of PostService should get their PostService instance from this
      * method to allow for mocking of the instance.
      *
      * @return the instance.
      */
-    protected PostService getPostService() {
-        return new PostService();
+    protected PostServiceProxy getPostService() {
+        return new PostServiceProxy();
     }
 }
