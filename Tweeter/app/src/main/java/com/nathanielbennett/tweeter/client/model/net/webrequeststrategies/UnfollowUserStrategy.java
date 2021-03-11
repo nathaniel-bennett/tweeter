@@ -1,26 +1,36 @@
 package com.nathanielbennett.tweeter.client.model.net.webrequeststrategies;
 
 import com.nathanielbennett.tweeter.client.model.net.ClientCommunicator;
+import com.nathanielbennett.tweeter.model.net.Serializer;
 import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
+import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 
 public class UnfollowUserStrategy implements ClientCommunicator.WebRequestStrategy{
     @Override
     public String getRequestPath() {
-        return null;
+        return "/unfollowUser";
     }
 
     @Override
     public String getRequestMethod() {
-        return null;
+        return "POST";
     }
 
     @Override
     public TweeterAPIResponse formResponse(String serializedResponse) {
-        return null;
+        Serializer serializer = new Serializer();
+        return serializer.deserialize(serializedResponse, UnfollowUserResponse.class);
     }
 
     @Override
     public TweeterAPIResponse formFailureResponse(int httpResponseCode) {
-        return null;
+        switch (httpResponseCode) {
+            case 400:
+                return new UnfollowUserResponse("Client error");
+            case 500:
+                return new UnfollowUserResponse("Server error");
+            default:
+                return new UnfollowUserResponse("An unknown error occurred");
+        }
     }
 }
