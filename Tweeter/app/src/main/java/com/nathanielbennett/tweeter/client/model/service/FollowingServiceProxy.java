@@ -13,7 +13,7 @@ import java.io.IOException;
 public class FollowingServiceProxy extends Service implements FollowingService {
 
     /**
-     * Returns the users that the user specified in the request is following. Uses information in
+     * Returns the folowees that the user specified in the request is following. Uses information in
      * the request object to limit the number of followees returned and to return the next set of
      * followees after any that were returned in a previous request. Uses the {@link ServerFacade} to
      * get the followees from the server.

@@ -26,9 +26,15 @@ public class LoginStrategy implements ClientCommunicator.WebRequestStrategy{
     public TweeterAPIResponse formFailureResponse(int httpResponseCode) {
         switch (httpResponseCode) {
             case 400:
-                return new LoginResponse("Client error thingy");
+                return new LoginResponse("Bad Request: invalid form data in login");
+            case 408:
+                return new LoginResponse("Request timed out (please retry)");
+            case 429:
+                return new LoginResponse("Too many login requests received: try logging in later");
             case 500:
-                return new LoginResponse("Server error thingy");
+                return new LoginResponse("The server has encountered an unspecified error and is unable to log in");
+            case 504:
+                return new LoginResponse("Server timed out while processing request");
             default:
                 return new LoginResponse("Unknown server error");
         }
