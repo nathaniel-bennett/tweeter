@@ -22,8 +22,6 @@ public class ClientCommunicator {
 
     public interface WebRequestStrategy {
 
-        boolean hasRequestBody();
-
         String getRequestPath();
 
         String getRequestMethod();
@@ -42,7 +40,7 @@ public class ClientCommunicator {
     private String readString(InputStream is) throws IOException {
         StringBuilder sb = new StringBuilder();
         InputStreamReader sr = new InputStreamReader(is);
-        char[] buf = new char[1024];
+        char[] buf = new char[4096];
         int len;
         while ((len = sr.read(buf)) > 0) {
             sb.append(buf, 0, len);
@@ -64,20 +62,17 @@ public class ClientCommunicator {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod(webRequestStrategy.getRequestMethod());
-            connection.setDoOutput(webRequestStrategy.hasRequestBody());
+            connection.setDoOutput(true);
             if (authToken != null) {
                 connection.addRequestProperty("Authorization", authToken.toString());
             }
 
             connection.connect();
 
-
-            if (webRequestStrategy.hasRequestBody()) {
-                String serializedRequest = "put Gson serializer here with APIRequest";
-                OutputStream os = connection.getOutputStream();
-                writeString(serializedRequest, os);
-                os.close();
-            }
+            String serializedRequest = "put Gson serializer here with APIRequest";
+            OutputStream os = connection.getOutputStream();
+            writeString(serializedRequest, os);
+            os.close();
 
             switch (connection.getResponseCode()) {
                 case HttpURLConnection.HTTP_OK:
