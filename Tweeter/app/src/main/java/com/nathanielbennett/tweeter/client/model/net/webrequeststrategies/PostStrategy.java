@@ -20,7 +20,7 @@ public class PostStrategy implements ClientCommunicator.WebRequestStrategy{
 
     @Override
     public String getRequestMethod() {
-        return "POST";
+        return "PUT";
     }
 
     @Override
