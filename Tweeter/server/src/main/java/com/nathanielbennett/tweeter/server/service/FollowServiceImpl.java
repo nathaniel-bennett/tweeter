@@ -7,6 +7,7 @@ import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
 import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
+import com.nathanielbennett.tweeter.server.dao.FollowDAO;
 
 public class FollowServiceImpl implements FollowService {
 
@@ -23,5 +24,16 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public CheckFollowingResponse checkFollowStatus(CheckFollowingRequest request) {
         return null;
+    }
+
+    /**
+     * Returns an instance of {@link FollowDAO}. Allows mocking of the FollowDAO class
+     * for testing purposes. All usages of FollowDAO should get their FollowDAO
+     * instance from this method to allow for mocking of the instance.
+     *
+     * @return the instance.
+     */
+    public FollowDAO getFollowDao() {
+        return new FollowDAO();
     }
 }
