@@ -13,11 +13,11 @@ public class FeedServiceImpl implements FeedService {
             throw new BadRequestException("Request body missing or malformed");
         }
 
-        if (request.getAlias() == null) {
+        if (request.getAlias() == null || request.getAlias().isEmpty()) {
             throw new BadRequestException("Request missing user");
         }
 
-        return null;
+        return getFeedDao().getFeed(request);
     }
 
     /**

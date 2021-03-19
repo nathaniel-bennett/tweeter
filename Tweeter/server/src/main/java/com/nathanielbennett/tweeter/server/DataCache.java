@@ -13,6 +13,10 @@ import java.util.Set;
 
 public class DataCache {
 
+    // NOTE TO TAs: This is to store temporary, non-persistant data. It may look otherwise
+    // because it is a singleton, but Lambda instances will create and destroy it every time
+    // so we decided to leave the data in the singleton pattern.
+
     private static DataCache instance;
 
     public static DataCache getInstance(){
