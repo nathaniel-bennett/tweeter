@@ -1,12 +1,10 @@
 package com.nathanielbennett.tweeter.server.service;
 
-import com.nathanielbennett.tweeter.model.domain.AuthToken;
-import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.LoginService;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
-import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.dao.LoginDAO;
+import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 
 public class LoginServiceImpl implements LoginService {
 
@@ -24,10 +22,7 @@ public class LoginServiceImpl implements LoginService {
             throw new BadRequestException("Password missing from login request");
         }
 
-        // TODO: Generates dummy data. Replace with a real implementation.
-        User user = new User("Test", "User",
-                "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
-        return new LoginResponse(user, new AuthToken());
+        return getLoginDao().login(request);
     }
 
     /**
