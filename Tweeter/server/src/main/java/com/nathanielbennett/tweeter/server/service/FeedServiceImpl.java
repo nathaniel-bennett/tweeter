@@ -3,11 +3,20 @@ package com.nathanielbennett.tweeter.server.service;
 import com.nathanielbennett.tweeter.model.service.FeedService;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
+import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.dao.FeedDAO;
 
 public class FeedServiceImpl implements FeedService {
     @Override
     public StatusResponse fetchFeed(StatusRequest request) {
+        if (request == null) {
+            throw new BadRequestException("Request body missing or malformed");
+        }
+
+        if (request.getUserToGet() == null) {
+            throw new BadRequestException("Request missing user");
+        }
+
         return null;
     }
 
