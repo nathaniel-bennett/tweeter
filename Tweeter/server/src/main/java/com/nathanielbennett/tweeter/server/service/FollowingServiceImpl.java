@@ -40,7 +40,7 @@ public class FollowingServiceImpl  implements FollowingService {
         }
 
 
-        return getFollowingDAO().getFollowees(request);
+        return getFollowingDAO().getFollowing(request);
     }
 
     /**
