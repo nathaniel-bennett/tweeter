@@ -50,7 +50,7 @@ public class FollowingServiceImpl  implements FollowingService {
      *
      * @return the instance.
      */
-    FollowingDAO getFollowingDAO() {
+    public FollowingDAO getFollowingDAO() {
         return new FollowingDAO();
     }
 }
