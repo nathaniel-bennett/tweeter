@@ -13,9 +13,15 @@ public class StoryServiceImpl implements StoryService {
             throw new BadRequestException("Request body missing or malformed");
         }
 
+        if (request.getAlias() == null || request.getAlias().isEmpty()) {
+            throw new BadRequestException("Request missing alias");
+        }
 
+        if (request.getLimit() == 0) {
+            throw new BadRequestException("Request limit cannot equal zero");
+        }
 
-        return null;
+        return getStoryDAO().getStory(request);
     }
 
     /**
