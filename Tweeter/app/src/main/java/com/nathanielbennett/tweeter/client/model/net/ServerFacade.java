@@ -271,12 +271,12 @@ public class ServerFacade {
                 throw new AssertionError();
             }
 
-            if (request.getUserToGet() == null) {
+            if (request.getAlias() == null) {
                 throw new AssertionError();
             }
         }
 
-        List<Status> allStatuses = getStoryFromDC(request.getUserToGet());
+        List<Status> allStatuses = getStoryFromDC(dc.getUser(request.getAlias()));
         List<Status> responseStatuses = new ArrayList<>(request.getLimit());
 
         boolean hasMorePages = false;
@@ -300,12 +300,12 @@ public class ServerFacade {
                 throw new AssertionError();
             }
 
-            if (request.getUserToGet() == null) {
+            if (request.getAlias() == null) {
                 throw new AssertionError();
             }
         }
 
-        List<Status> allStatuses = getFeedFromDC(request.getUserToGet());
+        List<Status> allStatuses = getFeedFromDC(dc.getUser(request.getAlias()));
         List<Status> responseStatuses = new ArrayList<>(request.getLimit());
 
         boolean hasMorePages = false;

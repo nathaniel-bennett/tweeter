@@ -13,7 +13,7 @@ public class FeedDAO {
     private static final DataCache dc = DataCache.getInstance();
 
     public StatusResponse getFeed(StatusRequest request) {
-        List<Status> allStatuses = getFeedFromDC(request.getUserToGet());
+        List<Status> allStatuses = getFeedFromDC(dc.getUser(request.getAlias()));
         List<Status> responseStatuses = new ArrayList<>(request.getLimit());
 
         boolean hasMorePages = false;

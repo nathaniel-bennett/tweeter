@@ -24,7 +24,7 @@ public class StoryServiceProxy extends Service implements StoryService {
             throw new NullPointerException("Null status request passed into StoryService");
         }
 
-        if (request.getUserToGet() == null) {
+        if (request.getAlias() == null) {
             throw new NullPointerException("User field missing in status request (StoryService)");
         }
 

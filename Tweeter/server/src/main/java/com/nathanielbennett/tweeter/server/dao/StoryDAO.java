@@ -22,7 +22,7 @@ public class StoryDAO {
      * @return the story response.
      */
     public StatusResponse getStory(StatusRequest request) {
-        List<Status> allStatuses = getStoryFromDC(request.getUserToGet());
+        List<Status> allStatuses = getStoryFromDC(dc.getUser(request.getAlias()));
         List<Status> responseStatuses = new ArrayList<>(request.getLimit());
 
         boolean hasMorePages = false;

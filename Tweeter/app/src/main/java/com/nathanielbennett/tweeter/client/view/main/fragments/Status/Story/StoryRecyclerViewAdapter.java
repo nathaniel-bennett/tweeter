@@ -38,7 +38,7 @@ public class StoryRecyclerViewAdapter extends StatusRecycleViewAdapter {
         addLoadingFooter();
 
         GetStoryTask getStoryTask = new GetStoryTask((StoryPresenter) presenter, observer);
-        StatusRequest request = new StatusRequest(user, PAGE_SIZE, lastStatusMessage);
+        StatusRequest request = new StatusRequest(user.getAlias(), PAGE_SIZE, lastStatusMessage);
         getStoryTask.execute(request);
     }
 }
