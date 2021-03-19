@@ -10,8 +10,7 @@ public class UnfollowUserHandler implements RequestHandler<UnfollowUserRequest, 
     @Override
     public UnfollowUserResponse handleRequest(UnfollowUserRequest request, Context context) {
         FollowServiceImpl followService = new FollowServiceImpl();
+
         return followService.unfollow(request);
-
-
     }
 }
