@@ -23,7 +23,7 @@ public class PostServiceImpl implements PostService {
             throw new BadRequestException("Message body missing user's username");
         }
 
-        return null;
+        return getPostDAO().addToStory(request);
     }
 
     /**
