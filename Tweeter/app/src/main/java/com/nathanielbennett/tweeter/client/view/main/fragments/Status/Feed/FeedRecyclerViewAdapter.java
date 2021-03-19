@@ -34,7 +34,7 @@ public class FeedRecyclerViewAdapter extends StatusRecycleViewAdapter {
         addLoadingFooter();
 
         GetFeedTask getFeedTask = new GetFeedTask((FeedPresenter) presenter, observer);
-        StatusRequest request = new StatusRequest(user, PAGE_SIZE, lastStatusMessage);
+        StatusRequest request = new StatusRequest(user.getAlias(), PAGE_SIZE, lastStatusMessage);
         getFeedTask.execute(request);
     }
 }

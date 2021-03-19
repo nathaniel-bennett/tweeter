@@ -25,7 +25,7 @@ public class FeedServiceProxy extends Service implements FeedService {
             throw new NullPointerException("Null status request passed into FeedService");
         }
 
-        if (request.getUserToGet() == null) {
+        if (request.getAlias() == null) {
             throw new NullPointerException("User field missing in status request (FeedService)");
         }
 

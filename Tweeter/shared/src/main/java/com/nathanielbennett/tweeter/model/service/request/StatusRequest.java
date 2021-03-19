@@ -1,10 +1,8 @@
 package com.nathanielbennett.tweeter.model.service.request;
 
-import com.nathanielbennett.tweeter.model.domain.User;
-
 public class StatusRequest implements TweeterAPIRequest {
 
-    private User userToGet;
+    private String alias;
     private final int limit;
     private String lastStatusMessageSent;
 
@@ -13,8 +11,8 @@ public class StatusRequest implements TweeterAPIRequest {
      * @param userToGet the user that we want to get their stories.
      * @param limit
      */
-    public StatusRequest(User userToGet, int limit, String lastStatusSent) {
-        this.userToGet = userToGet;
+    public StatusRequest(String userToGet, int limit, String lastStatusSent) {
+        this.alias = userToGet;
         this.limit = limit;
         this.lastStatusMessageSent = lastStatusSent;
     }
@@ -23,8 +21,8 @@ public class StatusRequest implements TweeterAPIRequest {
      * Getter for userToGet.
      * @return userToGet
      */
-    public User getUserToGet() {
-        return userToGet;
+    public String getAlias() {
+        return alias;
     }
 
     /**
