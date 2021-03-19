@@ -34,6 +34,8 @@ public class FollowUserStrategy implements ClientCommunicator.WebRequestStrategy
         switch (httpResponseCode) {
             case 400:
                 return new FollowUserResponse("Client error");
+            case 409:
+                return new FollowUserResponse("User is already being followed");
             case 500:
                 return new FollowUserResponse("Server error");
             default:
