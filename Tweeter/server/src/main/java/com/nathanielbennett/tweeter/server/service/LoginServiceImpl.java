@@ -5,12 +5,24 @@ import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.LoginService;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
+import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.dao.LoginDAO;
 
 public class LoginServiceImpl implements LoginService {
 
     @Override
     public LoginResponse login(LoginRequest request) {
+        if (request == null) {
+            throw new BadRequestException("Message body missing or malformed");
+        }
+
+        if (request.getUsername() == null || request.getUsername().isEmpty()) {
+            throw new BadRequestException("Username missing from login request");
+        }
+
+        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            throw new BadRequestException("Password missing from login request");
+        }
 
         // TODO: Generates dummy data. Replace with a real implementation.
         User user = new User("Test", "User",
