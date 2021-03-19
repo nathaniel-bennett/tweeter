@@ -30,8 +30,7 @@ public class FollowServiceImpl implements FollowService {
         if (request.getUserToFollow() == null || request.getUserToFollow().isEmpty()) {
             throw new BadRequestException("Message body missing username to check");
         }
-
-        return null;
+        return getFollowDAO().follow(request);
     }
 
     @Override
@@ -51,8 +50,7 @@ public class FollowServiceImpl implements FollowService {
         if (request.getUserToUnfollow() == null || request.getUserToUnfollow().isEmpty()) {
             throw new BadRequestException("Message body missing username to check");
         }
-
-        return null;
+        return getFollowDAO().unfollow(request);
     }
 
     @Override
@@ -72,9 +70,7 @@ public class FollowServiceImpl implements FollowService {
         if (request.getOtherUser() == null || request.getOtherUser().isEmpty()) {
             throw new BadRequestException("Message body missing username to check");
         }
-
-
-        return null;
+        return getFollowDAO().isFollowing(request);
     }
 
     /**
@@ -84,7 +80,7 @@ public class FollowServiceImpl implements FollowService {
      *
      * @return the instance.
      */
-    public FollowDAO getFollowDao() {
+    public FollowDAO getFollowDAO() {
         return new FollowDAO();
     }
 }

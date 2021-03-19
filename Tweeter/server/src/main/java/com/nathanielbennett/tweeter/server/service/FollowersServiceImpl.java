@@ -24,9 +24,7 @@ public class FollowersServiceImpl implements FollowersService {
         if (request.getLimit() <= 0) {
             throw new BadRequestException("Bad limit on number of Followers to return");
         }
-
-
-        return null;
+        return getFollowersDAO().getFollowers(request);
     }
 
     /**
@@ -36,7 +34,7 @@ public class FollowersServiceImpl implements FollowersService {
      *
      * @return the instance.
      */
-    public FollowersDAO getFollowersDao() {
+    public FollowersDAO getFollowersDAO() {
         return new FollowersDAO();
     }
 }

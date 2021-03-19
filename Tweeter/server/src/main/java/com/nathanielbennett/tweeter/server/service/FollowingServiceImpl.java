@@ -38,8 +38,6 @@ public class FollowingServiceImpl  implements FollowingService {
         if (request.getLimit() <= 0) {
             throw new BadRequestException("Bad limit on number of Followers to return");
         }
-
-
         return getFollowingDAO().getFollowing(request);
     }
 
