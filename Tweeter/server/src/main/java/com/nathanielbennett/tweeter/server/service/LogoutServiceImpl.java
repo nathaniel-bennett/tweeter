@@ -22,7 +22,7 @@ public class LogoutServiceImpl implements LogoutService {
             throw new NotAuthorizedException("Logout request missing Authorization Token");
         }
 
-        return null;
+        return getLogoutDao().logout(request);
     }
 
     /**
