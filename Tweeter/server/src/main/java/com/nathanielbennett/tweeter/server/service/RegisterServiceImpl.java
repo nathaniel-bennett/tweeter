@@ -36,7 +36,7 @@ public class RegisterServiceImpl implements RegisterService {
             throw new BadRequestException("A profile picture is required in order to register");
         }
 
-        return null;
+        return getRegisterDAO().register(request);
     }
 
     /**
