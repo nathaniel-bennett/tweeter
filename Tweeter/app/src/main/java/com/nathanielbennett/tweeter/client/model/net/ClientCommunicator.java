@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.client.model.net;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
+import com.nathanielbennett.tweeter.model.net.Serializer;
 import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 
@@ -69,7 +70,8 @@ public class ClientCommunicator {
         connection.connect();
 
         if (webRequestStrategy.hasRequestBody()) {
-            String serializedRequest = "put Gson serializer here with APIRequest";
+            Serializer serializer = new Serializer();
+            String serializedRequest = serializer.serialize(request);
             OutputStream os = connection.getOutputStream();
             writeString(serializedRequest, os);
             os.close();
