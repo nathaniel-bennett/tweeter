@@ -80,9 +80,11 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
             // Pass null as the parent view because its going in the dialog layout
             builder.setView(v)
                     // Add action buttons
-                    .setPositiveButton(R.string.post, (dialog, id) -> {
+                    .setPositiveButton(R.string.post, (dialog, id) -> { // NOTE: this used to be an onClickListener
                         // Get the text
                         EditText text = v.findViewById(R.id.newPost);
+
+                        Toast.makeText(this, "Posting message", Toast.LENGTH_SHORT).show();
 
                         PostPresenter presenter = new PostPresenter(self);
 
