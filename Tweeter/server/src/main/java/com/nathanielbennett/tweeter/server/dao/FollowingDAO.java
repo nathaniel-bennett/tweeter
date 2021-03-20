@@ -9,6 +9,7 @@ import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.server.DataCache;
+import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 
 /**
  * A DAO for accessing 'following' data from the database.
@@ -22,7 +23,7 @@ public class FollowingDAO {
 
         User user = dc.getUser(request.getOtherUser());
         if (user == null) {
-            return new CheckFollowingResponse("Requested user does not exist.");
+            throw new BadRequestException("Requested user does not exist.");
         }
 
         if (dc.getFollowing(loggedInUser).contains(user)) {

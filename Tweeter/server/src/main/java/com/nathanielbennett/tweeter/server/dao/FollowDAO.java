@@ -8,8 +8,12 @@ import com.nathanielbennett.tweeter.model.service.response.CheckFollowingRespons
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
 import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 import com.nathanielbennett.tweeter.server.DataCache;
+import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
+import com.nathanielbennett.tweeter.server.exceptions.UserAlreadyFollowedException;
+import com.nathanielbennett.tweeter.server.exceptions.UserAlreadyUnfollowedException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class FollowDAO {
     /**
@@ -21,13 +25,21 @@ public class FollowDAO {
         DataCache cache = DataCache.getInstance();
 
         User loggedInUser = cache.getUser(request.getUsername());
+        if (loggedInUser == null) {
+            throw new BadRequestException("The user specified in the request does not exist.");
+        }
 
         User user = cache.getUser(request.getUserToFollow());
         if (user == null) {
-            return new FollowUserResponse("Requested user does not exist.");
+            throw new BadRequestException("Requested user to follow does not exist.");
         }
 
-        cache.getFollowers(user).add(loggedInUser);
+        ArrayList<User> followers = cache.getFollowers(loggedInUser);
+        if (followers.contains(loggedInUser)) {
+            throw new UserAlreadyFollowedException("Requested user to follow is already followed.");
+        }
+
+        followers.add(loggedInUser);
         user.setFollowerCount(user.getFollowerCount() + 1);
 
         cache.getFollowing(loggedInUser).add(user);
@@ -41,13 +53,21 @@ public class FollowDAO {
         DataCache cache = DataCache.getInstance();
 
         User loggedInUser = cache.getUser(request.getUsername());
+        if (loggedInUser == null) {
+            throw new BadRequestException("The user specified in the request does not exist.");
+        }
 
         User user = cache.getUser(request.getUserToUnfollow());
         if (user == null) {
-            return new UnfollowUserResponse("Requested user does not exist.");
+            throw new BadRequestException("Requested user to unfollow does not exist.");
         }
 
-        cache.getFollowers(user).add(loggedInUser);
+        ArrayList<User> followers = cache.getFollowers(loggedInUser);
+        if (!followers.contains(loggedInUser)) {
+            throw new UserAlreadyUnfollowedException("Requested user to unfollow was not being followed in the first place.");
+        }
+        followers.remove(loggedInUser);
+
         user.setFollowerCount(user.getFollowerCount() - 1);
 
         cache.getFollowing(loggedInUser).remove(user);
@@ -63,7 +83,7 @@ public class FollowDAO {
 
         User user = cache.getUser(request.getOtherUser());
         if (user == null) {
-            return new CheckFollowingResponse("Requested user does not exist.");
+            throw new BadRequestException("Requested user does not exist.");
         }
 
         if (cache.getFollowing(loggedInUser).contains(user)) {

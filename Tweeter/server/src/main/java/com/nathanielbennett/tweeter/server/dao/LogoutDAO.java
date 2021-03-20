@@ -4,6 +4,7 @@ import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 import com.nathanielbennett.tweeter.server.DataCache;
+import com.nathanielbennett.tweeter.server.exceptions.NotAuthorizedException;
 
 public class LogoutDAO {
     private static final DataCache dc = DataCache.getInstance();
@@ -15,7 +16,7 @@ public class LogoutDAO {
      */
     public LogoutResponse logout(LogoutRequest logoutRequest) {
         if (!logoutRequest.getAuthToken().equals(dc.getAuthToken())) {
-            return new LogoutResponse("Invalid AuthToken");
+            throw new NotAuthorizedException("Invalid AuthToken");
         } else {
             return new LogoutResponse();
         }

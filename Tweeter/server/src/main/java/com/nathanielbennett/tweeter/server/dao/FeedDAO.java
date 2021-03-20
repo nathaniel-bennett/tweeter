@@ -5,6 +5,7 @@ import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.server.DataCache;
+import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,12 @@ public class FeedDAO {
     private static final DataCache dc = DataCache.getInstance();
 
     public StatusResponse getFeed(StatusRequest request) {
-        List<Status> allStatuses = getFeedFromDC(dc.getUser(request.getAlias()));
+        User user = dc.getUser(request.getAlias());
+        if (user == null) {
+            throw new BadRequestException("Requested user does not exist.");
+        }
+
+        List<Status> allStatuses = getFeedFromDC(user);
         List<Status> responseStatuses = new ArrayList<>(request.getLimit());
 
         boolean hasMorePages = false;

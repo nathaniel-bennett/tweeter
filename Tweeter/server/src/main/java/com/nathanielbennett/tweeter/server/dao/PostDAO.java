@@ -5,6 +5,7 @@ import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.PostRequest;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
 import com.nathanielbennett.tweeter.server.DataCache;
+import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,7 +18,7 @@ public class PostDAO {
     public PostResponse addToStory(PostRequest request) {
 
         if (dc.getUser(request.getUsername()) == null) {
-            throw new AssertionError("User not found in database");
+            throw new BadRequestException("User not found in database");
         }
 
         Date date = Calendar.getInstance().getTime();

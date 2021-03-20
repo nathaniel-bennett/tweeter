@@ -5,6 +5,7 @@ import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.server.DataCache;
+import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,16 @@ public class StoryDAO {
      * @return the story response.
      */
     public StatusResponse getStory(StatusRequest request) {
-        List<Status> allStatuses = getStoryFromDC(dc.getUser(request.getAlias()));
+        User user = dc.getUser(request.getAlias());
+        if (user == null) {
+            throw new BadRequestException("The requested user does not exist.");
+        }
+
+
+        List<Status> allStatuses = getStoryFromDC(user);
         List<Status> responseStatuses = new ArrayList<>(request.getLimit());
+
+
 
         boolean hasMorePages = false;
 
@@ -56,7 +65,7 @@ public class StoryDAO {
             // This is a paged request for something after the first page. Find the first item
             // we should return
             for (int i = 0; i < allStatuses.size(); i++) {
-                if(message.equals(allStatuses.get(i).getStatusMessage())) {
+                if (message.equals(allStatuses.get(i).getStatusMessage())) {
                     // We found the index of the last item returned last time. Increment to get
                     // to the first one we should return;
                     statusIndex = i + 1;

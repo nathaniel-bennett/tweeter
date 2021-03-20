@@ -5,6 +5,7 @@ import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.server.DataCache;
+import com.nathanielbennett.tweeter.server.exceptions.InvalidPasswordException;
 
 public class LoginDAO {
     private static final AuthToken authToken1 = new AuthToken();
@@ -19,13 +20,13 @@ public class LoginDAO {
      * @return the login response.
      */
     public LoginResponse login(LoginRequest request) {
-        if (request.getPassword().equals("dummyUser") && request.getUsername().equals("dummyUser")){
+        if (request.getPassword().equals("dummyUser") && request.getUsername().equals("dummyUser")) {
             User user = dc.getUser("dummyUser");
             dc.setAuthToken(authToken1);
             return new LoginResponse(user, authToken1);
-        }
-        else{
-            return new LoginResponse("Failed to authenticate user on login");
+
+        } else {
+            throw new InvalidPasswordException("Failed to authenticate user on login");
         }
     }
 }

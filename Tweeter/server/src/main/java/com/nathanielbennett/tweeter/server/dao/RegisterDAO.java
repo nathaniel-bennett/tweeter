@@ -5,6 +5,8 @@ import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
 import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
 import com.nathanielbennett.tweeter.server.DataCache;
+import com.nathanielbennett.tweeter.server.exceptions.HandleTakenException;
+import com.nathanielbennett.tweeter.server.exceptions.WeakPasswordException;
 
 public class RegisterDAO {
     private static final AuthToken authToken1 = new AuthToken();
@@ -19,9 +21,13 @@ public class RegisterDAO {
      */
     public RegisterResponse register(RegisterRequest request) {
         if (dc.getUser(request.getUsername()) != null){
-            return new RegisterResponse("Username taken; please try another username");
-        }
-        else {
+            throw new HandleTakenException("Username taken; please try another username");
+
+        } else {
+            if (request.getPassword().length() < 8) {
+                throw new WeakPasswordException("Password is not long enough (must be 8 characters or more)");
+            }
+
             User user = new User(request.getFirstName(), request.getLastName(), request.getUsername(),
                     "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
             user.setImageBytes(request.getImage());
