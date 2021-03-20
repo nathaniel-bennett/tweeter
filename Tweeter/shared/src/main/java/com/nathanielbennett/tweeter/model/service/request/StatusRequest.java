@@ -3,7 +3,20 @@ package com.nathanielbennett.tweeter.model.service.request;
 public class StatusRequest implements TweeterAPIRequest {
 
     private String alias;
-    private final int limit;
+    private int limit;
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public void setLastStatusMessageSent(String lastStatusMessageSent) {
+        this.lastStatusMessageSent = lastStatusMessageSent;
+    }
+
     private String lastStatusMessageSent;
 
     /**

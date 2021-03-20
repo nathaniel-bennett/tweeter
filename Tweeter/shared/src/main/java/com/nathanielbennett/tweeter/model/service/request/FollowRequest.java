@@ -6,9 +6,22 @@ package com.nathanielbennett.tweeter.model.service.request;
  */
 public class FollowRequest implements TweeterAPIRequest {
 
-    private final String followAlias;
-    private final int limit;
-    private final String lastFollowAlias;
+    private String followAlias;
+    private int limit;
+
+    public void setFollowAlias(String followAlias) {
+        this.followAlias = followAlias;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public void setLastFollowAlias(String lastFollowAlias) {
+        this.lastFollowAlias = lastFollowAlias;
+    }
+
+    private String lastFollowAlias;
 
     /**
      * Creates an instance.
