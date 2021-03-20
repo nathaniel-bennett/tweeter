@@ -15,7 +15,7 @@ public class PostServiceImpl implements PostService {
             throw new BadRequestException("Message body missing or malformed");
         }
 
-        if (request.getAuthToken() == null || request.getAuthToken().getTokenID().isEmpty()) {
+        if (request.getAuthToken() == null || request.getAuthToken().getAuthTokenID().isEmpty()) {
             throw new NotAuthorizedException("Authorization Token not included in request header");
         }
 

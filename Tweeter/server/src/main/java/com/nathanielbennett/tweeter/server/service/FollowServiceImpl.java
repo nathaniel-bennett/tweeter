@@ -19,7 +19,7 @@ public class FollowServiceImpl implements FollowService {
             throw new BadRequestException("Request body missing or malformed");
         }
 
-        if (request.getAuthToken() == null || request.getAuthToken().getTokenID().isEmpty()) {
+        if (request.getAuthToken() == null || request.getAuthToken().getAuthTokenID().isEmpty()) {
             throw new NotAuthorizedException("Authorization Token not included in request header");
         }
 
@@ -39,7 +39,7 @@ public class FollowServiceImpl implements FollowService {
             throw new BadRequestException("Request body missing or malformed");
         }
 
-        if (request.getAuthToken() == null || request.getAuthToken().getTokenID().isEmpty()) {
+        if (request.getAuthToken() == null || request.getAuthToken().getAuthTokenID().isEmpty()) {
             throw new NotAuthorizedException("Authorization Token not included in request header");
         }
 
@@ -59,7 +59,7 @@ public class FollowServiceImpl implements FollowService {
             throw new BadRequestException("Message body missing or malformed");
         }
 
-        if (request.getAuthToken() == null || request.getAuthToken().getTokenID().isEmpty()) {
+        if (request.getAuthToken() == null || request.getAuthToken().getAuthTokenID().isEmpty()) {
             throw new NotAuthorizedException("Authorization Token not included in request header");
         }
 
