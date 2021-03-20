@@ -17,4 +17,10 @@ public class CheckFollowingResponse extends TweeterAPIResponse {
         return isFollowing;
     }
 
+    public CheckFollowingResponse() {
+    }
+
+    public void setFollowing(Boolean following) {
+        isFollowing = following;
+    }
 }

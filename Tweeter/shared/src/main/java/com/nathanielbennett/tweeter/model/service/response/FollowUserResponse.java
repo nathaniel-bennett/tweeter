@@ -19,4 +19,6 @@ public class FollowUserResponse extends TweeterAPIResponse {
     public FollowUserResponse(String message) {
         super(message);
     }
+
+
 }

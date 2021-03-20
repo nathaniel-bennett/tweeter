@@ -5,7 +5,7 @@ package com.nathanielbennett.tweeter.model.service.response;
  */
 public class PagedResponse extends TweeterAPIResponse {
 
-    private final boolean hasMorePages;
+    private boolean hasMorePages;
 
     /**
      * creates a response indicating that the page request was successful.
@@ -34,5 +34,8 @@ public class PagedResponse extends TweeterAPIResponse {
      */
     public boolean getHasMorePages() {
         return hasMorePages;
+    }
+
+    public PagedResponse() {
     }
 }

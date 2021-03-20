@@ -49,4 +49,7 @@ public class LoginResponse extends TweeterAPIResponse {
     public AuthToken getAuthToken() {
         return authToken;
     }
+
+    public LoginResponse() {
+    }
 }

@@ -32,4 +32,11 @@ public class StatusResponse extends PagedResponse {
     public List<Status> getStatuses() {
         return statuses;
     }
+
+    public void setStatuses(List<Status> statuses) {
+        this.statuses = statuses;
+    }
+
+    public StatusResponse() {
+    }
 }
