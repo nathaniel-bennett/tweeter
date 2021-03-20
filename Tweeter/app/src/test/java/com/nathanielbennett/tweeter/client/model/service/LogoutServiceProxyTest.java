@@ -26,7 +26,7 @@ public class LogoutServiceProxyTest {
     private ServerFacade mockServerFacade;
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
 
         nullUsername = new LogoutRequest(null, new AuthToken());
         nullAuthToken = new LogoutRequest("@Chuck", null);

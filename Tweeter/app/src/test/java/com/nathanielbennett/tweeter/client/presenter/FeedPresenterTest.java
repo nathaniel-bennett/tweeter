@@ -33,10 +33,10 @@ public class FeedPresenterTest {
         User resultUser3 = new User("FirstName3", "LastName3",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
 
-        request = new StatusRequest(currentUser, 3, "I like to play Mario Bros.");
+        request = new StatusRequest("@ME", 3, "I like to play Mario Bros.");
         response = new StatusResponse(false, new ArrayList<>());
 
-        badRequest = new StatusRequest(resultUser1, -1, null);
+        badRequest = new StatusRequest("@ME", -1, null);
         badResponse = new StatusResponse(true, null);
 
         // Create a mock FollowingService

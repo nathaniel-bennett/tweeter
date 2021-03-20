@@ -45,7 +45,7 @@ public class FollowServiceProxyTest {
         private FollowUserResponse successResponse;
 
         @BeforeEach
-        public void setupFunction() {
+        public void setupFunction() throws IOException {
 
             nullUserName = new FollowUserRequest(null, new AuthToken(), "@HelloThere");
             nullAuthToken = new FollowUserRequest("@GenHammer", null, "@HelloThere");
@@ -149,7 +149,7 @@ public class FollowServiceProxyTest {
         private UnfollowUserResponse goodResponse;
 
         @BeforeEach
-        public void setupFunction() {
+        public void setupFunction() throws IOException {
 
             nullUsername = new UnfollowUserRequest(null, new AuthToken(), "@Me");
             nullAuthToken = new UnfollowUserRequest("@Me", null, "@Me2");
@@ -241,7 +241,7 @@ public class FollowServiceProxyTest {
         private CheckFollowingResponse validResponse;
 
         @BeforeEach
-        public void setupFunction() {
+        public void setupFunction() throws IOException {
 
             nullUsername = new CheckFollowingRequest(null, new AuthToken(), "@Other");
             nullOtherUser = new CheckFollowingRequest("@Good", new AuthToken(), null);

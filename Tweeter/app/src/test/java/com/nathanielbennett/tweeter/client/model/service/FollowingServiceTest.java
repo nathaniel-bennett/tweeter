@@ -30,7 +30,7 @@ public class FollowingServiceTest {
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
         User currentUser = new User("FirstName", "LastName", null);
 
         User resultUser1 = new User("FirstName1", "LastName1",

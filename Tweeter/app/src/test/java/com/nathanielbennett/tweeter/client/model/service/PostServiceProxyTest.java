@@ -31,7 +31,7 @@ public class PostServiceProxyTest {
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
         // Setup request objects to use in the tests
         validRequest = new PostRequest("THis is a status", "FirstNameLastName", new AuthToken());
         invalidRequest = new PostRequest(null, null, null);

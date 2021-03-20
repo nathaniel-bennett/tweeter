@@ -25,7 +25,7 @@ public class LoginServiceTest {
     private ServerFacade mockServerFacade;
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
 
         nullUsername = new LoginRequest(null, "password");
         nullPassword = new LoginRequest("Void", null);

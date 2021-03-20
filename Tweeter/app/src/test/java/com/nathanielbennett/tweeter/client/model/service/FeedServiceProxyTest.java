@@ -28,7 +28,7 @@ public class FeedServiceProxyTest {
 
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
         User currentUser = new User("FirstName", "LastName", null);
 
         User resultUser1 = new User("FirstName1", "LastName1",
@@ -42,9 +42,9 @@ public class FeedServiceProxyTest {
                 "Yesterday", Arrays.asList(currentUser));
 
         // Setup request objects to use in the tests
-        validRequest = new StatusRequest(currentUser, 1, null);
+        validRequest = new StatusRequest(currentUser.getAlias(), 1, null);
         invalidRequest = new StatusRequest(null, 10, null);
-        otherInvalidRequest = new StatusRequest(resultUser2, 3, null);
+        otherInvalidRequest = new StatusRequest(resultUser2.getAlias(), 3, null);
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new StatusResponse(true, Arrays.asList(hisStatus));

@@ -28,7 +28,7 @@ public class RegisterServiceProxyTest {
     private ServerFacade mockServerFacade;
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
 
         nullUsername = new RegisterRequest("Joe", "Johansen", null, "mashedpotatoes", new byte[0]);
         nullPassword = new RegisterRequest("Joe", "Johansen", "joeyboy", null, new byte[0]);
