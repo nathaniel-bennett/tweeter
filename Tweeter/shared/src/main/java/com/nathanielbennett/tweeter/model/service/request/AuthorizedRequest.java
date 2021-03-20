@@ -3,8 +3,17 @@ package com.nathanielbennett.tweeter.model.service.request;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 
 public abstract class AuthorizedRequest implements TweeterAPIRequest {
-    private final String username;
-    private final AuthToken authToken;
+    private String username;
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setAuthToken(AuthToken authToken) {
+        this.authToken = authToken;
+    }
+
+    private AuthToken authToken;
 
     public AuthorizedRequest(String username, AuthToken authToken) {
         this.username = username;
