@@ -20,6 +20,8 @@ public class RegisterRequest extends AdmissionRequest {
 
     private byte[] image;
 
+    public RegisterRequest() {
+    }
 
     public RegisterRequest(String firstName, String lastName, String username, String password, byte[] image) {
         super(username, password);

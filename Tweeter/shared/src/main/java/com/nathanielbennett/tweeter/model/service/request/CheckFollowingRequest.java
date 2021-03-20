@@ -3,6 +3,10 @@ package com.nathanielbennett.tweeter.model.service.request;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 
 public class CheckFollowingRequest extends AuthorizedRequest {
+
+    public CheckFollowingRequest() {
+    }
+
     public void setOtherUser(String otherUser) {
         this.otherUser = otherUser;
     }

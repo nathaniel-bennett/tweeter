@@ -2,6 +2,9 @@ package com.nathanielbennett.tweeter.model.service.request;
 
 public class StatusRequest implements TweeterAPIRequest {
 
+    public StatusRequest() {
+    }
+
     private String alias;
     private int limit;
 

@@ -3,6 +3,10 @@ package com.nathanielbennett.tweeter.model.service.request;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 
 public class PostRequest extends AuthorizedRequest {
+
+    public PostRequest() {
+    }
+
     public void setStatus(String status) {
         this.status = status;
     }

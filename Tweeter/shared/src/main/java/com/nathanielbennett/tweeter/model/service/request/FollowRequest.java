@@ -6,6 +6,9 @@ package com.nathanielbennett.tweeter.model.service.request;
  */
 public class FollowRequest implements TweeterAPIRequest {
 
+    public FollowRequest() {
+    }
+
     private String followAlias;
     private int limit;
 

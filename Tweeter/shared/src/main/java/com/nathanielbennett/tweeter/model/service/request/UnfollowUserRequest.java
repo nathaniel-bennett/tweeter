@@ -3,6 +3,10 @@ package com.nathanielbennett.tweeter.model.service.request;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 
 public class UnfollowUserRequest extends AuthorizedRequest {
+
+    public UnfollowUserRequest() {
+    }
+
     public void setUserToUnfollow(String userToUnfollow) {
         this.userToUnfollow = userToUnfollow;
     }
