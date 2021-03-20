@@ -18,7 +18,7 @@ public class LogoutServiceImpl implements LogoutService {
             throw new BadRequestException("Logout request missing username");
         }
 
-        if (request.getAuthToken() == null || request.getAuthToken().getTokenID().isEmpty()) {
+        if (request.getAuthToken() == null || request.getAuthToken().getAuthTokenID().isEmpty()) {
             throw new NotAuthorizedException("Logout request missing Authorization Token");
         }
 

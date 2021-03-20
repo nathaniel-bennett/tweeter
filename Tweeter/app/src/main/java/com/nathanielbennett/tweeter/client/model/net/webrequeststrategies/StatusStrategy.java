@@ -5,6 +5,7 @@ import com.nathanielbennett.tweeter.model.net.Serializer;
 import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
+import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 
 public class StatusStrategy implements ClientCommunicator.WebRequestStrategy{
 
@@ -24,20 +25,14 @@ public class StatusStrategy implements ClientCommunicator.WebRequestStrategy{
     }
 
     @Override
-    public TweeterAPIResponse formResponse(String serializedResponse) {
+    public TweeterAPIResponse formResponse(String serializedResponse, int httpResponseCode) {
         Serializer serializer = new Serializer();
-        return serializer.deserialize(serializedResponse, StatusResponse.class);
-    }
+        StatusResponse response = serializer.deserialize(serializedResponse, StatusResponse.class);
 
-    @Override
-    public TweeterAPIResponse formFailureResponse(int httpResponseCode) {
-        switch (httpResponseCode) {
-            case 400:
-                return new StatusResponse("Client error");
-            case 500:
-                return new StatusResponse("Server error");
-            default:
-                return new StatusResponse("An unknown error occurred");
+        if (httpResponseCode != 200) {
+            response.setSuccess(false);
         }
+
+        return response;
     }
 }

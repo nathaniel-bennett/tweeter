@@ -7,13 +7,13 @@ import java.util.UUID;
  * Represents an auth token in the system.
  */
 public class AuthToken implements Serializable {
-    private final String authTokenID;
+    private String authTokenID;
 
     public AuthToken() {
         authTokenID = UUID.randomUUID().toString();
     }
 
-    public String getTokenID() {
+    public String getAuthTokenID() {
         return authTokenID;
     }
 
@@ -30,6 +30,10 @@ public class AuthToken implements Serializable {
         AuthToken authToken = (AuthToken) o;
 
         return this.authTokenID.equals(authToken.authTokenID);
+    }
+
+    public void setAuthTokenID(String authTokenID) {
+        this.authTokenID = authTokenID;
     }
 
     @Override
