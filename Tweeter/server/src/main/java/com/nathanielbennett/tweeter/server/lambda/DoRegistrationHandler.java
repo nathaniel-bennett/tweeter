@@ -7,6 +7,7 @@ import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
 import com.nathanielbennett.tweeter.server.service.RegisterServiceImpl;
 
 public class DoRegistrationHandler implements RequestHandler<RegisterRequest, RegisterResponse> {
+
     @Override
     public RegisterResponse handleRequest(RegisterRequest request, Context context) {
         RegisterServiceImpl registerService = new RegisterServiceImpl();

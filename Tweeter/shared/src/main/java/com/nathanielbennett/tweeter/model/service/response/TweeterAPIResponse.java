@@ -3,7 +3,7 @@ package com.nathanielbennett.tweeter.model.service.response;
 /**
  * A base class for server responses.
  */
-public abstract class TweeterAPIResponse {
+public class TweeterAPIResponse {
 
     protected boolean success;
     protected String message;

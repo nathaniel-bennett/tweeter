@@ -1,6 +1,10 @@
 package com.nathanielbennett.tweeter.model.service.request;
 
 public abstract class AdmissionRequest implements TweeterAPIRequest {
+
+    public AdmissionRequest() {
+    }
+
     private String username;
 
     public void setPassword(String password) {

@@ -5,6 +5,8 @@ package com.nathanielbennett.tweeter.model.service.request;
  */
 public class LoginRequest extends AdmissionRequest {
 
+    public LoginRequest() {
+    }
 
     /**
      * Creates an instance.
