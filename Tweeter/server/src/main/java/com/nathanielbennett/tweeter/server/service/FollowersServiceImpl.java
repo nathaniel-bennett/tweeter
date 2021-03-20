@@ -17,10 +17,6 @@ public class FollowersServiceImpl implements FollowersService {
             throw new BadRequestException("Follow handle missing from request");
         }
 
-        if (request.getLastFollowAlias() == null || request.getLastFollowAlias().isEmpty()) {
-            throw new BadRequestException("LastFollow handle missing from request");
-        }
-
         if (request.getLimit() <= 0) {
             throw new BadRequestException("Bad limit on number of Followers to return");
         }
