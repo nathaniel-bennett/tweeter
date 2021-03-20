@@ -29,9 +29,7 @@ public class ClientCommunicator {
 
         String getRequestMethod();
 
-        TweeterAPIResponse formResponse(String serializedResponse);
-
-        TweeterAPIResponse formFailureResponse(int httpResponseCode);
+        TweeterAPIResponse formResponse(String serializedResponse, int httpResponseCode);
     }
 
     public ClientCommunicator(WebRequestStrategy strategy) {
@@ -77,14 +75,9 @@ public class ClientCommunicator {
             os.close();
         }
 
-        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            InputStream responseBody = connection.getInputStream();
-            String responseData = readString(responseBody);
-            responseBody.close();
-
-            return webRequestStrategy.formResponse(responseData);
-        } else {
-            return webRequestStrategy.formFailureResponse(connection.getResponseCode());
-        }
+        InputStream responseBody = connection.getInputStream();
+        String responseData = readString(responseBody);
+        responseBody.close();
+        return webRequestStrategy.formResponse(responseData, connection.getResponseCode());
     }
 }

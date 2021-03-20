@@ -25,22 +25,13 @@ public class UnfollowUserStrategy implements ClientCommunicator.WebRequestStrate
     }
 
     @Override
-    public TweeterAPIResponse formResponse(String serializedResponse) {
+    public TweeterAPIResponse formResponse(String serializedResponse, int httpResponseCode) {
         Serializer serializer = new Serializer();
-        return serializer.deserialize(serializedResponse, UnfollowUserResponse.class);
-    }
+        UnfollowUserResponse response = serializer.deserialize(serializedResponse, UnfollowUserResponse.class);
 
-    @Override
-    public TweeterAPIResponse formFailureResponse(int httpResponseCode) {
-        switch (httpResponseCode) {
-            case 400:
-                return new UnfollowUserResponse("Client error");
-            case 409:
-                return new UnfollowUserResponse("User has already being unfollowed");
-            case 500:
-                return new UnfollowUserResponse("Server error");
-            default:
-                return new UnfollowUserResponse("An unknown error occurred");
+        if (httpResponseCode != 200) {
+            response.setSuccess(false);
         }
+        return response;
     }
 }

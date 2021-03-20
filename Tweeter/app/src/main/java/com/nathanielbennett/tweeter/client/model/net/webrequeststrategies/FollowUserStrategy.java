@@ -4,6 +4,7 @@ import com.nathanielbennett.tweeter.client.model.net.ClientCommunicator;
 import com.nathanielbennett.tweeter.model.net.Serializer;
 import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
+import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 
 public class FollowUserStrategy implements ClientCommunicator.WebRequestStrategy {
@@ -24,22 +25,14 @@ public class FollowUserStrategy implements ClientCommunicator.WebRequestStrategy
     }
 
     @Override
-    public TweeterAPIResponse formResponse(String serializedResponse) {
+    public TweeterAPIResponse formResponse(String serializedResponse, int httpResponseCode) {
         Serializer serializer = new Serializer();
-        return serializer.deserialize(serializedResponse, FollowUserResponse.class);
-    }
+        FollowUserResponse response = serializer.deserialize(serializedResponse, FollowUserResponse.class);
 
-    @Override
-    public TweeterAPIResponse formFailureResponse(int httpResponseCode) {
-        switch (httpResponseCode) {
-            case 400:
-                return new FollowUserResponse("Client error");
-            case 409:
-                return new FollowUserResponse("User is already being followed");
-            case 500:
-                return new FollowUserResponse("Server error");
-            default:
-                return new FollowUserResponse("An unknown error occurred");
+        if (httpResponseCode != 200) {
+            response.setSuccess(false);
         }
+
+        return response;
     }
 }

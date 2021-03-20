@@ -5,6 +5,7 @@ import com.nathanielbennett.tweeter.model.net.Serializer;
 import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
+import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 
 public class CheckFollowingStrategy implements ClientCommunicator.WebRequestStrategy {
@@ -26,20 +27,15 @@ public class CheckFollowingStrategy implements ClientCommunicator.WebRequestStra
     }
 
     @Override
-    public TweeterAPIResponse formResponse(String serializedResponse) {
+    public TweeterAPIResponse formResponse(String serializedResponse, int httpResponseCode) {
         Serializer serializer = new Serializer();
-        return serializer.deserialize(serializedResponse, CheckFollowingResponse.class);
+        CheckFollowingResponse response = serializer.deserialize(serializedResponse, CheckFollowingResponse.class);
+
+        if (httpResponseCode != 200) {
+            response.setSuccess(false);
+        }
+
+        return response;
     }
 
-    @Override
-    public TweeterAPIResponse formFailureResponse(int httpResponseCode) {
-        switch (httpResponseCode) {
-            case 400:
-                return new CheckFollowingResponse("Client error");
-            case 500:
-                return new CheckFollowingResponse("Server error");
-            default:
-                return new CheckFollowingResponse("An unknown error occurred");
-        }
-    }
 }
