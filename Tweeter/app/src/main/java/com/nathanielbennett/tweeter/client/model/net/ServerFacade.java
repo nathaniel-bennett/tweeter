@@ -1,20 +1,15 @@
 package com.nathanielbennett.tweeter.client.model.net;
 
-import android.util.Log;
-
-import com.nathanielbennett.tweeter.BuildConfig;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.CheckFollowingStrategy;
+import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.FeedStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.FollowStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.FollowUserStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.LoginStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.LogoutStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.PostStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.RegisterStrategy;
-import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.StatusStrategy;
+import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.StoryStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.UnfollowUserStrategy;
-import com.nathanielbennett.tweeter.model.domain.AuthToken;
-import com.nathanielbennett.tweeter.model.domain.Status;
-import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
@@ -35,11 +30,6 @@ import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 
 /**
  * Acts as a Facade to the Tweeter server. All network requests to the server should go through
@@ -170,13 +160,13 @@ public class ServerFacade {
      * @return the story response.
      */
     public StatusResponse getStory(StatusRequest request) throws IOException {
-        ClientCommunicator communicator = new ClientCommunicator(new StatusStrategy());
+        ClientCommunicator communicator = new ClientCommunicator(new StoryStrategy());
 
         return (StatusResponse) communicator.doWebRequest(request, null);
     }
 
     public StatusResponse getFeed(StatusRequest request) throws IOException {
-        ClientCommunicator communicator = new ClientCommunicator(new StatusStrategy());
+        ClientCommunicator communicator = new ClientCommunicator(new FeedStrategy());
 
         return (StatusResponse) communicator.doWebRequest(request, null);
     }

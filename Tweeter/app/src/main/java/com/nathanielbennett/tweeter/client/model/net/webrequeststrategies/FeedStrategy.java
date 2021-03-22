@@ -2,12 +2,12 @@ package com.nathanielbennett.tweeter.client.model.net.webrequeststrategies;
 
 import com.nathanielbennett.tweeter.client.model.net.ClientCommunicator;
 import com.nathanielbennett.tweeter.model.net.Serializer;
+import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
-import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 
-public class StatusStrategy implements ClientCommunicator.WebRequestStrategy{
+public class FeedStrategy implements ClientCommunicator.WebRequestStrategy {
 
     @Override
     public boolean hasRequestBody() {
@@ -16,7 +16,10 @@ public class StatusStrategy implements ClientCommunicator.WebRequestStrategy{
 
     @Override
     public String getRequestPath(TweeterAPIRequest request) {
-        return "/status";
+
+        StatusRequest statusRequest = (StatusRequest) request;
+
+        return "/feed";
     }
 
     @Override
