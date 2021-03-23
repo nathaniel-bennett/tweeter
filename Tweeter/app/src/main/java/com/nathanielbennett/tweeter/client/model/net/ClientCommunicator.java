@@ -67,7 +67,7 @@ public class ClientCommunicator {
 
         connection.connect();
 
-        if (webRequestStrategy.hasRequestBody()) {
+        if (connection.getResponseCode() == 200 && webRequestStrategy.hasRequestBody()) {
             Serializer serializer = new Serializer();
             String serializedRequest = serializer.serialize(request);
             OutputStream os = connection.getOutputStream();
