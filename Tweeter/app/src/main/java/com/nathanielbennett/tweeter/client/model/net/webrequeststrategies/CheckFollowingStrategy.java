@@ -18,7 +18,7 @@ public class CheckFollowingStrategy implements ClientCommunicator.WebRequestStra
     @Override
     public String getRequestPath(TweeterAPIRequest request) {
         CheckFollowingRequest followingRequest = (CheckFollowingRequest) request;
-        return "/" + followingRequest.getUsername() + "/follows/" + followingRequest.getOtherUser();
+        return "/follows?userOne=" + followingRequest.getUsername() + "&userTwo=" + followingRequest.getOtherUser();
     }
 
     @Override
