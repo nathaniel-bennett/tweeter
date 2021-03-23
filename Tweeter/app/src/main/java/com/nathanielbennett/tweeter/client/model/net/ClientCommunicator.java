@@ -69,19 +69,19 @@ public class ClientCommunicator {
 
         connection.connect();
 
-        if (connection.getResponseCode() == 200 && webRequestStrategy.hasRequestBody()) {
+        if (webRequestStrategy.hasRequestBody()) {
             Serializer serializer = new Serializer();
             String serializedRequest = serializer.serialize(request);
             OutputStream os = connection.getOutputStream();
             writeString(serializedRequest, os);
             os.close();
+        }
 
+        if (connection.getResponseCode() == 200) {
             InputStream responseBody = connection.getInputStream();
             responseData = readString(responseBody);
             responseBody.close();
         }
-
-
 
         return webRequestStrategy.formResponse(responseData, connection.getResponseCode());
     }
