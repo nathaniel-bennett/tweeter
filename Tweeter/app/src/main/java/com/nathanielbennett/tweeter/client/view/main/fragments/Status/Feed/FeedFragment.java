@@ -98,7 +98,10 @@ public class FeedFragment extends TemplateFragment<Status> implements FeedPresen
 
     @Override
     public void feedNotRetrieved(StatusResponse response) {
-        //TODO SOMETHING NEEDS TO BE DONE IN CASE OF STORIES NOT RETRIEVED
+        Log.e(LOG_TAG, response.getErrorMessage());
+        recyclerViewAdapter.removeLoadingFooter();
+        recyclerViewAdapter.setLoading(false);
+        Toast.makeText(getContext(), response.getErrorMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override

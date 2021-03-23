@@ -6,24 +6,24 @@ package com.nathanielbennett.tweeter.model.service.response;
 public class TweeterAPIResponse {
 
     protected boolean success;
-    protected String message;
+    protected String errorMessage;
 
     /**
      * Creates a response to a successful request.
      */
     TweeterAPIResponse() {
         this.success = true;
-        this.message = null;
+        this.errorMessage = null;
     }
 
     /**
      * Creates a response to a failed request,.
      *
-     * @param message an error message describing why the request was unsuccessful.
+     * @param errorMessage an error message describing why the request was unsuccessful.
      */
-    TweeterAPIResponse(String message) {
+    TweeterAPIResponse(String errorMessage) {
         this.success = false;
-        this.message = message;
+        this.errorMessage = errorMessage;
     }
 
     /**
@@ -44,12 +44,12 @@ public class TweeterAPIResponse {
      *
      * @return an error message or null if the response indicates a successful result.
      */
-    public String getMessage() {
-        return message;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
 

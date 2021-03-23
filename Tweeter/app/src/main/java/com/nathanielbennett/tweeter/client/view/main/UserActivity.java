@@ -173,7 +173,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
 
     @Override
     public void checkFollowingUnsuccessful(CheckFollowingResponse checkFollowingResponse) {
-        setFollowError("Couldn't fetch user relationship: " + checkFollowingResponse.getMessage());
+        setFollowError("Couldn't fetch user relationship: " + checkFollowingResponse.getErrorMessage());
     }
 
     @Override
@@ -193,7 +193,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
 
     @Override
     public void followUserUnsuccessful(FollowUserResponse followUserResponse) {
-        setFollowError("Failed to follow user: " + followUserResponse.getMessage());
+        setFollowError("Failed to follow user: " + followUserResponse.getErrorMessage());
     }
 
     @Override
@@ -213,7 +213,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
 
     @Override
     public void unfollowUserUnsuccessful(UnfollowUserResponse followUserResponse) {
-        setFollowError("Failed to unfollow user: " + followUserResponse.getMessage());
+        setFollowError("Failed to unfollow user: " + followUserResponse.getErrorMessage());
     }
 
     @Override

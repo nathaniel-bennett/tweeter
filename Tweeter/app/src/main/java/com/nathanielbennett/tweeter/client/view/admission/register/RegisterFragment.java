@@ -111,7 +111,7 @@ public class RegisterFragment extends AdmissionTabFragment implements RegisterPr
 
     @Override
     public void registrationUnsuccessful(RegisterResponse response) {
-        indicateAdmissionFailure(response.getMessage());
+        indicateAdmissionFailure(response.getErrorMessage());
     }
 
     @Override

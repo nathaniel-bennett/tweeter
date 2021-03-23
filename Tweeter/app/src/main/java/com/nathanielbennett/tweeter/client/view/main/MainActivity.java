@@ -141,7 +141,7 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
 
     @Override
     public void logoutUnsuccessful(LogoutResponse logoutResponse) {
-        Toast.makeText(this, "Logout failed: " + logoutResponse.getMessage(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Logout failed: " + logoutResponse.getErrorMessage(), Toast.LENGTH_LONG).show();
 
         // Silently fail--still go back to login page
         Intent intent = new Intent(MainActivity.this, AdmissionActivity.class);
@@ -156,7 +156,7 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
 
     @Override
     public void postNotSuccessful(PostResponse response) {
-        Toast.makeText(this, "Post unsuccessful: " + response.getMessage(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Post unsuccessful: " + response.getErrorMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

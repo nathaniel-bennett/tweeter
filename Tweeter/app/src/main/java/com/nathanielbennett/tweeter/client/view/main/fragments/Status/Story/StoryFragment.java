@@ -103,7 +103,10 @@ public class StoryFragment extends TemplateFragment<Status> implements StoryPres
 
     @Override
     public void storyNotRetrieved(StatusResponse response) {
-        //TODO SOMETHING NEEDS TO BE DONE IN CASE OF AN ERROR
+        Log.e(LOG_TAG, response.getErrorMessage());
+        recyclerViewAdapter.removeLoadingFooter();
+        recyclerViewAdapter.setLoading(false);
+        Toast.makeText(getContext(), response.getErrorMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override

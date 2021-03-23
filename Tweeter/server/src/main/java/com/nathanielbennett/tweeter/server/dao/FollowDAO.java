@@ -27,12 +27,12 @@ public class FollowDAO {
 
         User loggedInUser = cache.getUser(request.getUsername());
         if (loggedInUser == null) {
-            throw new BadRequestException("The user specified in the request does not exist.");
+            throw new BadRequestException("The user specified in the request was not found in database.");
         }
 
         User user = cache.getUser(request.getUserToFollow());
         if (user == null) {
-            throw new BadRequestException("Requested user to follow does not exist.");
+            throw new BadRequestException("Requested user to follow was not found in database.");
         }
 
 
@@ -59,12 +59,12 @@ public class FollowDAO {
 
         User loggedInUser = cache.getUser(request.getUsername());
         if (loggedInUser == null) {
-            throw new BadRequestException("The user specified in the request does not exist.");
+            throw new BadRequestException("The user specified in the request does not exist in the database.");
         }
 
         User user = cache.getUser(request.getUserToUnfollow());
         if (user == null) {
-            throw new BadRequestException("Requested user to unfollow does not exist.");
+            throw new BadRequestException("Requested user to unfollow does not exist in the database.");
         }
 
         List<User> following = cache.getFollowing(loggedInUser);
@@ -91,7 +91,7 @@ public class FollowDAO {
 
         User user = cache.getUser(request.getOtherUser());
         if (user == null) {
-            throw new BadRequestException("Requested user does not exist.");
+            throw new BadRequestException("Requested user does not exist in the database.");
         }
 
         if (cache.getFollowing(loggedInUser).contains(user)) {

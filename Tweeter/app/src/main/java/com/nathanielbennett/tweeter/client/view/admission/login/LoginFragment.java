@@ -60,7 +60,7 @@ public class LoginFragment extends AdmissionTabFragment implements LoginPresente
 
     @Override
     public void loginUnsuccessful(LoginResponse response) {
-        indicateAdmissionFailure(response.getMessage());
+        indicateAdmissionFailure(response.getErrorMessage());
     }
 
     @Override

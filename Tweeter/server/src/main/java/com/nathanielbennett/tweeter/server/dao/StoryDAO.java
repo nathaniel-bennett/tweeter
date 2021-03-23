@@ -25,7 +25,7 @@ public class StoryDAO {
     public StatusResponse getStory(StatusRequest request) {
         User user = dc.getUser(request.getAlias());
         if (user == null) {
-            throw new BadRequestException("The requested user does not exist.");
+            throw new BadRequestException("The requested user was not found in database.");
         }
 
 

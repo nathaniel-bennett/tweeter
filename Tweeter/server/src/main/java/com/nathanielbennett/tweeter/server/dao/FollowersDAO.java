@@ -30,7 +30,7 @@ public class FollowersDAO {
         List<User> responseFollowers = new ArrayList<>(request.getLimit());
 
         if (allFollowers == null) {
-            throw new BadRequestException("The requested user does not exist.");
+            throw new BadRequestException("The requested user does not exist in the database.");
         }
 
         boolean hasMorePages = false;

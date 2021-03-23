@@ -16,7 +16,7 @@ public class FeedDAO {
     public StatusResponse getFeed(StatusRequest request) {
         User user = dc.getUser(request.getAlias());
         if (user == null) {
-            throw new BadRequestException("Requested user does not exist.");
+            throw new BadRequestException("Requested user does not exist in database.");
         }
 
         List<Status> allStatuses = getFeedFromDC(user);

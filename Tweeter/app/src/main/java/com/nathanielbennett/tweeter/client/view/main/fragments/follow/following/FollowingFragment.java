@@ -108,6 +108,14 @@ public class FollowingFragment extends TemplateFragment<User> implements Followi
 
     }
 
+    @Override
+    public void followeesNotRetrieved(FollowResponse response) {
+        Log.e(LOG_TAG, response.getErrorMessage());
+        recyclerViewAdapter.removeLoadingFooter();
+        recyclerViewAdapter.setLoading(false);
+        Toast.makeText(getContext(), response.getErrorMessage(), Toast.LENGTH_LONG).show();
+    }
+
     /**
      * Is called when the getFolloweesTask receives an exception and handles said exception.
      * @param exception The exception received from the getFolloweesTask.

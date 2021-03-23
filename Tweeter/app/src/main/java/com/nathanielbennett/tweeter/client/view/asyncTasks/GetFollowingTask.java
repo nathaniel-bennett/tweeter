@@ -21,6 +21,7 @@ public class GetFollowingTask extends TemplateTask {
      */
     public interface Observer {
         void followeesRetrieved(FollowResponse followResponse);
+        void followeesNotRetrieved(FollowResponse followResponse);
         void handleException(Exception exception);
     }
 
@@ -72,8 +73,7 @@ public class GetFollowingTask extends TemplateTask {
      */
     @Override
     protected void taskUnsuccessful(TweeterAPIResponse response) {
-        // Intentionally left blank
-        // TODO: ADD SOME ERROR STUFF HERE
+        observer.followeesNotRetrieved((FollowResponse) response);
     }
 
     /**

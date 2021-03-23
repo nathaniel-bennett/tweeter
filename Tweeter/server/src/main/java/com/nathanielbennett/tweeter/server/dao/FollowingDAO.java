@@ -23,7 +23,7 @@ public class FollowingDAO {
 
         User user = dc.getUser(request.getOtherUser());
         if (user == null) {
-            throw new BadRequestException("Requested user does not exist.");
+            throw new BadRequestException("Requested user was not found in database.");
         }
 
         if (dc.getFollowing(loggedInUser).contains(user)) {
