@@ -113,7 +113,7 @@ public class FollowServiceProxyTest {
         @Test
         public void testFollowUser_badRequest_tryToFollowSelf_correctResponse() throws IOException {
             Assertions.assertEquals("Error - too much vanity (you can't follow yourself)",
-                    followServiceProxySpy.follow(followSelfRequest).getMessage());
+                    followServiceProxySpy.follow(followSelfRequest).getErrorMessage());
         }
 
         /**
