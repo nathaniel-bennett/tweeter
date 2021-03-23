@@ -37,11 +37,11 @@ public class FollowDAO {
 
 
         List<User> following = cache.getFollowing(loggedInUser);
-        loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount() + 1);
-        if (following.contains(loggedInUser)) {
+        if (following.contains(user)) {
             throw new UserAlreadyFollowedException("Requested user to follow is already followed.");
         }
         following.add(user);
+        loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount() + 1);
 
 
         List<User> followers = cache.getFollowers(user);
@@ -68,10 +68,10 @@ public class FollowDAO {
         }
 
         List<User> following = cache.getFollowing(loggedInUser);
-        loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount() - 1);
         if (!following.contains(user)) {
             throw new UserAlreadyUnfollowedException("Requested user to unfollow was not being followed in the first place.");
         }
+        loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount() - 1);
 
         following.remove(user);
 
