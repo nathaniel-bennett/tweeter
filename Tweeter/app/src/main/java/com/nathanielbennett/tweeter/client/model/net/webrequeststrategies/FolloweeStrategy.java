@@ -18,10 +18,10 @@ public class FolloweeStrategy implements ClientCommunicator.WebRequestStrategy {
     public String getRequestPath(TweeterAPIRequest request) {
         FollowRequest followRequest = (FollowRequest) request;
 
-        String uri = "/followee/" + followRequest.getFollowAlias() + "/" + followRequest.getLimit();
+        String uri = "/followee?followAlias=" + followRequest.getFollowAlias() + "&limit=" + followRequest.getLimit();
 
         if (followRequest.getLastFollowAlias() != null && !followRequest.getLastFollowAlias().isEmpty()) {
-            uri += followRequest.getLastFollowAlias();
+            uri += "&lastFollowAlias" + followRequest.getLastFollowAlias();
         }
 
 

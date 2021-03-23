@@ -59,36 +59,43 @@ public class ClientCommunicator {
 
         URL url = new URL(serverHost + webRequestStrategy.getRequestPath(request));
 
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        HttpURLConnection connection = null;
 
-        connection.setRequestMethod(webRequestStrategy.getRequestMethod());
-        connection.setDoOutput(webRequestStrategy.hasRequestBody());
-        if (authToken != null) {
-            connection.addRequestProperty("Authorization", authToken.toString());
+        try {
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(webRequestStrategy.getRequestMethod());
+            connection.setDoOutput(webRequestStrategy.hasRequestBody());
+            if (authToken != null) {
+                connection.addRequestProperty("Authorization", authToken.toString());
+            }
+
+            connection.connect();
+
+            if (webRequestStrategy.hasRequestBody()) {
+                Serializer serializer = new Serializer();
+                String serializedRequest = serializer.serialize(request);
+                OutputStream os = connection.getOutputStream();
+                writeString(serializedRequest, os);
+                os.close();
+            }
+
+            if (connection.getResponseCode() == 200) {
+                InputStream responseBody = connection.getInputStream();
+                responseData = readString(responseBody);
+                responseBody.close();
+            } else {
+                InputStream errorBody = connection.getErrorStream();
+                responseData = readString(errorBody);
+                errorBody.close();
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
 
-        connection.connect();
-
-        if (webRequestStrategy.hasRequestBody()) {
-            Serializer serializer = new Serializer();
-            String serializedRequest = serializer.serialize(request);
-            OutputStream os = connection.getOutputStream();
-            writeString(serializedRequest, os);
-            os.close();
-        }
-
-        if (connection.getResponseCode() == 200) {
-            InputStream responseBody = connection.getInputStream();
-            responseData = readString(responseBody);
-            responseBody.close();
-        } else {
-            InputStream errorBody = connection.getErrorStream();
-            responseData = readString(errorBody);
-            errorBody.close();
-        }
-
-
-        connection.disconnect();
         return webRequestStrategy.formResponse(responseData, connection.getResponseCode());
     }
 }
