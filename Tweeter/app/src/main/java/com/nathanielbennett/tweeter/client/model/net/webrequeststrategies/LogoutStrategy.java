@@ -11,7 +11,7 @@ public class LogoutStrategy implements ClientCommunicator.WebRequestStrategy{
 
     @Override
     public boolean hasRequestBody() {
-        return true;
+        return false;
     }
 
     @Override

@@ -12,7 +12,7 @@ public class StoryStrategy implements ClientCommunicator.WebRequestStrategy {
 
     @Override
     public boolean hasRequestBody() {
-        return true;
+        return false;
     }
 
     @Override
