@@ -2,26 +2,9 @@ package com.nathanielbennett.tweeter.model.service.request;
 
 public class RegisterRequest extends AdmissionRequest {
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
     private String firstName;
-
     private String lastName;
-
     private byte[] image;
-
-    public RegisterRequest() {
-    }
 
     public RegisterRequest(String firstName, String lastName, String username, String password, byte[] image) {
         super(username, password);
@@ -31,15 +14,29 @@ public class RegisterRequest extends AdmissionRequest {
         this.image = image;
     }
 
+    public RegisterRequest() { }
+
     public String getFirstName() {
         return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public byte[] getImage() {
         return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

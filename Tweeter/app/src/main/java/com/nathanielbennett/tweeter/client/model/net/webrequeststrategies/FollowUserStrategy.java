@@ -16,7 +16,7 @@ public class FollowUserStrategy implements ClientCommunicator.WebRequestStrategy
 
     @Override
     public String getRequestPath(TweeterAPIRequest request) {
-        return "/followUser";
+        return "/follow";
     }
 
     @Override

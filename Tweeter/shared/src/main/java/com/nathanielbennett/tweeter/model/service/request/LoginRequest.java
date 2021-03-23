@@ -5,9 +5,6 @@ package com.nathanielbennett.tweeter.model.service.request;
  */
 public class LoginRequest extends AdmissionRequest {
 
-    public LoginRequest() {
-    }
-
     /**
      * Creates an instance.
      *
@@ -17,4 +14,6 @@ public class LoginRequest extends AdmissionRequest {
     public LoginRequest(String username, String password) {
         super(username, password);
     }
+
+    public LoginRequest() { }
 }

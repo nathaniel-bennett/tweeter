@@ -6,24 +6,8 @@ package com.nathanielbennett.tweeter.model.service.request;
  */
 public class FollowRequest implements TweeterAPIRequest {
 
-    public FollowRequest() {
-    }
-
     private String followAlias;
     private int limit;
-
-    public void setFollowAlias(String followAlias) {
-        this.followAlias = followAlias;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
-    }
-
-    public void setLastFollowAlias(String lastFollowAlias) {
-        this.lastFollowAlias = lastFollowAlias;
-    }
-
     private String lastFollowAlias;
 
     /**
@@ -41,6 +25,8 @@ public class FollowRequest implements TweeterAPIRequest {
         this.lastFollowAlias = lastFollowAlias;
     }
 
+    public FollowRequest() { }
+
     /**
      * Returns the follower whose followees are to be returned by this request.
      *
@@ -48,6 +34,10 @@ public class FollowRequest implements TweeterAPIRequest {
      */
     public String getFollowAlias() {
         return followAlias;
+    }
+
+    public void setFollowAlias(String followAlias) {
+        this.followAlias = followAlias;
     }
 
     /**
@@ -59,6 +49,10 @@ public class FollowRequest implements TweeterAPIRequest {
         return limit;
     }
 
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
     /**
      * Returns the last followee that was returned in the previous request or null if there was no
      * previous request or if no followees were returned in the previous request.
@@ -67,5 +61,9 @@ public class FollowRequest implements TweeterAPIRequest {
      */
     public String getLastFollowAlias() {
         return lastFollowAlias;
+    }
+
+    public void setLastFollowAlias(String lastFollowAlias) {
+        this.lastFollowAlias = lastFollowAlias;
     }
 }

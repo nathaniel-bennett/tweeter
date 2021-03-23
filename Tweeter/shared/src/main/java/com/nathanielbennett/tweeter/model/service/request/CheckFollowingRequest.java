@@ -4,22 +4,20 @@ import com.nathanielbennett.tweeter.model.domain.AuthToken;
 
 public class CheckFollowingRequest extends AuthorizedRequest {
 
-    public CheckFollowingRequest() {
-    }
-
-    public void setOtherUser(String otherUser) {
-        this.otherUser = otherUser;
-    }
-
     private String otherUser;
-
 
     public CheckFollowingRequest(String username, AuthToken authToken, String otherUser) {
         super(username, authToken);
         this.otherUser = otherUser;
     }
 
+    public CheckFollowingRequest() { }
+
     public String getOtherUser() {
         return otherUser;
+    }
+
+    public void setOtherUser(String otherUser) {
+        this.otherUser = otherUser;
     }
 }

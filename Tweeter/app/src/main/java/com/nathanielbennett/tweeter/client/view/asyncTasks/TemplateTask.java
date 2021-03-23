@@ -102,7 +102,7 @@ public abstract class TemplateTask extends AsyncTask<TweeterAPIRequest,  Void, T
     protected void onPostExecute(TweeterAPIResponse response) {
         if(exception != null) {
             handleException(exception);
-        } else if(response.isSuccess()) {
+        } else if(response.getSuccess()) {
             taskSuccessful(response);
         } else {
             taskUnsuccessful(response);

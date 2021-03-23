@@ -28,7 +28,7 @@ public class RegisterTask extends TemplateTask {
     protected TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
         RegisterResponse response = presenter.register((RegisterRequest) request);
 
-        if (response.isSuccess()) {
+        if (response.getSuccess()) {
             loadUserImage(response.getUser());
         }
 

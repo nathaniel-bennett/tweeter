@@ -19,7 +19,12 @@ public class FeedStrategy implements ClientCommunicator.WebRequestStrategy {
 
         StatusRequest statusRequest = (StatusRequest) request;
 
-        return "/feed";
+        String uri = "/story/" + statusRequest.getAlias() + "/" + statusRequest.getLimit();
+        if (statusRequest.getLastStatusMessageSent() != null && !statusRequest.getLastStatusMessageSent().isEmpty()) {
+            uri += "/" + statusRequest.getLastStatusMessageSent();
+        }
+
+        return uri;
     }
 
     @Override

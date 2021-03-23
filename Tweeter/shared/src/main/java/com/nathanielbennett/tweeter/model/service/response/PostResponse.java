@@ -3,13 +3,6 @@ package com.nathanielbennett.tweeter.model.service.response;
 public class PostResponse extends TweeterAPIResponse {
 
     /**
-     * Creates a new PostResponse indicating that the attempted Post was successful.
-     */
-    public PostResponse() {
-        super();
-    }
-
-    /**
      * Creates a new PostResponse indicating that the attempted Post failed, with
      * an error message explaining why failure occurred.
      *
@@ -18,4 +11,9 @@ public class PostResponse extends TweeterAPIResponse {
     public PostResponse(String message) {
         super(message);
     }
+
+    /**
+     * Creates a new PostResponse indicating that the attempted Post was successful.
+     */
+    public PostResponse() { }
 }

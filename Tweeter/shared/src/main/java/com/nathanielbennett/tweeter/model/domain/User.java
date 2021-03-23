@@ -7,10 +7,10 @@ import java.io.Serializable;
  */
 public class User implements Comparable<User>, Serializable {
 
-    private final String firstName;
-    private final String lastName;
-    private final String alias;
-    private final String imageUrl;
+    private String firstName;
+    private String lastName;
+    private String alias;
+    private String imageUrl;
     private byte [] imageBytes;
     private int followerCount;
     private int followeeCount;
@@ -34,12 +34,22 @@ public class User implements Comparable<User>, Serializable {
         this.followeeCount = 0;
     }
 
+    public User() {}
+
     public String getFirstName() {
         return firstName;
     }
 
+    public void setFirstName(String name) {
+        this.firstName = name;
+    }
+
     public String getLastName() {
         return lastName;
+    }
+
+    public void setLastName(String name) {
+        this.lastName = name;
     }
 
     public String getName() {
@@ -50,8 +60,16 @@ public class User implements Comparable<User>, Serializable {
         return alias;
     }
 
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public byte [] getImageBytes() {

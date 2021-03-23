@@ -48,7 +48,7 @@ public class GetFollowingTask extends TemplateTask {
     @Override
     protected TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
         FollowResponse response = presenter.getFollowing((FollowRequest) request);
-        if (response.isSuccess()) {
+        if (response.getSuccess()) {
             loadUserImages(response.getRequestedUsers());
         }
 

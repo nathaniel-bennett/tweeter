@@ -4,8 +4,7 @@ import com.nathanielbennett.tweeter.model.domain.AuthToken;
 
 public class UnfollowUserRequest extends AuthorizedRequest {
 
-    public UnfollowUserRequest() {
-    }
+    public UnfollowUserRequest() { }
 
     public void setUserToUnfollow(String userToUnfollow) {
         this.userToUnfollow = userToUnfollow;

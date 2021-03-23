@@ -17,6 +17,10 @@ public class AuthToken implements Serializable {
         return authTokenID;
     }
 
+    public void setAuthTokenID(String authTokenID) {
+        this.authTokenID = authTokenID;
+    }
+
     @Override
     public String toString() {
         return authTokenID;
@@ -30,10 +34,6 @@ public class AuthToken implements Serializable {
         AuthToken authToken = (AuthToken) o;
 
         return this.authTokenID.equals(authToken.authTokenID);
-    }
-
-    public void setAuthTokenID(String authTokenID) {
-        this.authTokenID = authTokenID;
     }
 
     @Override

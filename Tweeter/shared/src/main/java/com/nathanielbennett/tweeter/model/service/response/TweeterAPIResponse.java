@@ -31,8 +31,12 @@ public class TweeterAPIResponse {
      *
      * @return the success indicator.
      */
-    public boolean isSuccess() {
+    public boolean getSuccess() {
         return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
     /**
@@ -42,10 +46,6 @@ public class TweeterAPIResponse {
      */
     public String getMessage() {
         return message;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
     }
 
     public void setMessage(String message) {

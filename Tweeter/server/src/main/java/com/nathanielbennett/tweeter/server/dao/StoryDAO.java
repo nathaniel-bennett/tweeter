@@ -37,7 +37,7 @@ public class StoryDAO {
         boolean hasMorePages = false;
 
         if (request.getLimit() > 0) {
-            int storyIndex = getStatusStartingIndex(request.getLastStatusSent(), allStatuses);
+            int storyIndex = getStatusStartingIndex(request.getLastStatusMessageSent(), allStatuses);
 
             for (int limitCounter = 0; storyIndex < allStatuses.size() && limitCounter < request.getLimit(); storyIndex++, limitCounter++) {
                 responseStatuses.add(allStatuses.get(storyIndex));

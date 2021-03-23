@@ -13,14 +13,13 @@ public class CheckFollowingResponse extends TweeterAPIResponse {
         this.isFollowing = null;
     }
 
+    public CheckFollowingResponse() { }
+
     public Boolean isFollowingUser() {
         return isFollowing;
     }
 
-    public CheckFollowingResponse() {
-    }
-
-    public void setFollowing(Boolean following) {
+    public void setFollowingUser(Boolean following) {
         isFollowing = following;
     }
 }

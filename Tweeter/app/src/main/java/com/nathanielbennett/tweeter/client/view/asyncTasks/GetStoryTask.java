@@ -43,7 +43,7 @@ public class GetStoryTask extends TemplateTask {
     @Override
     protected TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
         StatusResponse response = presenter.getStory((StatusRequest) request);
-        if (response.isSuccess()) {
+        if (response.getSuccess()) {
             loadStatusImages(response.getStatuses());
             for (com.nathanielbennett.tweeter.model.domain.Status status : response.getStatuses()) {
                 loadUserImages(status.getMentions());

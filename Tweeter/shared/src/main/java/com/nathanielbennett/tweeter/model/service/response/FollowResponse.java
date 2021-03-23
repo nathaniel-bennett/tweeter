@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class FollowResponse extends PagedResponse {
 
-    private final List<User> requestedUsers;
+    private List<User> requestedUsers;
 
     /**
      * Creates a response indicating that the corresponding Follow request was unsuccessful. Sets the
@@ -35,6 +35,8 @@ public class FollowResponse extends PagedResponse {
         this.requestedUsers = requestedUsers;
     }
 
+    public FollowResponse() { }
+
     /**
      * Returns the followees for the corresponding request.
      *
@@ -42,6 +44,10 @@ public class FollowResponse extends PagedResponse {
      */
     public List<User> getRequestedUsers() {
         return requestedUsers;
+    }
+
+    public void setRequestedUsers(List<User> users) {
+        this.requestedUsers = users;
     }
 
     @Override

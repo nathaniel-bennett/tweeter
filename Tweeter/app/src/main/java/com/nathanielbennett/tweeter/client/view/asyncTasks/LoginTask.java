@@ -39,7 +39,7 @@ public class LoginTask extends TemplateTask {
     public TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
         LoginResponse response = presenter.login((LoginRequest) request);
 
-        if (response.isSuccess()) {
+        if (response.getSuccess()) {
             loadUserImage(response.getUser());
         }
 

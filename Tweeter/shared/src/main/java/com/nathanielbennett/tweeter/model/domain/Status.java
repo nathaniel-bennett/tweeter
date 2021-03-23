@@ -3,10 +3,10 @@ package com.nathanielbennett.tweeter.model.domain;
 import java.util.List;
 
 public class Status {
-    private final User userOfStatus;
-    private final String statusMessage;
-    private final String datePosted;
-    private final List<User> mentions;
+    private User userOfStatus;
+    private String statusMessage;
+    private String datePosted;
+    private List<User> mentions;
 
     /**
      * Creates an instance of status.
@@ -22,12 +22,18 @@ public class Status {
         this.mentions = mentions;
     }
 
+    public Status() { }
+
     /**
      * Getter for userOfStatus.
      * @return userOfStatus
      */
     public User getUserOfStatus() {
         return userOfStatus;
+    }
+
+    public void setUserOfStatus(User user) {
+        this.userOfStatus = user;
     }
 
     /**
@@ -38,6 +44,10 @@ public class Status {
         return statusMessage;
     }
 
+    public void setStatusMessage(String message) {
+        this.statusMessage = message;
+    }
+
     /**
      * Getter for datePosted.
      * @return datePosted
@@ -46,11 +56,19 @@ public class Status {
         return datePosted;
     }
 
+    public void setDatePosted(String date) {
+        this.datePosted = date;
+    }
+
     /**
      * Getter for list of mentions
      * @return mentions
      */
     public List<User> getMentions() {
         return mentions;
+    }
+
+    public void setMentions(List<User> mentions) {
+        this.mentions = mentions;
     }
 }

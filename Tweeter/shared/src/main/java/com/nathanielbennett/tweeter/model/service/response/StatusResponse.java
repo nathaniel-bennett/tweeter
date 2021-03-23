@@ -25,6 +25,8 @@ public class StatusResponse extends PagedResponse {
         super(message);
     }
 
+    public StatusResponse() { }
+
     /**
      * Getter for list of statuses.
      * @return statuses
@@ -35,8 +37,5 @@ public class StatusResponse extends PagedResponse {
 
     public void setStatuses(List<Status> statuses) {
         this.statuses = statuses;
-    }
-
-    public StatusResponse() {
     }
 }

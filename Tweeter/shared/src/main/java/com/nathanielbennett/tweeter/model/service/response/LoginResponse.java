@@ -32,6 +32,8 @@ public class LoginResponse extends TweeterAPIResponse {
         this.authToken = authToken;
     }
 
+    public LoginResponse() { }
+
     /**
      * Returns the logged in user.
      *
@@ -39,6 +41,10 @@ public class LoginResponse extends TweeterAPIResponse {
      */
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**
@@ -50,6 +56,7 @@ public class LoginResponse extends TweeterAPIResponse {
         return authToken;
     }
 
-    public LoginResponse() {
+    public void setAuthToken(AuthToken authToken) {
+        this.authToken = authToken;
     }
 }

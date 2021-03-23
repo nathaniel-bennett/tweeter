@@ -4,13 +4,6 @@ import com.nathanielbennett.tweeter.model.domain.AuthToken;
 
 public class FollowUserRequest extends AuthorizedRequest {
 
-    public FollowUserRequest() {
-    }
-
-    public void setUserToFollow(String userToFollow) {
-        this.userToFollow = userToFollow;
-    }
-
     private String userToFollow;
 
 
@@ -25,7 +18,13 @@ public class FollowUserRequest extends AuthorizedRequest {
         this.userToFollow = userToFollow;
     }
 
+    public FollowUserRequest() { }
+
     public String getUserToFollow() {
         return userToFollow;
+    }
+
+    public void setUserToFollow(String userToFollow) {
+        this.userToFollow = userToFollow;
     }
 }

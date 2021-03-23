@@ -4,19 +4,7 @@ import com.nathanielbennett.tweeter.model.domain.AuthToken;
 
 public abstract class AuthorizedRequest implements TweeterAPIRequest {
 
-    public AuthorizedRequest() {
-    }
-
     private String username;
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setAuthToken(AuthToken authToken) {
-        this.authToken = authToken;
-    }
-
     private AuthToken authToken;
 
     public AuthorizedRequest(String username, AuthToken authToken) {
@@ -24,11 +12,21 @@ public abstract class AuthorizedRequest implements TweeterAPIRequest {
         this.authToken = authToken;
     }
 
+    public AuthorizedRequest() { }
+
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public AuthToken getAuthToken() {
         return authToken;
+    }
+
+    public void setAuthToken(AuthToken authToken) {
+        this.authToken = authToken;
     }
 }

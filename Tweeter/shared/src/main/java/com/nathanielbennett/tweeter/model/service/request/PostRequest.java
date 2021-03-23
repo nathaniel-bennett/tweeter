@@ -4,13 +4,6 @@ import com.nathanielbennett.tweeter.model.domain.AuthToken;
 
 public class PostRequest extends AuthorizedRequest {
 
-    public PostRequest() {
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     private String status;
 
     public PostRequest(String status, String username, AuthToken authToken) {
@@ -18,7 +11,13 @@ public class PostRequest extends AuthorizedRequest {
         this.status = status;
     }
 
+    public PostRequest() { }
+
     public String getStatus() {
         return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
