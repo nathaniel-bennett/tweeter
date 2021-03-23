@@ -84,11 +84,11 @@ public class ClientCommunicator {
         } else {
             InputStream errorBody = connection.getErrorStream();
             responseData = readString(errorBody);
-            errorBody.close()
+            errorBody.close();
         }
 
 
-
+        connection.disconnect();
         return webRequestStrategy.formResponse(responseData, connection.getResponseCode());
     }
 }
