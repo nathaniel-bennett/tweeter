@@ -17,22 +17,6 @@ import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 public class FollowingDAO {
     private static final DataCache dc = DataCache.getInstance();
 
-    public CheckFollowingResponse isFollowing(CheckFollowingRequest request) {
-
-        User loggedInUser = dc.getUser(request.getUsername());
-
-        User user = dc.getUser(request.getOtherUser());
-        if (user == null) {
-            throw new BadRequestException("Requested user was not found in database.");
-        }
-
-        if (dc.getFollowing(loggedInUser).contains(user)) {
-            return new CheckFollowingResponse(true);
-        } else {
-            return new CheckFollowingResponse(false);
-        }
-    }
-
     /**
      * Returns the users that the user specified in the request is following. Uses information in
      * the request object to limit the number of followees returned and to return the next set of
@@ -44,6 +28,22 @@ public class FollowingDAO {
      * @return the following response.
      */
     public FollowResponse getFollowing(FollowRequest request) {
+
+        User loggedInUser = dc.getUser(request.getFollowAlias());
+        if (loggedInUser == null) {
+            throw new BadRequestException("User was not found in database.");
+        }
+
+        User user = dc.getUser(request.getLastFollowAlias());
+        if (user == null) {
+            throw new BadRequestException("Requested user was not found in database.");
+        }
+
+        List<User> following = dc.getFollowing(loggedInUser);
+        if (following == null) {
+            return new FollowResponse(new ArrayList<User>(), false);
+        }
+
 
         List<User> allFollowing = getFollowingFromUserName(request.getFollowAlias());
         List<User> responseFollowing = new ArrayList<>(request.getLimit());

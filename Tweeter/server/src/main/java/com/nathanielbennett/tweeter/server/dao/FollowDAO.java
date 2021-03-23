@@ -85,16 +85,25 @@ public class FollowDAO {
     }
 
     public CheckFollowingResponse isFollowing(CheckFollowingRequest request) {
-        DataCache cache = DataCache.getInstance();
 
-        User loggedInUser = cache.getUser(request.getUsername());
+        DataCache dc = DataCache.getInstance();
 
-        User user = cache.getUser(request.getOtherUser());
-        if (user == null) {
-            throw new BadRequestException("Requested user does not exist in the database.");
+        User loggedInUser = dc.getUser(request.getUsername());
+        if (loggedInUser == null) {
+            throw new BadRequestException("User was not found in database.");
         }
 
-        if (cache.getFollowing(loggedInUser).contains(user)) {
+        User user = dc.getUser(request.getOtherUser());
+        if (user == null) {
+            throw new BadRequestException("Requested user was not found in database.");
+        }
+
+        List<User> following = dc.getFollowing(loggedInUser);
+        if (following == null) {
+            return new CheckFollowingResponse(false);
+        }
+
+        if (dc.getFollowing(loggedInUser).contains(user)) {
             return new CheckFollowingResponse(true);
         } else {
             return new CheckFollowingResponse(false);

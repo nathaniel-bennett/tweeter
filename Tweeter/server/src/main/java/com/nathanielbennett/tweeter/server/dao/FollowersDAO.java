@@ -26,6 +26,23 @@ public class FollowersDAO {
      * @return the followers response
      */
     public FollowResponse getFollowers(FollowRequest request) {
+        User loggedInUser = dc.getUser(request.getFollowAlias());
+        if (loggedInUser == null) {
+            throw new BadRequestException("User was not found in database.");
+        }
+
+        User user = dc.getUser(request.getLastFollowAlias());
+        if (user == null) {
+            throw new BadRequestException("Requested user was not found in database.");
+        }
+
+        List<User> following = dc.getFollowing(loggedInUser);
+        if (following == null) {
+            return new FollowResponse(new ArrayList<User>(), false);
+        }
+
+
+
         List<User> allFollowers = getFollowersByUserName(request.getFollowAlias());
         List<User> responseFollowers = new ArrayList<>(request.getLimit());
 
