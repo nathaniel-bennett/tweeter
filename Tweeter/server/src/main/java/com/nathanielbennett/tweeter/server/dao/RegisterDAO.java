@@ -9,7 +9,7 @@ import com.nathanielbennett.tweeter.server.exceptions.HandleTakenException;
 import com.nathanielbennett.tweeter.server.exceptions.WeakPasswordException;
 
 public class RegisterDAO {
-    private static final AuthToken authToken1 = new AuthToken();
+    private static final AuthToken authToken1 = new AuthToken("Authenticated");
     private static final DataCache dc = DataCache.getInstance();
 
     /**
