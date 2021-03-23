@@ -81,7 +81,13 @@ public class ClientCommunicator {
             InputStream responseBody = connection.getInputStream();
             responseData = readString(responseBody);
             responseBody.close();
+        } else {
+            InputStream errorBody = connection.getErrorStream();
+            responseData = readString(errorBody);
+            errorBody.close()
         }
+
+
 
         return webRequestStrategy.formResponse(responseData, connection.getResponseCode());
     }
