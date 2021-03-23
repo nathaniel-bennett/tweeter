@@ -2,26 +2,35 @@ package com.nathanielbennett.tweeter.client.model.net.webrequeststrategies;
 
 import com.nathanielbennett.tweeter.client.model.net.ClientCommunicator;
 import com.nathanielbennett.tweeter.model.net.Serializer;
+import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
-import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
 import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 
-public class FollowStrategy implements ClientCommunicator.WebRequestStrategy {
+public class FolloweeStrategy implements ClientCommunicator.WebRequestStrategy {
 
     @Override
     public boolean hasRequestBody() {
-        return true;
+        return false;
     }
 
     @Override
     public String getRequestPath(TweeterAPIRequest request) {
-        return "/follow";
+        FollowRequest followRequest = (FollowRequest) request;
+
+        String uri = "/followee/" + followRequest.getFollowAlias() + "/" + followRequest.getLimit();
+
+        if (followRequest.getLastFollowAlias() != null && !followRequest.getLastFollowAlias().isEmpty()) {
+            uri += followRequest.getLastFollowAlias();
+        }
+
+
+        return uri;
     }
 
     @Override
     public String getRequestMethod() {
-        return "POST";
+        return "GET";
     }
 
     @Override

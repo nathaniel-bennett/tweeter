@@ -2,8 +2,9 @@ package com.nathanielbennett.tweeter.client.model.net;
 
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.CheckFollowingStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.FeedStrategy;
-import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.FollowStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.FollowUserStrategy;
+import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.FolloweeStrategy;
+import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.FollowerStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.LoginStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.LogoutStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.PostStrategy;
@@ -122,7 +123,7 @@ public class ServerFacade {
      * @return the following response.
      */
     public FollowResponse getFollowing(FollowRequest request) throws IOException {
-        ClientCommunicator communicator = new ClientCommunicator(new FollowStrategy());
+        ClientCommunicator communicator = new ClientCommunicator(new FolloweeStrategy());
 
         return (FollowResponse) communicator.doWebRequest(request, null);
     }
@@ -138,7 +139,7 @@ public class ServerFacade {
      * @return the followers response
      */
     public FollowResponse getFollowers(FollowRequest request) throws IOException {
-        ClientCommunicator communicator = new ClientCommunicator(new FollowStrategy());
+        ClientCommunicator communicator = new ClientCommunicator(new FollowerStrategy());
 
         return (FollowResponse) communicator.doWebRequest(request, null);
     }
