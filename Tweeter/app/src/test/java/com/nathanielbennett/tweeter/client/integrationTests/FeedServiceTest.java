@@ -40,6 +40,4 @@ public class FeedServiceTest {
         Assertions.assertNotNull(response.getErrorMessage());
     }
 
-
-
 }
