@@ -1,7 +1,5 @@
 package com.nathanielbennett.tweeter.client.model.net.webrequeststrategies;
 
-import android.util.Log;
-
 import com.nathanielbennett.tweeter.client.model.net.ClientCommunicator;
 import com.nathanielbennett.tweeter.model.net.Serializer;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
@@ -20,7 +18,7 @@ public class LogoutStrategy implements ClientCommunicator.WebRequestStrategy{
     public String getRequestPath(TweeterAPIRequest request) {
         LogoutRequest logoutRequest = (LogoutRequest) request;
 
-        return "/logout/" + logoutRequest.getUsername();
+        return "/logout?username=" + logoutRequest.getUsername();
     }
 
     @Override

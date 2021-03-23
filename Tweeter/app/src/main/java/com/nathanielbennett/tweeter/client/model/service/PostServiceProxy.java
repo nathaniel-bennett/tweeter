@@ -6,6 +6,7 @@ import com.nathanielbennett.tweeter.model.service.request.PostRequest;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
 
 import java.io.IOException;
+import java.nio.charset.MalformedInputException;
 
 
 public class PostServiceProxy extends Service implements PostService {
@@ -32,6 +33,12 @@ public class PostServiceProxy extends Service implements PostService {
         if (request.getAuthToken() == null) {
             throw new NullPointerException("Auth token missing in post request (PostService)");
         }
+
+        if (request.getStatus() == null || request.getStatus().isEmpty()) {
+            throw new NullPointerException("Status body must not be empty.");
+        }
+
+
 
         return serverFacade.addToStory(request);
     }
