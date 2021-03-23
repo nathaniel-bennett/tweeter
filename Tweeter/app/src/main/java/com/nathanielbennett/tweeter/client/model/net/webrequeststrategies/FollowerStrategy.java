@@ -18,10 +18,10 @@ public class FollowerStrategy implements ClientCommunicator.WebRequestStrategy {
     public String getRequestPath(TweeterAPIRequest request) {
         FollowRequest followRequest = (FollowRequest) request;
 
-        String uri = "/follower/" + followRequest.getFollowAlias() + "/" + followRequest.getLimit();
+        String uri = "/follower?followAlias=" + followRequest.getFollowAlias() + "&limit=" + followRequest.getLimit();
 
         if (followRequest.getLastFollowAlias() != null && !followRequest.getLastFollowAlias().isEmpty()) {
-            uri += followRequest.getLastFollowAlias();
+            uri += "&lastFollowAlias=" + followRequest.getLastFollowAlias();
         }
 
 
