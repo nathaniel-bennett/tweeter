@@ -55,6 +55,8 @@ public class ClientCommunicator {
 
 
     public TweeterAPIResponse doWebRequest(TweeterAPIRequest request, AuthToken authToken) throws IOException {
+        String responseData = null;
+
         URL url = new URL(serverHost + webRequestStrategy.getRequestPath(request));
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -73,11 +75,14 @@ public class ClientCommunicator {
             OutputStream os = connection.getOutputStream();
             writeString(serializedRequest, os);
             os.close();
+
+            InputStream responseBody = connection.getInputStream();
+            responseData = readString(responseBody);
+            responseBody.close();
         }
 
-        InputStream responseBody = connection.getInputStream();
-        String responseData = readString(responseBody);
-        responseBody.close();
+
+
         return webRequestStrategy.formResponse(responseData, connection.getResponseCode());
     }
 }
