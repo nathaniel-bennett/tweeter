@@ -63,7 +63,7 @@ public class FollowItemHolder extends TemplateItemHolder<User> {
     @Override
     public void bindItem(User itemToBind) {
         associatedUser = itemToBind;
-        userImage.setImageDrawable(ImageUtils.drawableFromByteArray(itemToBind.getImageBytes()));
+        userImage.setImageDrawable(ImageUtils.drawableFromByteArray(itemToBind.imageToBytes()));
         userAlias.setText(itemToBind.getAlias());
         userName.setText(itemToBind.getName());
     }

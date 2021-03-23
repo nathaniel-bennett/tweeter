@@ -73,7 +73,7 @@ public class User implements Comparable<User>, Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public byte [] getImageBytes() {
+    public byte [] imageToBytes() {
         return imageBytes;
     }
 

@@ -135,7 +135,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
         userAlias.setText(selectedUser.getAlias());
 
         ImageView userImageView = findViewById(R.id.userImage);
-        userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(selectedUser.getImageBytes()));
+        userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(selectedUser.imageToBytes()));
 
         TextView followeeCount = findViewById(R.id.followeeCount);
         followeeCount.setText(MessageFormat.format("Following: {0}", Integer.toString(selectedUser.getFolloweeCount())));
