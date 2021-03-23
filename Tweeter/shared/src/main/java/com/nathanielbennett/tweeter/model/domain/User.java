@@ -34,7 +34,7 @@ public class User implements Comparable<User>, Serializable {
         this.followeeCount = 0;
     }
 
-    public User() {}
+    public User() { }
 
     public String getFirstName() {
         return firstName;
