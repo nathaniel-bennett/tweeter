@@ -31,11 +31,6 @@ public class FollowersDAO {
             throw new BadRequestException("User was not found in database.");
         }
 
-        User user = dc.getUser(request.getLastFollowAlias());
-        if (user == null) {
-            throw new BadRequestException("Requested user was not found in database.");
-        }
-
         List<User> following = dc.getFollowing(loggedInUser);
         if (following == null) {
             return new FollowResponse(new ArrayList<User>(), false);
