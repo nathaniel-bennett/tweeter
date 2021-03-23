@@ -104,7 +104,7 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
         userAlias.setText(loggedInUser.getAlias());
 
         ImageView userImageView = findViewById(R.id.userImage);
-        userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(loggedInUser.imageToBytes()));
+        userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(loggedInUser.getImageBytes()));
 
         TextView followeeCount = findViewById(R.id.followeeCount);
         followeeCount.setText(MessageFormat.format("Following: {0}", Integer.toString(loggedInUser.getFolloweeCount())));

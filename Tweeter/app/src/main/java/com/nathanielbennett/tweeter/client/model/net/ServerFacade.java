@@ -11,6 +11,7 @@ import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.PostSt
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.RegisterStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.StoryStrategy;
 import com.nathanielbennett.tweeter.client.model.net.webrequeststrategies.UnfollowUserStrategy;
+import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
@@ -56,7 +57,21 @@ public class ServerFacade {
     public RegisterResponse register(RegisterRequest request) throws IOException {
         ClientCommunicator registerCommunicator = new ClientCommunicator(new RegisterStrategy());
 
-        return (RegisterResponse) registerCommunicator.doWebRequest(request, null);
+        RegisterResponse response = (RegisterResponse) registerCommunicator.doWebRequest(request, null);
+
+        if (response.getSuccess()) {
+            User newUser = new User();
+            newUser.setImageBytes(request.getImage());
+            newUser.setAlias(request.getUsername());
+            newUser.setLastName(request.getLastName());
+            newUser.setFirstName(request.getFirstName());
+            newUser.setFolloweeCount(0);
+            newUser.setFollowerCount(0);
+            newUser.setImageUrl("");
+            response.setUser(newUser);
+        }
+
+        return response;
     }
 
 

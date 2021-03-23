@@ -73,18 +73,13 @@ public class User implements Comparable<User>, Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public byte [] imageToBytes() {
+    public byte [] getImageBytes() {
         return imageBytes;
     }
 
-    public String getBytes() {
-        return Arrays.toString(this.imageBytes);
+    public void setImageBytes(byte[] imageBytes) {
+        this.imageBytes = imageBytes;
     }
-
-    public void setBytes(String imageBytes) {
-        this.imageBytes = imageBytes.getBytes();
-    }
-
 
     public int getFollowerCount() {
         return followerCount;

@@ -30,9 +30,9 @@ public class RegisterDAO {
 
             User user = new User(request.getFirstName(), request.getLastName(), request.getUsername(),
                     "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
-            user.setBytes(request.getImage().toString());
+            user.setImageBytes(request.getImage());
             dc.registerUser(user);
-            return new RegisterResponse(user, authToken1);
+            return new RegisterResponse(null, authToken1);
         }
     }
 }

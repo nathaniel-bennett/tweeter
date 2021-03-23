@@ -82,11 +82,11 @@ public abstract class TemplateTask extends AsyncTask<TweeterAPIRequest,  Void, T
 
     protected void loadUserImage(User user) {
         try {
-            if (user.imageToBytes() != null) {
+            if (user.getImageBytes() != null) {
                 return;
             }
             byte [] bytes = ByteArrayUtils.bytesFromUrl(user.getImageUrl());
-            user.setBytes(bytes.toString());
+            user.setImageBytes(bytes);
         } catch (IOException e) {
             Log.e(this.getClass().getName(), e.toString(), e);
         }
