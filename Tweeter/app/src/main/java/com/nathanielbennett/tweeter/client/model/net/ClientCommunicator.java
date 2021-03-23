@@ -16,8 +16,8 @@ import java.net.URL;
 
 public class ClientCommunicator {
 
-    private final String serverHost = "192.168.1.71";
-    private final String serverPort = "4040";
+    private final String serverHost = "https://mg0d2gdm2b.execute-api.us-west-2.amazonaws.com/Development";
+    private final String serverPort = "";
 
     private WebRequestStrategy webRequestStrategy;
 
@@ -55,7 +55,7 @@ public class ClientCommunicator {
 
 
     public TweeterAPIResponse doWebRequest(TweeterAPIRequest request, AuthToken authToken) throws IOException {
-        URL url = new URL("http://" + serverHost + ":" + serverPort + webRequestStrategy.getRequestPath(request));
+        URL url = new URL(serverHost + webRequestStrategy.getRequestPath(request));
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
