@@ -9,6 +9,10 @@ import java.util.UUID;
 public class AuthToken implements Serializable {
     private String authTokenID;
 
+    public AuthToken(String authTokenID){
+        this.authTokenID = authTokenID;
+    }
+
     public AuthToken() {
         authTokenID = UUID.randomUUID().toString();
     }
