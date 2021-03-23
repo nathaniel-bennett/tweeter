@@ -26,7 +26,7 @@ public class RegisterServiceTest {
     @BeforeEach
     public void setup() {
         registerService = new RegisterServiceProxy();
-        goodRequest = new RegisterRequest("Bartholomew", "Desperation", "Mr.Desperate", "GOODPASSWORD", new byte[1]);
+        goodRequest = new RegisterRequest("Bartholomew", "Desperation", "@TheMr.Desperate", "GOODPASSWORD", new byte[1]);
         badRequest = new RegisterRequest(null, null, null, null, null);
     }
 

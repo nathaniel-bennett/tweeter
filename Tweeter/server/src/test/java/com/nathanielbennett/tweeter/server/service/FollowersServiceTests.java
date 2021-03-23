@@ -49,8 +49,6 @@ public class FollowersServiceTests {
 
         args.add(Arguments.of(new FollowRequest(null, 1, "@me")));
         args.add(Arguments.of(new FollowRequest("", 1, "@me")));
-        args.add(Arguments.of(new FollowRequest("@me", 1, "")));
-        args.add(Arguments.of(new FollowRequest("@me", 1, null)));
         args.add(Arguments.of(new FollowRequest("@you", 0, "@me")));
 
         return args.stream();

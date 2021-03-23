@@ -20,10 +20,7 @@ public class DataCache {
     private static DataCache instance;
 
     public static DataCache getInstance(){
-        if (instance == null){
-            instance = new DataCache();
-        }
-        return instance;
+        return new DataCache();
     }
 
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
@@ -193,10 +190,10 @@ public class DataCache {
     }
 
     public void registerUser(User userToRegister) {
-        allUsers.put(userToRegister.getAlias(), userToRegister);
-        statusMap.put(userToRegister, new ArrayList<>());
-        followingMap.put(userToRegister, new ArrayList<>());
-        followerMap.put(userToRegister, new ArrayList<>());
+        //allUsers.put(userToRegister.getAlias(), userToRegister);
+        //statusMap.put(userToRegister, new ArrayList<>());
+        //followingMap.put(userToRegister, new ArrayList<>());
+        //followerMap.put(userToRegister, new ArrayList<>());
     }
 
     public void postStatus(User user, Status status) {

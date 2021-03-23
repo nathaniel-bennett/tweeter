@@ -32,7 +32,7 @@ public class FollowServiceTest {
 
         // follow requests
         validFollowRequest = new FollowUserRequest("@AmyAmes", new AuthToken(), "@BonnieBeatty");
-        invalidFollowRequest = new FollowUserRequest("@dAmyAmes", new AuthToken(), "dummyUser");
+        invalidFollowRequest = new FollowUserRequest("@Dumb", new AuthToken(), "@ME");
 
         // unfollow requets
         validUnFollowRequest = new UnfollowUserRequest("dummyUser", new AuthToken(), "@BobBobson");
@@ -54,7 +54,7 @@ public class FollowServiceTest {
     @Test
     public void invalidFollowRequest () throws IOException {
 
-        FollowUserResponse response = followService.follow(validFollowRequest);
+        FollowUserResponse response = followService.follow(invalidFollowRequest);
         Assertions.assertFalse(response.getSuccess());
         Assertions.assertNotNull(response.getErrorMessage());
     }
