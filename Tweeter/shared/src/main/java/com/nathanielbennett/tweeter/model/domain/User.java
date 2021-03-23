@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.model.domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * Represents a user in the system.
@@ -76,9 +77,14 @@ public class User implements Comparable<User>, Serializable {
         return imageBytes;
     }
 
-    public void setImageBytes(byte[] imageBytes) {
-        this.imageBytes = imageBytes;
+    public String getBytes() {
+        return Arrays.toString(this.imageBytes);
     }
+
+    public void setBytes(String imageBytes) {
+        this.imageBytes = imageBytes.getBytes();
+    }
+
 
     public int getFollowerCount() {
         return followerCount;
