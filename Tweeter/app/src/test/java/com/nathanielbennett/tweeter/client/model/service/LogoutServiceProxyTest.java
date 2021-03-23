@@ -62,7 +62,7 @@ public class LogoutServiceProxyTest {
     @Test
     public void testLogout_nullUsername_throwsException() throws IOException {
         Assertions.assertEquals("Username required to log out of session",
-                logoutServiceProxySpy.logout(nullUsername).getMessage());
+                logoutServiceProxySpy.logout(nullUsername).getErrorMessage());
     }
 
     /**
@@ -72,7 +72,7 @@ public class LogoutServiceProxyTest {
     @Test
     public void testLogout_nullAuthToken_throwsException() throws IOException {
         Assertions.assertEquals("Auth token required to log out of session",
-                logoutServiceProxySpy.logout(nullAuthToken).getMessage());
+                logoutServiceProxySpy.logout(nullAuthToken).getErrorMessage());
     }
 
     /**

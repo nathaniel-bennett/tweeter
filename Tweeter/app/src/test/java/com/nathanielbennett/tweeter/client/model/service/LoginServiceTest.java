@@ -61,7 +61,7 @@ public class LoginServiceTest {
     @Test
     public void testLogin_nullUsername_correctResponse() throws IOException {
         Assertions.assertEquals("A Username is required to sign in (please enter)",
-                loginServiceSpy.login(nullUsername).getMessage());
+                loginServiceSpy.login(nullUsername).getErrorMessage());
     }
 
     /**
@@ -71,7 +71,7 @@ public class LoginServiceTest {
     @Test
     public void testLogin_nullPassword_correctResponse() throws IOException {
         Assertions.assertEquals("A password is required to sign in (please enter)",
-                loginServiceSpy.login(nullPassword).getMessage());
+                loginServiceSpy.login(nullPassword).getErrorMessage());
     }
 
     /**

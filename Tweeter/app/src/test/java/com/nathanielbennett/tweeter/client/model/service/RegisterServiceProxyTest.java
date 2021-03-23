@@ -67,7 +67,7 @@ public class RegisterServiceProxyTest {
     @Test
     public void testRegister_nullUsername_correctResponse() throws IOException {
         Assertions.assertEquals("A Username is required to register (please enter)",
-                registerServiceProxySpy.register(nullUsername).getMessage());
+                registerServiceProxySpy.register(nullUsername).getErrorMessage());
     }
 
     /**
@@ -77,7 +77,7 @@ public class RegisterServiceProxyTest {
     @Test
     public void testRegister_nullPassword_correctResponse() throws IOException {
         Assertions.assertEquals("A password is required to register (please enter)",
-                registerServiceProxySpy.register(nullPassword).getMessage());
+                registerServiceProxySpy.register(nullPassword).getErrorMessage());
     }
 
     /**
@@ -87,7 +87,7 @@ public class RegisterServiceProxyTest {
     @Test
     public void testRegister_nullFirstName_correctResponse() throws IOException {
         Assertions.assertEquals("First name is required to register (please enter)",
-                registerServiceProxySpy.register(nullFirstName).getMessage());
+                registerServiceProxySpy.register(nullFirstName).getErrorMessage());
     }
 
     /**
@@ -97,7 +97,7 @@ public class RegisterServiceProxyTest {
     @Test
     public void testRegister_nullLastName_correctResponse() throws IOException {
         Assertions.assertEquals("Last name is required to register (please enter)",
-                registerServiceProxySpy.register(nullLastName).getMessage());
+                registerServiceProxySpy.register(nullLastName).getErrorMessage());
     }
 
     /**
@@ -107,7 +107,7 @@ public class RegisterServiceProxyTest {
     @Test
     public void testRegister_nullPicture_correctResponse() throws IOException {
         Assertions.assertEquals("A profile picture is required to register",
-                registerServiceProxySpy.register(nullImage).getMessage());
+                registerServiceProxySpy.register(nullImage).getErrorMessage());
     }
 
     /**
