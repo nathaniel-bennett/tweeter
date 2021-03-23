@@ -16,8 +16,6 @@ public class LogoutStrategy implements ClientCommunicator.WebRequestStrategy{
 
     @Override
     public String getRequestPath(TweeterAPIRequest request) {
-        LogoutRequest logoutRequest = (LogoutRequest) request;
-
         return "/logout";
     }
 

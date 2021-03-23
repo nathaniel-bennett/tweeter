@@ -18,7 +18,7 @@ import java.util.List;
 
 public class FollowDAO {
     /**
-     * TODO: document lol
+     * Attempts to insert a new
      * @param request
      * @return
      */

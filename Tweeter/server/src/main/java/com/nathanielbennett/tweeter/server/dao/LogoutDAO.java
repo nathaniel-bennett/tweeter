@@ -15,7 +15,7 @@ public class LogoutDAO {
      * @return A response indicating whether the logout was successful or not.
      */
     public LogoutResponse logout(LogoutRequest logoutRequest) {
-        if (!logoutRequest.getAuthToken().equals(dc.getAuthToken())) {
+        if (!logoutRequest.getAuthToken().equals(new AuthToken("Authorized"))) {
             throw new NotAuthorizedException("Invalid AuthToken");
         } else {
             return new LogoutResponse();

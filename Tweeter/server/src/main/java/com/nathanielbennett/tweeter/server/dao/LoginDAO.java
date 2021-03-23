@@ -8,7 +8,7 @@ import com.nathanielbennett.tweeter.server.DataCache;
 import com.nathanielbennett.tweeter.server.exceptions.InvalidPasswordException;
 
 public class LoginDAO {
-    private static final AuthToken authToken1 = new AuthToken();
+    private static final AuthToken authToken1 = new AuthToken("Authorized");
     private static final DataCache dc = DataCache.getInstance();
 
     /**
