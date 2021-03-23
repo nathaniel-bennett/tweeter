@@ -1,25 +1,25 @@
 package com.nathanielbennett.tweeter.model.service.response;
 
 public class CheckFollowingResponse extends TweeterAPIResponse {
-    Boolean isFollowing;
+    Boolean followingUser;
 
     public CheckFollowingResponse(boolean isFollowing) {
         super();
-        this.isFollowing = isFollowing;
+        this.followingUser = isFollowing;
     }
 
     public CheckFollowingResponse(String errorMessage) {
         super(errorMessage);
-        this.isFollowing = null;
+        this.followingUser = null;
     }
 
     public CheckFollowingResponse() { }
 
-    public Boolean isFollowingUser() {
-        return isFollowing;
+    public Boolean getFollowingUser() {
+        return followingUser;
     }
 
     public void setFollowingUser(Boolean following) {
-        isFollowing = following;
+        followingUser = following;
     }
 }

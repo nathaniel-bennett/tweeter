@@ -164,7 +164,7 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
 
     @Override
     public void checkFollowingSuccessful(CheckFollowingResponse checkFollowingResponse) {
-        if (checkFollowingResponse.isFollowingUser()) {
+        if (checkFollowingResponse.getFollowingUser()) {
             setFollowing();
         } else {
             setNotFollowing();
