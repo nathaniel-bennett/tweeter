@@ -16,7 +16,7 @@ public class UnfollowUserStrategy implements ClientCommunicator.WebRequestStrate
 
     @Override
     public String getRequestPath(TweeterAPIRequest request) {
-        return "/unfollowUser";
+        return "/unfollow";
     }
 
     @Override

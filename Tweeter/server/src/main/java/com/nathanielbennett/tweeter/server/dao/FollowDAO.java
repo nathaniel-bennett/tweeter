@@ -14,6 +14,7 @@ import com.nathanielbennett.tweeter.server.exceptions.UserAlreadyUnfollowedExcep
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FollowDAO {
     /**
@@ -34,16 +35,20 @@ public class FollowDAO {
             throw new BadRequestException("Requested user to follow does not exist.");
         }
 
-        ArrayList<User> followers = cache.getFollowers(loggedInUser);
-        if (followers.contains(loggedInUser)) {
+
+        List<User> following = cache.getFollowing(loggedInUser);
+        loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount() + 1);
+        if (following.contains(loggedInUser)) {
             throw new UserAlreadyFollowedException("Requested user to follow is already followed.");
         }
+        following.add(user);
 
+
+        List<User> followers = cache.getFollowers(user);
         followers.add(loggedInUser);
         user.setFollowerCount(user.getFollowerCount() + 1);
 
-        cache.getFollowing(loggedInUser).add(user);
-        loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount() + 1);
+
 
         return new FollowUserResponse();
     }
@@ -62,16 +67,19 @@ public class FollowDAO {
             throw new BadRequestException("Requested user to unfollow does not exist.");
         }
 
-        ArrayList<User> followers = cache.getFollowers(loggedInUser);
-        if (!followers.contains(loggedInUser)) {
+        List<User> following = cache.getFollowing(loggedInUser);
+        loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount() - 1);
+        if (!following.contains(user)) {
             throw new UserAlreadyUnfollowedException("Requested user to unfollow was not being followed in the first place.");
         }
-        followers.remove(loggedInUser);
 
+        following.remove(user);
+
+        ArrayList<User> followers = cache.getFollowers(user);
+        followers.remove(loggedInUser);
         user.setFollowerCount(user.getFollowerCount() - 1);
 
-        cache.getFollowing(loggedInUser).remove(user);
-        loggedInUser.setFolloweeCount(loggedInUser.getFolloweeCount() - 1);
+
 
         return new UnfollowUserResponse();
     }

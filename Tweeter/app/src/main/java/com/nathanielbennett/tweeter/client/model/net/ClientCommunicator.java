@@ -66,7 +66,7 @@ public class ClientCommunicator {
             connection.setRequestMethod(webRequestStrategy.getRequestMethod());
             connection.setDoOutput(webRequestStrategy.hasRequestBody());
             if (authToken != null) {
-                connection.addRequestProperty("Authorization", authToken.toString());
+                connection.addRequestProperty("auth", authToken.toString());
             }
 
             connection.connect();
