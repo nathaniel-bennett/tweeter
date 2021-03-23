@@ -20,9 +20,9 @@ public class StoryStrategy implements ClientCommunicator.WebRequestStrategy {
 
         StatusRequest statusRequest = (StatusRequest) request;
 
-        String uri = "/feed/" + statusRequest.getAlias() + "/" + statusRequest.getLimit();
-        if (statusRequest.getLastStatusMessageSent() != null && !statusRequest.getLastStatusMessageSent().isEmpty()) {
-            uri += "/" + statusRequest.getLastStatusMessageSent();
+        String uri = "/story/" + statusRequest.getAlias() + "/" + statusRequest.getLimit();
+        if (statusRequest.getLastStatus() != null && !statusRequest.getLastStatus().isEmpty()) {
+            uri += "/" + statusRequest.getLastStatus();
         }
 
         return uri;

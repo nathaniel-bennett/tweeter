@@ -47,11 +47,11 @@ public class StatusRequest implements TweeterAPIRequest {
      * Getter for lastStatusMessageSent
      * @return lastStatusMessageSent
      */
-    public String getLastStatusMessageSent() {
+    public String getLastStatus() {
         return lastStatusMessageSent;
     }
 
-    public void setLastStatusMessageSent(String lastStatusMessageSent) {
+    public void setLastStatus(String lastStatusMessageSent) {
         this.lastStatusMessageSent = lastStatusMessageSent;
     }
 }
