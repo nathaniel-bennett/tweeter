@@ -11,19 +11,19 @@ public class LogoutStrategy implements ClientCommunicator.WebRequestStrategy{
 
     @Override
     public boolean hasRequestBody() {
-        return false;
+        return true;
     }
 
     @Override
     public String getRequestPath(TweeterAPIRequest request) {
         LogoutRequest logoutRequest = (LogoutRequest) request;
 
-        return "/logout?username=" + logoutRequest.getUsername();
+        return "/logout";
     }
 
     @Override
     public String getRequestMethod() {
-        return "DELETE";
+        return "POST";
     }
 
     @Override
