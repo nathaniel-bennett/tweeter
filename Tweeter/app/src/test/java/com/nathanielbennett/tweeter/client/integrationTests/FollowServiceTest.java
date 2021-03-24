@@ -54,7 +54,7 @@ public class FollowServiceTest {
     @Test
     public void invalidFollowRequest () throws IOException {
 
-        FollowUserResponse response = followService.follow(validFollowRequest);
+        FollowUserResponse response = followService.follow(invalidFollowRequest);
         Assertions.assertFalse(response.getSuccess());
         Assertions.assertNotNull(response.getErrorMessage());
     }
