@@ -1,16 +1,16 @@
 package com.nathanielbennett.tweeter.server.dao;
 
-import com.nathanielbennett.tweeter.model.domain.Status;
+import com.nathanielbennett.tweeter.server.model.StoredStatus;
 
 import java.util.List;
 
 public class StoryDAO {
 
-    public void addStatus(Status status) {
+    public void addStatus(StoredStatus status) {
 
     }
 
-    public List<Status> getStatuses(int numStatuses, String lastSeenStatus) {
+    public List<StoredStatus> getStatuses(String alias, int numStatuses, String lastSeenStatus) {
         return null;
     }
 

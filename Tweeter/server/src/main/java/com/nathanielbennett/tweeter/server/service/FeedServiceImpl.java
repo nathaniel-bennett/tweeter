@@ -1,12 +1,16 @@
 package com.nathanielbennett.tweeter.server.service;
 
+import com.nathanielbennett.tweeter.model.domain.Status;
 import com.nathanielbennett.tweeter.model.service.FeedService;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.dao.FeedDAO;
+import com.nathanielbennett.tweeter.server.model.StoredStatus;
 
-public class FeedServiceImpl implements FeedService {
+import java.util.List;
+
+public class FeedServiceImpl extends AbstractStatusServiceTemplate implements FeedService {
     @Override
     public StatusResponse fetchFeed(StatusRequest request) {
         if (request == null) {
@@ -17,7 +21,12 @@ public class FeedServiceImpl implements FeedService {
             throw new BadRequestException("Request missing user");
         }
 
-        return getFeedDao().getFeed(request);
+        List<StoredStatus> storedStatusList = getFeedDao().getUserFeed(request.getAlias(), request.getLimit(), request.getLastStatus());
+        boolean hasMorePages = (storedStatusList.size() == request.getLimit());
+
+        List<Status> statuses = formUserStatuses(storedStatusList);
+
+        return new StatusResponse(hasMorePages, statuses);
     }
 
     /**

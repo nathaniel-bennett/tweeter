@@ -11,6 +11,7 @@ import com.nathanielbennett.tweeter.model.domain.Status;
 import com.nathanielbennett.tweeter.model.net.Serializer;
 import com.nathanielbennett.tweeter.server.dao.FollowDAO;
 import com.nathanielbennett.tweeter.server.model.PostUpdateBatch;
+import com.nathanielbennett.tweeter.server.model.StoredStatus;
 
 import java.util.List;
 
@@ -24,9 +25,9 @@ public class PostUpdateFeedMessages implements RequestHandler<SQSEvent, Void> {
         Serializer serializer = new Serializer();
 
         for (SQSEvent.SQSMessage msg : input.getRecords()) {
-            Status status = serializer.deserialize(msg.getBody(), Status.class);
+            StoredStatus status = serializer.deserialize(msg.getBody(), StoredStatus.class);
 
-            List<String> followingAliases = followDAO.getFollowing(status.getUserOfStatus().getAlias());
+            List<String> followingAliases = followDAO.getFollowing(status.getAlias());
 
             for (int i = 0; i < followingAliases.size(); i += BATCH_SIZE) {
                 List<String> aliases = followingAliases.subList(i, Integer.min(i + 25, followingAliases.size()));

@@ -1,5 +1,6 @@
 package com.nathanielbennett.tweeter.server.service;
 
+import com.nathanielbennett.tweeter.model.domain.Status;
 import com.nathanielbennett.tweeter.model.service.StoryService;
 import com.nathanielbennett.tweeter.model.service.request.PostRequest;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
@@ -7,8 +8,11 @@ import com.nathanielbennett.tweeter.model.service.response.PostResponse;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.dao.StoryDAO;
+import com.nathanielbennett.tweeter.server.model.StoredStatus;
 
-public class StoryServiceImpl implements StoryService {
+import java.util.List;
+
+public class StoryServiceImpl extends AbstractStatusServiceTemplate implements StoryService {
     @Override
     public StatusResponse fetchStory(StatusRequest request) {
         if (request == null) {
@@ -23,7 +27,14 @@ public class StoryServiceImpl implements StoryService {
             throw new BadRequestException("Request limit cannot equal zero");
         }
 
-        return getStoryDAO().getStory(request);
+        StoryDAO storyDAO = getStoryDAO();
+
+        List<StoredStatus> storedStatusList = storyDAO.getStatuses(request.getAlias(), request.getLimit(), request.getLastStatus());
+        boolean hasMorePages = (storedStatusList.size() == request.getLimit());
+
+        List<Status> statuses = formUserStatuses(storedStatusList);
+
+        return new StatusResponse(hasMorePages, statuses);
     }
 
     /**

@@ -6,9 +6,9 @@ import java.util.List;
 
 public class PostUpdateBatch {
     private List<String> aliases;
-    private Status status;
+    private StoredStatus status;
 
-    public PostUpdateBatch(Status status, List<String> aliases) {
+    public PostUpdateBatch(StoredStatus status, List<String> aliases) {
         this.status = status;
         this.aliases = aliases;
     }
@@ -23,11 +23,11 @@ public class PostUpdateBatch {
         this.aliases = aliases;
     }
 
-    public Status getStatus() {
+    public StoredStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(StoredStatus status) {
         this.status = status;
     }
 }

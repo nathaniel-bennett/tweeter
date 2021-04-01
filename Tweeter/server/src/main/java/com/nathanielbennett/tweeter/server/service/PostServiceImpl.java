@@ -7,14 +7,19 @@ import com.amazonaws.services.sqs.model.SendMessageResult;
 import com.nathanielbennett.tweeter.model.domain.Status;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.net.Serializer;
+import com.nathanielbennett.tweeter.model.service.AuthorizationService;
 import com.nathanielbennett.tweeter.model.service.PostService;
+import com.nathanielbennett.tweeter.model.service.request.AuthorizationRequest;
 import com.nathanielbennett.tweeter.model.service.request.PostRequest;
+import com.nathanielbennett.tweeter.model.service.response.AuthorizationResponse;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
+import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
 import com.nathanielbennett.tweeter.server.dao.StoryDAO;
 import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.NotAuthorizedException;
 import com.nathanielbennett.tweeter.server.dao.PostDAO;
+import com.nathanielbennett.tweeter.server.model.StoredStatus;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -37,11 +42,17 @@ public class PostServiceImpl implements PostService {
             throw new BadRequestException("Message body missing user's username");
         }
 
-        UserDAO userDAO = getUserDAO();
-        User associatedUser = userDAO.getUser(request.getUsername());
-        List<User> mentionedUsers = getMentionedUsers(request.getStatus());
+        // Now check to make sure username/auth token combo is valid
 
-        Status status = new Status(associatedUser, request.getStatus(), DateFormat.getDateTimeInstance().format(new Date()), mentionedUsers);
+        AuthorizationRequest authRequest = new AuthorizationRequest(request);
+        AuthorizationService authService = new AuthorizationServiceImpl();
+        AuthorizationResponse authResponse = authService.isAuthorized(authRequest);
+
+        if (!authResponse.getSuccess()) {
+            return new PostResponse(authResponse.getErrorMessage());
+        }
+
+        StoredStatus status = new StoredStatus(request.getUsername(), request.getStatus(), DateFormat.getDateTimeInstance().format(new Date()));
 
         getStoryDAO().addStatus(status);
 
@@ -75,50 +86,7 @@ public class PostServiceImpl implements PostService {
         return new StoryDAO();
     }
 
-    public UserDAO getUserDAO() {
-        return new UserDAO();
-    }
-
-
-    private List<User> getMentionedUsers(String status) {
-        List<String> mentionedAliases = getMentionedAliases(status);
-        List<User> mentionedUsers = new ArrayList<>();
-
-        UserDAO userDAO = getUserDAO();
-
-        for (String alias : mentionedAliases) {
-            User user = userDAO.getUser(alias);
-            if (user != null) { // TODO: Make sure that this returns null instead of throwing error when no user is to be found. Either that or make UserNotFound exception...
-                mentionedUsers.add(user);
-            }
-        }
-
-        return mentionedUsers;
-    }
-
-    private List<String> getMentionedAliases(String status) {
-        StringBuilder sb = new StringBuilder(status);
-        List<String> userMentions = new ArrayList<>();
-
-        Integer start = null;
-
-        for (int i = 0; i < status.length(); i++) {
-            if (sb.charAt(i) == '@') {
-                start = i;
-                continue;
-            }
-
-            if (start != null) {
-                if (!(Character.isAlphabetic(status.charAt(i)) || Character.isDigit(status.charAt(i)))
-                            || i == status.length() - 1) {
-                    int end = (i == status.length() - 1) ? i + 1 : i;
-
-                    userMentions.add(sb.substring(start, end)); // TODO: make sure this substring works
-                    start = null;
-                }
-            }
-        }
-
-        return userMentions;
+    public AuthTokenDAO getAuthTokenDAO() {
+        return new AuthTokenDAO();
     }
 }

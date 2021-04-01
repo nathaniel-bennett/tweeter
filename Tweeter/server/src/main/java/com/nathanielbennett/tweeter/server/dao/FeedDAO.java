@@ -1,21 +1,20 @@
 package com.nathanielbennett.tweeter.server.dao;
 
 import com.nathanielbennett.tweeter.model.domain.Status;
-import com.nathanielbennett.tweeter.model.domain.User;
-import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
-import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
-import com.nathanielbennett.tweeter.server.DataCache;
-import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
+import com.nathanielbennett.tweeter.server.model.StoredStatus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FeedDAO {
-    public void addStatus(String alias, Status status) {
+    public void addStatus(String alias, StoredStatus status) {
 
     }
 
-    public List<Status> getUserFeed(String alias, int numStatuses, String lastSeenStatus) {
+    public void addStatus(List<String> aliases, StoredStatus status) {
+
+    }
+
+    public List<StoredStatus> getUserFeed(String alias, int numStatuses, String lastSeenStatus) {
         return null;
     }
 }
