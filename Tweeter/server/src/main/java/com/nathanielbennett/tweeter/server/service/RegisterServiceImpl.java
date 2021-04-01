@@ -1,8 +1,12 @@
 package com.nathanielbennett.tweeter.server.service;
 
+import com.nathanielbennett.tweeter.model.domain.AuthToken;
+import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.RegisterService;
 import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
 import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
+import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
+import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.WeakPasswordException;
 import com.nathanielbennett.tweeter.server.dao.LogoutDAO;
@@ -35,8 +39,13 @@ public class RegisterServiceImpl implements RegisterService {
         if (request.getImage() == null || request.getImage().length == 0) {
             throw new BadRequestException("A profile picture is required in order to register");
         }
-
-        return getRegisterDAO().register(request);
+        if (getRegisterDAO().createUser(request)){
+            User user = getRegisterDAO().getUser(request.getUsername());
+            AuthTokenDAO authTokenDAO = new AuthTokenDAO();
+            AuthToken authToken = authTokenDAO.createAuthToken(request.getUsername());
+            return new RegisterResponse(user, authToken);
+        }
+        return new RegisterResponse("Unable to create user");
     }
 
     /**
@@ -46,7 +55,7 @@ public class RegisterServiceImpl implements RegisterService {
      *
      * @return the instance.
      */
-    public RegisterDAO getRegisterDAO() {
-        return new RegisterDAO();
+    public UserDAO getRegisterDAO() {
+        return new UserDAO();
     }
 }
