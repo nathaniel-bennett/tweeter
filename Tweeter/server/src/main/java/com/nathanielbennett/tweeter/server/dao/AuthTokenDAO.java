@@ -11,7 +11,11 @@ import java.util.List;
 public class AuthTokenDAO {
 
     public AuthToken createAuthToken(String alias) throws DataAccessFailureException {
-        return new AuthToken();
+        AuthToken authToken = new AuthToken();
+
+        // TODO: actually store auth token in database
+
+        return authToken;
     }
 
     public List<AuthToken> getValidAuthTokens(String alias) throws DataAccessFailureException {
