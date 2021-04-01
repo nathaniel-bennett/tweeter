@@ -8,11 +8,11 @@ public class Serializer {
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public String serialize(TweeterAPIRequest request) {
-        return gson.toJson(request);
+    public String serialize(Object objectToSerialize) {
+        return gson.toJson(objectToSerialize);
     }
 
-    public <T> T deserialize(String response, Class<T> type) {
-        return type.cast(gson.fromJson(response, type));
+    public <T> T deserialize(String stringToDeserialize, Class<T> type) {
+        return type.cast(gson.fromJson(stringToDeserialize, type));
     }
 }
