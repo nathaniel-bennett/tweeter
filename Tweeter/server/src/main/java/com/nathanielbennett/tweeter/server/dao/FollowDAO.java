@@ -17,11 +17,11 @@ public class FollowDAO {
         return false;
     }
 
-    public List<String> getFollowing(String follower) throws DataAccessFailureException {
+    public List<String> getFollowing(String follower, int limit, String lastFollower) throws DataAccessFailureException {
         return null;
     }
 
-    public List<String> getFollowedBy(String followee) throws DataAccessFailureException {
+    public List<String> getFollowedBy(String followee, int limit, String lastfollowee) throws DataAccessFailureException {
         return null;
     }
 }
