@@ -12,5 +12,19 @@ public class UserDAO {
         return null;
     }
 
+    public void decrementUserFollowing(String alias) {
 
+    }
+
+    public void incrementUserFollowing(String alias) {
+
+    }
+
+    public void decrementUserFollowers(String alias) {
+
+    }
+
+    public void incrementUserFollowers(String alias) {
+
+    }
 }
