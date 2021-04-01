@@ -15,10 +15,6 @@ public class FeedDAO {
 
     }
 
-    public void removeStatuses(String alias, String aliasOfStatusesToRemove) {
-
-    }
-
     public List<Status> getUserFeed(String alias, int numStatuses, String lastSeenStatus) {
         return null;
     }
