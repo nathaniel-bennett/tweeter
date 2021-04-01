@@ -2,20 +2,18 @@ package com.nathanielbennett.tweeter.server.dao;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.BatchWriteItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.dynamodbv2.document.Index;
 import com.amazonaws.services.dynamodbv2.document.Item;
-import com.amazonaws.services.dynamodbv2.document.ItemCollection;
-import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
-import com.amazonaws.services.dynamodbv2.document.QueryOutcome;
 import com.amazonaws.services.dynamodbv2.document.Table;
-import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
-import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
-import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
-import com.nathanielbennett.tweeter.server.exceptions.DataAccessFailureException;
+import com.amazonaws.services.dynamodbv2.document.TableWriteItems;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.QueryRequest;
+import com.amazonaws.services.dynamodbv2.model.QueryResult;
+import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
+import com.nathanielbennett.tweeter.server.model.ResultsPage;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,99 +21,103 @@ public abstract class AmazonDAOTemplate {
 
     private static final String REGION = "us-west-1";
 
-
-    protected abstract String getTableName();
-
-    protected abstract Map<String, String> getNameMap();
-    protected abstract Map<String, Object> getValueMap(Object o);
-
-    protected abstract String getConditionExpression();
-
-    protected abstract String getIndexName();
-
-    protected abstract Object convertItems(List<Item> items) throws DataAccessFailureException;
-
-    protected abstract PrimaryKey getDeletePrimaryKey(Object o);
+    private static AmazonDynamoDB amazonDynamoDB = AmazonDynamoDBClientBuilder
+                                                        .standard()
+                                                        .withRegion(REGION)
+                                                        .build();
+    private static DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
 
 
-    protected void addToDatabase(Object o) {
+    private final String tableName;
+    private final String partitionKeyAttr;
+    private final String sortKeyAttr;
 
+
+    // Strings that need to be defined
+    public AmazonDAOTemplate(String tableName, String partitionKeyAttr, String sortKeyAttr) {
+        this.tableName = tableName;
+        this.partitionKeyAttr = partitionKeyAttr;
+        this.sortKeyAttr = sortKeyAttr;
     }
 
-    protected void addToDatabase(List<Object> o) {
-        // TODO: use transaction here
+    // Functions that need to be implemented--implementations can be left empty if not used
+    protected abstract Object databaseItemToObject(Map<String, AttributeValue> item) throws DataAccessException;
+    protected abstract Item objectToDatabaseItem(Object o);
 
+
+    protected void addToTable(Object o) {
+        Table table = dynamoDB.getTable(tableName);
+
+        Item item = objectToDatabaseItem(o);
+        table.putItem(item);
     }
 
-    protected Object getFromDatabase(Object o) {
-        Table table = getTable();
-        Index index = null;
+    protected void addToTable(List<Object> oList) {
+        TableWriteItems tableWriteItems = new TableWriteItems(tableName);
 
-        if (getIndexName() != null) {
-            index = table.getIndex(getIndexName());
+        for (Object o : oList) {
+            Item item = objectToDatabaseItem(o);
+            tableWriteItems.addItemToPut(item);
         }
 
-        QuerySpec querySpec = new QuerySpec()
-                .withKeyConditionExpression(getConditionExpression())
-                .withNameMap(getNameMap())
-                .withValueMap(getValueMap(o));
+        BatchWriteItemOutcome outcome = dynamoDB.batchWriteItem(tableWriteItems);
+        if (outcome.getUnprocessedItems().size() > 0) {
+            // TODO: log error here
+            throw new DataAccessException("Failed to add some items to table during batched add.");
+        }
+    }
 
-        if (index != null) {
-            querySpec = querySpec.withScanIndexForward(false);
-        } else {
-            querySpec = querySpec.withScanIndexForward(true);
+
+
+    protected void removeFromTable(String partitionKey) {
+        Table table = dynamoDB.getTable(tableName);
+        table.deleteItem(partitionKeyAttr, partitionKey);
+    }
+
+    protected void removeFromTable(String partitionKey, String sortKey) {
+        Table table = dynamoDB.getTable(tableName);
+        table.deleteItem(partitionKeyAttr, partitionKey, sortKeyAttr, sortKey);
+    }
+
+
+
+    protected ResultsPage getPagedFromDatabase(String partitionValue, int pageSize, String lastRetrieved) {
+        ResultsPage result = new ResultsPage();
+
+        Map<String, String> attrNames = new HashMap<>();
+        attrNames.put("#partitionAttr", partitionKeyAttr);
+
+        Map<String, AttributeValue> attrValues = new HashMap<>();
+        attrValues.put(":partitionValue", new AttributeValue().withS(partitionValue));
+
+        QueryRequest queryRequest = new QueryRequest()
+                .withTableName(tableName)
+                .withKeyConditionExpression("#partitionAttr = :partitionValue")
+                .withExpressionAttributeNames(attrNames)
+                .withExpressionAttributeValues(attrValues)
+                .withLimit(pageSize);
+
+        if (lastRetrieved != null && !lastRetrieved.isEmpty()) {
+            Map<String, AttributeValue> startKey = new HashMap<>();
+            startKey.put(partitionKeyAttr, new AttributeValue().withS(partitionValue));
+            startKey.put(sortKeyAttr, new AttributeValue().withS(lastRetrieved));
+
+            queryRequest = queryRequest.withExclusiveStartKey(startKey);
         }
 
-        ItemCollection<QueryOutcome> outcome = null;
-
-        List<Item> items = new ArrayList<>();
-        try {
-            if (index != null) {
-                outcome = index.query(querySpec);
-            } else {
-                outcome = table.query(querySpec);
+        QueryResult queryResult = amazonDynamoDB.query(queryRequest);
+        List<Map<String, AttributeValue>> items = queryResult.getItems();
+        if (items != null) {
+            for (Map<String, AttributeValue> item : items) {
+                result.addValue(databaseItemToObject(item));
             }
-
-            Iterator<Item> iterator = outcome.iterator();
-
-            while (iterator.hasNext()) {
-                items.add(iterator.next());
-            }
-        } catch (AmazonDynamoDBException e) { // TODO: is this the right exception?
-
-            throw new DataAccessFailureException("Database access failed: " + e.getLocalizedMessage());
         }
 
-        return convertItems(items);
-    }
-
-    protected void updateDatabase(Object o) {
-
-    }
-
-    protected void removeFromDatabase(Object o) {
-        Table table = getTable();
-
-        DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
-                .withPrimaryKey(getDeletePrimaryKey(o));
-
-        try {
-            table.deleteItem(deleteItemSpec);
-        } catch (AmazonDynamoDBException e) {
-
-            throw new DataAccessFailureException("Database delete failed: " + e.getLocalizedMessage());
+        Map<String, AttributeValue> lastKey = queryResult.getLastEvaluatedKey();
+        if (lastKey != null) {
+            result.setLastKey(lastKey.get(sortKeyAttr).getS());
         }
+
+        return result;
     }
-
-
-    private Table getTable() {
-        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
-                .withRegion(REGION)
-                .build();
-
-        DynamoDB db = new DynamoDB(client);
-
-        return db.getTable(getTableName());
-    }
-
 }

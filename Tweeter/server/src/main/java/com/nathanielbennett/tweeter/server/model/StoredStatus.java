@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.server.model;
 
 public class StoredStatus {
+    private String feedOwner = null; // Only used in DAO
     private String alias;
     private String message;
     private String timestamp;
@@ -12,6 +13,15 @@ public class StoredStatus {
     }
 
     public StoredStatus() { }
+
+
+    public String getFeedOwner() {
+        return feedOwner;
+    }
+
+    public void setFeedOwner(String feedOwner) {
+        this.feedOwner = feedOwner;
+    }
 
 
     public String getAlias() {
