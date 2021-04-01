@@ -10,8 +10,8 @@ import java.util.List;
 
 public class AuthTokenDAO {
 
-    public void createAuthToken(AuthToken authToken) throws DataAccessFailureException {
-
+    public AuthToken createAuthToken(String alias) throws DataAccessFailureException {
+        return new AuthToken();
     }
 
     public List<AuthToken> getValidAuthTokens(String alias) throws DataAccessFailureException {
