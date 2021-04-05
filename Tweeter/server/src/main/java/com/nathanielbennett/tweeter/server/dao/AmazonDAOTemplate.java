@@ -67,6 +67,10 @@ public abstract class AmazonDAOTemplate {
         }
     }
 
+    protected void updateTable(String partitionKey, String fieldName, Object fieldValue) {
+        // TODO: implement
+    }
+
 
 
     protected void removeFromTable(String partitionKey) {
