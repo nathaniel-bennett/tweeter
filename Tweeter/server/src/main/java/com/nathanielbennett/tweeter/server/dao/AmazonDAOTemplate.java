@@ -13,16 +13,32 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.amazonaws.services.dynamodbv2.model.QueryResult;
 import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
-import com.nathanielbennett.tweeter.server.exceptions.DataAccessFailureException;
 import com.nathanielbennett.tweeter.server.model.ResultsPage;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public abstract class AmazonDAOTemplate {
+
+    protected class DBIndex {
+        private final String indexName;
+        private final String indexPrimaryKeyAttr;
+
+        public DBIndex(String indexName, String indexPrimaryKeyAttr) {
+            this.indexName = indexName;
+            this.indexPrimaryKeyAttr = indexPrimaryKeyAttr;
+        }
+
+        public String getIndexName() {
+            return indexName;
+        }
+
+        public String getIndexPrimaryKeyAttr() {
+            return indexPrimaryKeyAttr;
+        }
+    }
 
     private static final String REGION = "us-west-1";
 
@@ -37,6 +53,11 @@ public abstract class AmazonDAOTemplate {
     private final String partitionKeyAttr;
     private final String sortKeyAttr;
 
+    public AmazonDAOTemplate(String tableName, String partitionKeyAttr) {
+        this.tableName = tableName;
+        this.partitionKeyAttr = partitionKeyAttr;
+        this.sortKeyAttr = null;
+    }
 
     // Strings that need to be defined
     public AmazonDAOTemplate(String tableName, String partitionKeyAttr, String sortKeyAttr) {
@@ -114,44 +135,21 @@ public abstract class AmazonDAOTemplate {
 
 
     protected Object getFromTable(String partitionKey) {
-        List<Map<String, AttributeValue>> items;
-
-        Map<String, String> attrNames = new HashMap<>();
-        attrNames.put("#partitionAttr", partitionKeyAttr);
-
-        Map<String, AttributeValue> attrValues = new HashMap<>();
-        attrValues.put(":partitionValue", new AttributeValue().withS(partitionKey));
-
-        try {
-            QueryRequest queryRequest = new QueryRequest()
-                    .withTableName(tableName)
-                    .withKeyConditionExpression("#partitionAttr = :partitionValue")
-                    .withExpressionAttributeNames(attrNames)
-                    .withExpressionAttributeValues(attrValues);
-
-            QueryResult queryResult = amazonDynamoDB.query(queryRequest);
-            items = queryResult.getItems();
-            if (items == null) {
-                return null;
-            }
-
-        } catch (AmazonDynamoDBException e) {
-            throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
-        }
-
-        if (items.size() > 1) {
-            return new DataAccessException("Multiple items found in database when only one was expected");
-        }
-
-        return databaseItemToObject(items.get(0));
+        return getFromTable(partitionKey, null);
     }
 
     protected Object getFromTable(String partitionKey, String sortKey) {
         List<Map<String, AttributeValue>> items;
 
+        String keyConditionExpression = "#partitionAttr = :partitionValue";
+        if (sortKey != null) {
+            keyConditionExpression += " and #sortAttr = :sortValue";
+        }
+
         Map<String, String> attrNames = new HashMap<>();
         attrNames.put("#partitionAttr", partitionKeyAttr);
         attrNames.put("#sortAttr", sortKeyAttr);
+        // TODO: do we need to take sortKeyAttr/sortValue out when sortKey is null, or...?
 
         Map<String, AttributeValue> attrValues = new HashMap<>();
         attrValues.put(":partitionValue", new AttributeValue().withS(partitionKey));
@@ -160,7 +158,7 @@ public abstract class AmazonDAOTemplate {
         try {
             QueryRequest queryRequest = new QueryRequest()
                     .withTableName(tableName)
-                    .withKeyConditionExpression("#partitionAttr = :partitionValue and #sortAttr = :sortValue")
+                    .withKeyConditionExpression(keyConditionExpression)
                     .withExpressionAttributeNames(attrNames)
                     .withExpressionAttributeValues(attrValues);
 
@@ -181,14 +179,25 @@ public abstract class AmazonDAOTemplate {
         return databaseItemToObject(items.get(0));
     }
 
+
     protected List<Object> getAllFromTable(String partitionValue) {
-        List<Object> result = new ArrayList<Object>();
+        return getAllFromTable(partitionValue, null);
+    }
+
+    protected List<Object> getAllFromTable(String primaryValue, DBIndex index) {
+        List<Object> result = new ArrayList<>();
+        String primaryAttr;
+        if (index != null) {
+            primaryAttr = index.getIndexPrimaryKeyAttr();
+        } else {
+            primaryAttr = partitionKeyAttr;
+        }
 
         Map<String, String> attrNames = new HashMap<>();
-        attrNames.put("#partitionAttr", partitionKeyAttr);
+        attrNames.put("#partitionAttr", primaryAttr);
 
         Map<String, AttributeValue> attrValues = new HashMap<>();
-        attrValues.put(":partitionValue", new AttributeValue().withS(partitionValue));
+        attrValues.put(":partitionValue", new AttributeValue().withS(primaryValue));
 
         try {
             QueryRequest queryRequest = new QueryRequest()
@@ -196,6 +205,10 @@ public abstract class AmazonDAOTemplate {
                     .withKeyConditionExpression("#partitionAttr = :partitionValue")
                     .withExpressionAttributeNames(attrNames)
                     .withExpressionAttributeValues(attrValues);
+
+            if (index != null) {
+                queryRequest = queryRequest.withIndexName(index.getIndexName());
+            }
 
             QueryResult queryResult = amazonDynamoDB.query(queryRequest);
             List<Map<String, AttributeValue>> items = queryResult.getItems();
@@ -214,40 +227,58 @@ public abstract class AmazonDAOTemplate {
 
 
     protected ResultsPage getPagedFromDatabase(String partitionValue, int pageSize, String lastRetrieved) {
+        return getPagedFromDatabase(partitionValue, pageSize, lastRetrieved, null);
+    }
+
+    protected ResultsPage getPagedFromDatabase(String partitionValue, int pageSize, String lastRetrieved, DBIndex index) {
         ResultsPage result = new ResultsPage();
+        String primaryAttr;
+        if (index != null) {
+            primaryAttr = index.getIndexPrimaryKeyAttr();
+        } else {
+            primaryAttr = partitionKeyAttr;
+        }
 
         Map<String, String> attrNames = new HashMap<>();
-        attrNames.put("#partitionAttr", partitionKeyAttr);
+        attrNames.put("#primaryAttr", primaryAttr);
 
         Map<String, AttributeValue> attrValues = new HashMap<>();
-        attrValues.put(":partitionValue", new AttributeValue().withS(partitionValue));
+        attrValues.put(":primaryValue", new AttributeValue().withS(partitionValue));
 
-        QueryRequest queryRequest = new QueryRequest()
-                .withTableName(tableName)
-                .withKeyConditionExpression("#partitionAttr = :partitionValue")
-                .withExpressionAttributeNames(attrNames)
-                .withExpressionAttributeValues(attrValues)
-                .withLimit(pageSize);
+        try {
+            QueryRequest queryRequest = new QueryRequest()
+                    .withTableName(tableName)
+                    .withKeyConditionExpression("#primaryAttr = :primaryValue")
+                    .withExpressionAttributeNames(attrNames)
+                    .withExpressionAttributeValues(attrValues)
+                    .withLimit(pageSize);
 
-        if (lastRetrieved != null && !lastRetrieved.isEmpty()) {
-            Map<String, AttributeValue> startKey = new HashMap<>();
-            startKey.put(partitionKeyAttr, new AttributeValue().withS(partitionValue));
-            startKey.put(sortKeyAttr, new AttributeValue().withS(lastRetrieved));
-
-            queryRequest = queryRequest.withExclusiveStartKey(startKey);
-        }
-
-        QueryResult queryResult = amazonDynamoDB.query(queryRequest);
-        List<Map<String, AttributeValue>> items = queryResult.getItems();
-        if (items != null) {
-            for (Map<String, AttributeValue> item : items) {
-                result.addValue(databaseItemToObject(item));
+            if (index != null) {
+                queryRequest = queryRequest.withIndexName(index.getIndexName());
             }
-        }
 
-        Map<String, AttributeValue> lastKey = queryResult.getLastEvaluatedKey();
-        if (lastKey != null) {
-            result.setLastKey(lastKey.get(sortKeyAttr).getS());
+            if (lastRetrieved != null && !lastRetrieved.isEmpty()) {
+                Map<String, AttributeValue> startKey = new HashMap<>();
+                startKey.put(partitionKeyAttr, new AttributeValue().withS(partitionValue));
+                startKey.put(sortKeyAttr, new AttributeValue().withS(lastRetrieved));
+
+                queryRequest = queryRequest.withExclusiveStartKey(startKey);
+            }
+
+            QueryResult queryResult = amazonDynamoDB.query(queryRequest);
+            List<Map<String, AttributeValue>> items = queryResult.getItems();
+            if (items != null) {
+                for (Map<String, AttributeValue> item : items) {
+                    result.addValue(databaseItemToObject(item));
+                }
+            }
+
+            Map<String, AttributeValue> lastKey = queryResult.getLastEvaluatedKey();
+            if (lastKey != null) {
+                result.setLastKey(lastKey.get(sortKeyAttr).getS());
+            }
+        } catch (AmazonDynamoDBException e) {
+            throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
         }
 
         return result;
