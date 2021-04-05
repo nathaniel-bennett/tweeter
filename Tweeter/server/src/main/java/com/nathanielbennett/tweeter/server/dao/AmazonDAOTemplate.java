@@ -8,12 +8,16 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.TableWriteItems;
+import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.amazonaws.services.dynamodbv2.model.QueryResult;
 import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
+import com.nathanielbennett.tweeter.server.exceptions.DataAccessFailureException;
 import com.nathanielbennett.tweeter.server.model.ResultsPage;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,47 +51,166 @@ public abstract class AmazonDAOTemplate {
 
 
     protected void addToTable(Object o) {
-        Table table = dynamoDB.getTable(tableName);
+        try {
+            Table table = dynamoDB.getTable(tableName);
 
-        Item item = objectToDatabaseItem(o);
-        table.putItem(item);
+            Item item = objectToDatabaseItem(o);
+            table.putItem(item);
+        } catch (AmazonDynamoDBException e) {
+            throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
+        }
     }
 
     protected void addToTable(List<Object> oList) {
-        TableWriteItems tableWriteItems = new TableWriteItems(tableName);
+        try {
+            TableWriteItems tableWriteItems = new TableWriteItems(tableName);
 
-        for (Object o : oList) {
-            Item item = objectToDatabaseItem(o);
-            tableWriteItems.addItemToPut(item);
-        }
+            for (Object o : oList) {
+                Item item = objectToDatabaseItem(o);
+                tableWriteItems.addItemToPut(item);
+            }
 
-        BatchWriteItemOutcome outcome = dynamoDB.batchWriteItem(tableWriteItems);
-        if (outcome.getUnprocessedItems().size() > 0) {
-            // TODO: log error here
-            throw new DataAccessException("Failed to add some items to table during batched add.");
+            BatchWriteItemOutcome outcome = dynamoDB.batchWriteItem(tableWriteItems);
+            if (outcome.getUnprocessedItems().size() > 0) {
+                // TODO: log error here
+                throw new DataAccessException("Failed to add some items to table during batched add.");
+            }
+        } catch (AmazonDynamoDBException e) {
+            throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
         }
     }
 
     protected void updateTable(String partitionKey, String fieldName, Object fieldValue) {
-        AttributeUpdate attributeUpdate = new AttributeUpdate(fieldName)
-                .put(fieldValue);
+        try {
+            AttributeUpdate attributeUpdate = new AttributeUpdate(fieldName)
+                    .put(fieldValue);
 
-        Table table = dynamoDB.getTable(tableName);
-        table.updateItem(partitionKey, attributeUpdate);
+            Table table = dynamoDB.getTable(tableName);
+            table.updateItem(partitionKey, attributeUpdate);
+        } catch (AmazonDynamoDBException e) {
+            throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
+        }
     }
 
 
 
     protected void removeFromTable(String partitionKey) {
-        Table table = dynamoDB.getTable(tableName);
-        table.deleteItem(partitionKeyAttr, partitionKey);
+        try {
+            Table table = dynamoDB.getTable(tableName);
+            table.deleteItem(partitionKeyAttr, partitionKey);
+        } catch (AmazonDynamoDBException e) {
+            throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
+        }
     }
 
     protected void removeFromTable(String partitionKey, String sortKey) {
-        Table table = dynamoDB.getTable(tableName);
-        table.deleteItem(partitionKeyAttr, partitionKey, sortKeyAttr, sortKey);
+        try {
+            Table table = dynamoDB.getTable(tableName);
+            table.deleteItem(partitionKeyAttr, partitionKey, sortKeyAttr, sortKey);
+        } catch (AmazonDynamoDBException e) {
+            throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
+        }
     }
 
+
+    protected Object getFromTable(String partitionKey) {
+        List<Map<String, AttributeValue>> items;
+
+        Map<String, String> attrNames = new HashMap<>();
+        attrNames.put("#partitionAttr", partitionKeyAttr);
+
+        Map<String, AttributeValue> attrValues = new HashMap<>();
+        attrValues.put(":partitionValue", new AttributeValue().withS(partitionKey));
+
+        try {
+            QueryRequest queryRequest = new QueryRequest()
+                    .withTableName(tableName)
+                    .withKeyConditionExpression("#partitionAttr = :partitionValue")
+                    .withExpressionAttributeNames(attrNames)
+                    .withExpressionAttributeValues(attrValues);
+
+            QueryResult queryResult = amazonDynamoDB.query(queryRequest);
+            items = queryResult.getItems();
+            if (items == null) {
+                return null;
+            }
+
+        } catch (AmazonDynamoDBException e) {
+            throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
+        }
+
+        if (items.size() > 1) {
+            return new DataAccessException("Multiple items found in database when only one was expected");
+        }
+
+        return databaseItemToObject(items.get(0));
+    }
+
+    protected Object getFromTable(String partitionKey, String sortKey) {
+        List<Map<String, AttributeValue>> items;
+
+        Map<String, String> attrNames = new HashMap<>();
+        attrNames.put("#partitionAttr", partitionKeyAttr);
+        attrNames.put("#sortAttr", sortKeyAttr);
+
+        Map<String, AttributeValue> attrValues = new HashMap<>();
+        attrValues.put(":partitionValue", new AttributeValue().withS(partitionKey));
+        attrValues.put(":sortValue", new AttributeValue().withS(sortKey));
+
+        try {
+            QueryRequest queryRequest = new QueryRequest()
+                    .withTableName(tableName)
+                    .withKeyConditionExpression("#partitionAttr = :partitionValue and #sortAttr = :sortValue")
+                    .withExpressionAttributeNames(attrNames)
+                    .withExpressionAttributeValues(attrValues);
+
+            QueryResult queryResult = amazonDynamoDB.query(queryRequest);
+            items = queryResult.getItems();
+            if (items == null) {
+                return null;
+            }
+
+        } catch (AmazonDynamoDBException e) {
+            throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
+        }
+
+        if (items.size() > 1) {
+            return new DataAccessException("Multiple items found in database when only one was expected");
+        }
+
+        return databaseItemToObject(items.get(0));
+    }
+
+    protected List<Object> getAllFromTable(String partitionValue) {
+        List<Object> result = new ArrayList<Object>();
+
+        Map<String, String> attrNames = new HashMap<>();
+        attrNames.put("#partitionAttr", partitionKeyAttr);
+
+        Map<String, AttributeValue> attrValues = new HashMap<>();
+        attrValues.put(":partitionValue", new AttributeValue().withS(partitionValue));
+
+        try {
+            QueryRequest queryRequest = new QueryRequest()
+                    .withTableName(tableName)
+                    .withKeyConditionExpression("#partitionAttr = :partitionValue")
+                    .withExpressionAttributeNames(attrNames)
+                    .withExpressionAttributeValues(attrValues);
+
+            QueryResult queryResult = amazonDynamoDB.query(queryRequest);
+            List<Map<String, AttributeValue>> items = queryResult.getItems();
+            if (items != null) {
+                for (Map<String, AttributeValue> item : items) {
+                    result.add(databaseItemToObject(item));
+                }
+            }
+
+        } catch (AmazonDynamoDBException e) {
+            throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
+        }
+
+        return result;
+    }
 
 
     protected ResultsPage getPagedFromDatabase(String partitionValue, int pageSize, String lastRetrieved) {
