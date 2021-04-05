@@ -2,6 +2,7 @@ package com.nathanielbennett.tweeter.server.dao;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.AttributeUpdate;
 import com.amazonaws.services.dynamodbv2.document.BatchWriteItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
@@ -68,7 +69,11 @@ public abstract class AmazonDAOTemplate {
     }
 
     protected void updateTable(String partitionKey, String fieldName, Object fieldValue) {
-        // TODO: implement
+        AttributeUpdate attributeUpdate = new AttributeUpdate(fieldName)
+                .put(fieldValue);
+
+        Table table = dynamoDB.getTable(tableName);
+        table.updateItem(partitionKey, attributeUpdate);
     }
 
 
