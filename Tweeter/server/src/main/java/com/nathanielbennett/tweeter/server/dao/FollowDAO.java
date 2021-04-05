@@ -2,7 +2,6 @@ package com.nathanielbennett.tweeter.server.dao;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.nathanielbennett.tweeter.model.service.response.PagedResponse;
 import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
 import com.nathanielbennett.tweeter.server.model.ResultsPage;
 import com.nathanielbennett.tweeter.server.model.StoredFollowRelationship;
@@ -14,6 +13,7 @@ import java.util.Map;
 public class FollowDAO extends AmazonDAOTemplate {
 
     private static final String TABLE_NAME = "follow";
+    private static final String FOLLOWING_INDEX_NAME = "following-index";
 
     private static final String PARTITION_KEY_LABEL = "followee";
     private static final String SORT_KEY_LABEL = "followed";
@@ -50,8 +50,22 @@ public class FollowDAO extends AmazonDAOTemplate {
         return (getFromTable(followee, followed) != null);
     }
 
-    public List<String> getFollowing(String followee, int limit, String lastFollowed) throws DataAccessException {
-        ResultsPage resultsPage = getPagedFromDatabase(followee, limit, lastFollowed);
+    public List<String> getFollowedBy(String followee, int limit, String lastFollowedAlias) throws DataAccessException {
+        ResultsPage resultsPage = getPagedFromDatabase(followee, limit, lastFollowedAlias);
+
+        List<String> followedBy = new ArrayList<>();
+        for (Object o : resultsPage.getValues()) {
+            StoredFollowRelationship followRelationship = (StoredFollowRelationship) o;
+
+            followedBy.add(followRelationship.getFollowee());
+        }
+
+        return followedBy;
+    }
+
+
+    public List<String> getFollowing(String userAlias, int limit, String lastFollowingAlias) throws DataAccessException {
+        ResultsPage resultsPage = getPagedFromDatabase(userAlias, limit, lastFollowingAlias, new DBIndex(FOLLOWING_INDEX_NAME, SORT_KEY_LABEL));
 
         List<String> following = new ArrayList<>();
         for (Object o : resultsPage.getValues()) {
@@ -61,10 +75,5 @@ public class FollowDAO extends AmazonDAOTemplate {
         }
 
         return following;
-    }
-
-
-    public List<String> getFollowedBy(String followee, int limit, String lastFollowed) throws DataAccessException {
-
     }
 }
