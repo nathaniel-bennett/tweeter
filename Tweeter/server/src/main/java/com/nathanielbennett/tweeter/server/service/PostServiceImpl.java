@@ -4,8 +4,6 @@ import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.amazonaws.services.sqs.model.SendMessageResult;
-import com.nathanielbennett.tweeter.model.domain.Status;
-import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.net.Serializer;
 import com.nathanielbennett.tweeter.model.service.AuthorizationService;
 import com.nathanielbennett.tweeter.model.service.PostService;
@@ -14,8 +12,8 @@ import com.nathanielbennett.tweeter.model.service.request.PostRequest;
 import com.nathanielbennett.tweeter.model.service.response.AuthorizationResponse;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
 import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
+import com.nathanielbennett.tweeter.server.dao.FeedDAO;
 import com.nathanielbennett.tweeter.server.dao.StoryDAO;
-import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.NotAuthorizedException;
 import com.nathanielbennett.tweeter.server.dao.PostDAO;
@@ -54,7 +52,8 @@ public class PostServiceImpl implements PostService {
 
         StoredStatus status = new StoredStatus(request.getUsername(), request.getStatus(), DateFormat.getDateTimeInstance().format(new Date()));
 
-        getStoryDAO().addStatus(status);
+        // Post the status to the user's own feed (*hopefully* within 1000 ms)
+        getStoryDAO().addStatusToStory(status);
 
         // Send message to SQS Queue
         String messageBody = new Serializer().serialize(status);
@@ -67,12 +66,9 @@ public class PostServiceImpl implements PostService {
         AmazonSQS sqs = AmazonSQSClientBuilder.defaultClient();
         SendMessageResult sendMessageResult = sqs.sendMessage(sendMessageRequest);
 
-        // TODO: could log message ID here
+        // NOTE: could log message ID/result here or something
 
-        PostResponse response = new PostResponse();
-        response.setSuccess(true);
-
-        return response;
+        return new PostResponse();
     }
 
     /**
@@ -84,9 +80,5 @@ public class PostServiceImpl implements PostService {
      */
     public StoryDAO getStoryDAO() {
         return new StoryDAO();
-    }
-
-    public AuthTokenDAO getAuthTokenDAO() {
-        return new AuthTokenDAO();
     }
 }

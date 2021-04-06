@@ -6,6 +6,7 @@ import com.nathanielbennett.tweeter.model.service.request.PostRequest;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
+import com.nathanielbennett.tweeter.server.dao.FeedDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.dao.StoryDAO;
 import com.nathanielbennett.tweeter.server.model.StoredStatus;
@@ -29,7 +30,7 @@ public class StoryServiceImpl extends AbstractStatusServiceTemplate implements S
 
         StoryDAO storyDAO = getStoryDAO();
 
-        List<StoredStatus> storedStatusList = storyDAO.getStatuses(request.getAlias(), request.getLimit(), request.getLastStatus());
+        List<StoredStatus> storedStatusList = storyDAO.getUserStory(request.getAlias(), request.getLimit(), request.getLastStatus());
         boolean hasMorePages = (storedStatusList.size() == request.getLimit());
 
         List<Status> statuses = formUserStatuses(storedStatusList);
