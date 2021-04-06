@@ -23,7 +23,7 @@ public class LogoutServiceImpl implements LogoutService {
         }
 
         AuthTokenDAO authTokenDAO = new AuthTokenDAO();
-        authTokenDAO.deleteToken(request.getAuthToken());
+        authTokenDAO.deleteToken(request.getAuthToken()); // TODO: notify when nothing was deleted
 
         return new LogoutResponse();
     }
