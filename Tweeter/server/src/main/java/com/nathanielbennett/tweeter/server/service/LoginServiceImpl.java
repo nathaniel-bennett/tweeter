@@ -10,6 +10,7 @@ import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.InvalidPasswordException;
 import com.nathanielbennett.tweeter.server.model.StoredUser;
+import com.nathanielbennett.tweeter.server.util.PasswordHasher;
 
 public class LoginServiceImpl implements LoginService {
 
@@ -35,7 +36,9 @@ public class LoginServiceImpl implements LoginService {
         }
 
         // TODO: hash password...
-        String hashedPassword = request.getPassword();
+        PasswordHasher hasher = new PasswordHasher();
+
+        String hashedPassword = hasher.hash(request.getPassword());
 
         if (!hashedPassword.equals(storedUser.getHashedPassword())) {
             throw new InvalidPasswordException("Incorrect password");

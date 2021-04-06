@@ -11,6 +11,7 @@ import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.HandleTakenException;
 import com.nathanielbennett.tweeter.server.exceptions.WeakPasswordException;
 import com.nathanielbennett.tweeter.server.model.StoredUser;
+import com.nathanielbennett.tweeter.server.util.PasswordHasher;
 
 public class RegisterServiceImpl implements RegisterService {
 
@@ -47,12 +48,12 @@ public class RegisterServiceImpl implements RegisterService {
             throw new HandleTakenException("Requested user handle is taken; please try another.");
         }
 
-        String hashedPassword = request.getPassword(); // TODO: add hashing
+        PasswordHasher hasher = new PasswordHasher();
+        String hashedPassword = hasher.hash(request.getPassword());
 
         String imageLocation = "lol"; // TODO: create S3 image resource from bytes, fetch resource location here
 
-
-        StoredUser storedUser = new StoredUser(request.getFirstName(), request.getLastName(), request.getPassword(), request.getUsername(), imageLocation, 0, 0);
+        StoredUser storedUser = new StoredUser(request.getFirstName(), request.getLastName(), hashedPassword, request.getUsername(), imageLocation, 0, 0);
 
         userDAO.createUser(storedUser);
 
@@ -64,7 +65,7 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     /**
-     * Returns an instance of {@link LogoutDAO}. Allows mocking of the RegisterDAO class
+     * Returns an instance of {@link UserDAO}. Allows mocking of the RegisterDAO class
      * for testing purposes. All usages of RegisterDAO should get their RegisterDAO
      * instance from this method to allow for mocking of the instance.
      *
