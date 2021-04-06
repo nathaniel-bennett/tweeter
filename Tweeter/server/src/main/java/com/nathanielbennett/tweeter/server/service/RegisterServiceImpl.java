@@ -39,12 +39,16 @@ public class RegisterServiceImpl implements RegisterService {
         if (request.getImage() == null || request.getImage().length == 0) {
             throw new BadRequestException("A profile picture is required in order to register");
         }
-        if (getRegisterDAO().createUser(request)){
-            User user = getRegisterDAO().getUser(request.getUsername());
+
+        UserDAO userDAO = getUserDAO();
+
+        if (userDAO.createUser(request)) {
+            User user = userDAO.getUser(request.getUsername());
             AuthTokenDAO authTokenDAO = new AuthTokenDAO();
             AuthToken authToken = authTokenDAO.createAuthToken(request.getUsername());
             return new RegisterResponse(user, authToken);
         }
+
         return new RegisterResponse("Unable to create user");
     }
 
@@ -55,7 +59,7 @@ public class RegisterServiceImpl implements RegisterService {
      *
      * @return the instance.
      */
-    public UserDAO getRegisterDAO() {
+    public UserDAO getUserDAO() {
         return new UserDAO();
     }
 }

@@ -22,6 +22,7 @@ public class LoginServiceImpl implements LoginService {
             throw new BadRequestException("Password missing from login request");
         }
 
+
         return getLoginDao().login(request);
     }
 
