@@ -2,7 +2,6 @@ package com.nathanielbennett.tweeter.server.service;
 
 import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
 import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
-import com.nathanielbennett.tweeter.server.dao.RegisterDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.WeakPasswordException;
 
@@ -20,6 +19,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class RegisterServiceTests {
+
+    /**
+     *
 
     RegisterServiceImpl service;
     RegisterDAO dao;
@@ -88,4 +90,5 @@ public class RegisterServiceTests {
         response = service.register(badRequest);
         Assertions.assertTrue(response == badResponse);
     }
+    */
 }

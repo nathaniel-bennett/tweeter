@@ -27,7 +27,7 @@ public class PostUpdateFeedMessages implements RequestHandler<SQSEvent, Void> {
         for (SQSEvent.SQSMessage msg : input.getRecords()) {
             StoredStatus status = serializer.deserialize(msg.getBody(), StoredStatus.class);
 
-            List<String> followingAliases = followDAO.getFollowing(status.getAlias());
+            List<String> followingAliases = followDAO.getFollowing(status.getAlias(), 5, null);
 
             for (int i = 0; i < followingAliases.size(); i += BATCH_SIZE) {
                 List<String> aliases = followingAliases.subList(i, Integer.min(i + 25, followingAliases.size()));

@@ -13,8 +13,9 @@ class FollowingDAOTest {
     private final User user7 = new User("Harriett", "Hansen", "");
     private final User user8 = new User("Zoe", "Zabriski", "");
 
-    private FollowingDAO followingDAOSpy;
+
     /*
+    private FollowingDAO followingDAOSpy;
     @BeforeEach
     void setup() {
         followingDAOSpy = Mockito.spy(new FollowingDAO());

@@ -27,6 +27,7 @@ public class FeedServiceTests {
     StatusRequest badRequest;
     StatusResponse badResponse;
 
+    /*
     @BeforeEach
     public void setup() {
         feedDAO = Mockito.mock(FeedDAO.class);
@@ -69,4 +70,6 @@ public class FeedServiceTests {
         response = feedService.fetchFeed(badRequest);
         Assertions.assertTrue(response == badResponse);
     }
+
+     */
 }
