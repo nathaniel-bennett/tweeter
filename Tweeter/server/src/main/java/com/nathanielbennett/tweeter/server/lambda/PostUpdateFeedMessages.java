@@ -36,7 +36,7 @@ public class PostUpdateFeedMessages implements RequestHandler<SQSEvent, Void> {
 
                 // Send message to SQS Queue
                 String messageBody = new Serializer().serialize(batch);
-                String queueURL = "https://sqs.us-east-1.amazonaws.com/594032838338/340queue"; // TODO: change this to second queue
+                String queueURL = "https://sqs.us-west-2.amazonaws.com/865443059576/CS340TweeterUpdateFeedQueue"; // TODO: change this to second queue
 
                 SendMessageRequest sendMessageRequest = new SendMessageRequest()
                         .withQueueUrl(queueURL)

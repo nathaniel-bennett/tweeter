@@ -56,7 +56,7 @@ public class PostServiceImpl implements PostService {
 
         // Send message to SQS Queue
         String messageBody = new Serializer().serialize(status);
-        String queueURL = "https://sqs.us-east-1.amazonaws.com/594032838338/340queue"; // TODO: change this to first queue
+        String queueURL = "https://sqs.us-west-2.amazonaws.com/865443059576/CS340TweeterPostStatusQueue"; // TODO: change this to first queue
 
         SendMessageRequest sendMessageRequest = new SendMessageRequest()
                 .withQueueUrl(queueURL)
@@ -71,7 +71,7 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * Returns an instance of {@link PostDAO}. Allows mocking of the PostDAO class
+     * Returns an instance of {@link StoryDAO}. Allows mocking of the PostDAO class
      * for testing purposes. All usages of PostDAO should get their PostDAO
      * instance from this method to allow for mocking of the instance.
      *
