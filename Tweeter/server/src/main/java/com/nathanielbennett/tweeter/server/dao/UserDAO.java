@@ -12,6 +12,7 @@ import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
 import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
 import com.nathanielbennett.tweeter.server.model.StoredFollowRelationship;
+import com.nathanielbennett.tweeter.server.model.StoredUser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,49 +42,70 @@ public class UserDAO extends AmazonDAOTemplate{
 
         String firstName = item.get(FIRSTNAME_LABEL).getS();
         String lastName = item.get(LASTNAME_LABEL).getS();
+        String hashedPassword = item.get(PASSWORD_LABEL).getS();
         String imageURL = item.get(IMAGEURL_LABEL).getS();
         int follower_count = Integer.parseInt(item.get(FOLLOWERCOUNT_LABEL).getN());
         int followee_count = Integer.parseInt(item.get(FOLLOWEECOUNT_LABEL).getN());
 
-        return new User(firstName, lastName, alias, imageURL, follower_count, followee_count);
+        return new StoredUser(firstName, lastName, hashedPassword, alias, imageURL, follower_count, followee_count);
     }
 
     @Override
     protected Item objectToDatabaseItem(Object o) {
-        User user = (User) o;
+        StoredUser user = (StoredUser) o;
 
         return new Item()
                 .withPrimaryKey(PARTITION_KEY_LABEL, user.getAlias())
                 .withString(FIRSTNAME_LABEL, user.getFirstName())
                 .withString(LASTNAME_LABEL, user.getLastName())
+                .withString(PASSWORD_LABEL, user.getHashedPassword())
                 .withString(IMAGEURL_LABEL, user.getImageUrl())
                 .withInt(FOLLOWERCOUNT_LABEL, user.getFollowerCount())
                 .withInt(FOLLOWEECOUNT_LABEL, user.getFolloweeCount());
     }
 
-    public boolean createUser(User user) {
+    public void createUser(StoredUser user) {
         addToTable(user);
-        return true;
     }
 
-    public User getUser(String alias){
-        return (User) getFromTable(alias);
+    public StoredUser getUser(String alias){
+        return (StoredUser) getFromTable(alias);
     }
 
     public void decrementUserFollowing(String alias) {
-        updateTable(alias, FOLLOWEECOUNT_LABEL, getUser(alias).getFolloweeCount()-1);
+        StoredUser user = getUser(alias);
+        if (user == null) {
+            throw new DataAccessException("Username not found in database");
+        }
+
+        updateTable(alias, FOLLOWEECOUNT_LABEL, user.getFolloweeCount()-1);
     }
 
     public void incrementUserFollowing(String alias) {
-        updateTable(alias, FOLLOWEECOUNT_LABEL, getUser(alias).getFolloweeCount()+1);
+        StoredUser user = getUser(alias);
+        if (user == null) {
+            throw new DataAccessException("Username not found in database");
+        }
+
+        updateTable(alias, FOLLOWEECOUNT_LABEL, user.getFolloweeCount()+1);
     }
 
     public void decrementUserFollowers(String alias) {
-        updateTable(alias, FOLLOWERCOUNT_LABEL, getUser(alias).getFollowerCount()-1);
+        StoredUser user = getUser(alias);
+        if (user == null) {
+            throw new DataAccessException("Username not found in database");
+        }
+
+        updateTable(alias, FOLLOWERCOUNT_LABEL, user.getFollowerCount()-1);
     }
 
     public void incrementUserFollowers(String alias) {
-        updateTable(alias, FOLLOWERCOUNT_LABEL, getUser(alias).getFollowerCount()+1);
+        StoredUser user = getUser(alias);
+        if (user == null) {
+            throw new DataAccessException("Username not found in database");
+        }
+
+        updateTable(alias, FOLLOWERCOUNT_LABEL, user.getFollowerCount()+1);
     }
 
 //    DynamoDB db;
