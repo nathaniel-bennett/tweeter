@@ -12,6 +12,7 @@ import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.amazonaws.services.dynamodbv2.model.QueryResult;
+import com.amazonaws.services.dynamodbv2.model.WriteRequest;
 import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
 import com.nathanielbennett.tweeter.server.model.ResultsPage;
 
@@ -82,22 +83,37 @@ public abstract class AmazonDAOTemplate {
         }
     }
 
-    protected void addToTable(List<Object> oList) {
+    protected void addToTableBatch(List<Object> oList) {
         try {
             TableWriteItems tableWriteItems = new TableWriteItems(tableName);
 
             for (Object o : oList) {
                 Item item = objectToDatabaseItem(o);
                 tableWriteItems.addItemToPut(item);
+
+                if (tableWriteItems.getItemsToPut() != null && tableWriteItems.getItemsToPut().size() == 25) {
+                    loopBatchWrite(tableWriteItems);
+                    tableWriteItems = new TableWriteItems(tableName);
+                }
             }
 
-            BatchWriteItemOutcome outcome = dynamoDB.batchWriteItem(tableWriteItems);
-            if (outcome.getUnprocessedItems().size() > 0) {
-                // TODO: log error here
-                throw new DataAccessException("Failed to add some items to table during batched add.");
+            if (tableWriteItems.getItemsToPut() != null && tableWriteItems.getItemsToPut().size() > 0) {
+                loopBatchWrite(tableWriteItems);
             }
         } catch (AmazonDynamoDBException e) {
             throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
+        }
+    }
+
+    private void loopBatchWrite(TableWriteItems items) {
+        BatchWriteItemOutcome outcome = dynamoDB.batchWriteItem(items);
+        System.out.println("Wrote User Batch");
+
+        while(outcome.getUnprocessedItems().size() > 0) {
+            Map<String, List<WriteRequest>> unprocessedItems = outcome.getUnprocessedItems();
+            outcome = dynamoDB.batchWriteItemUnprocessed(unprocessedItems);
+            System.out.println("Wrote more Users");
+
         }
     }
 

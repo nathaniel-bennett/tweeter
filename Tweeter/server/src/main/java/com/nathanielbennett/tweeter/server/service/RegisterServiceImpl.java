@@ -1,5 +1,11 @@
 package com.nathanielbennett.tweeter.server.service;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.RegisterService;
@@ -12,6 +18,11 @@ import com.nathanielbennett.tweeter.server.exceptions.HandleTakenException;
 import com.nathanielbennett.tweeter.server.exceptions.WeakPasswordException;
 import com.nathanielbennett.tweeter.server.model.StoredUser;
 import com.nathanielbennett.tweeter.server.util.PasswordHasher;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.util.UUID;
 
 public class RegisterServiceImpl implements RegisterService {
 
@@ -51,7 +62,31 @@ public class RegisterServiceImpl implements RegisterService {
         PasswordHasher hasher = new PasswordHasher();
         String hashedPassword = hasher.hash(request.getPassword());
 
-        String imageLocation = "lol"; // TODO: create S3 image resource from bytes, fetch resource location here
+        AmazonS3 s3 = AmazonS3ClientBuilder
+                .standard()
+                .withRegion("us-west-2")
+                .build();
+
+        String bucket_name = "cs340nccimagebucket";
+        String bucket_key = UUID.randomUUID().toString();
+
+        try {
+            InputStream byteStream = new ByteArrayInputStream(request.getImage());
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.addUserMetadata("content-type", "image/png");
+
+            PutObjectRequest objectRequest = new PutObjectRequest(bucket_name, bucket_key, byteStream, metadata);
+            objectRequest.setKey("bueno");
+
+            PutObjectResult response = s3.putObject(objectRequest);
+
+
+        } catch (AmazonServiceException e) {
+            System.err.println(e.getErrorMessage());
+            System.exit(1);
+        }
+
+        String imageLocation = "https://" + bucket_name + ".s3-us-west-2.amazonaws.com/" + bucket_key; // TODO: create S3 image resource from bytes, fetch resource location here
 
         StoredUser storedUser = new StoredUser(request.getFirstName(), request.getLastName(), hashedPassword, request.getUsername(), imageLocation, 0, 0);
 

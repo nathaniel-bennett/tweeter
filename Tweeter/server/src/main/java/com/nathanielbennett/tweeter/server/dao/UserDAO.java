@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.PutItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.TableWriteItems;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.nathanielbennett.tweeter.model.domain.User;
@@ -18,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 public class UserDAO extends AmazonDAOTemplate{
@@ -106,6 +108,10 @@ public class UserDAO extends AmazonDAOTemplate{
         }
 
         updateTable(alias, FOLLOWERCOUNT_LABEL, user.getFollowerCount()+1);
+    }
+
+    public void addUserBatch(List<Object> users) {
+        addToTableBatch(users);
     }
 
 //    DynamoDB db;
