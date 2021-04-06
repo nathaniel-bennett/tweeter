@@ -10,8 +10,6 @@ import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.HandleTakenException;
 import com.nathanielbennett.tweeter.server.exceptions.WeakPasswordException;
-import com.nathanielbennett.tweeter.server.dao.LogoutDAO;
-import com.nathanielbennett.tweeter.server.dao.RegisterDAO;
 import com.nathanielbennett.tweeter.server.model.StoredUser;
 
 public class RegisterServiceImpl implements RegisterService {

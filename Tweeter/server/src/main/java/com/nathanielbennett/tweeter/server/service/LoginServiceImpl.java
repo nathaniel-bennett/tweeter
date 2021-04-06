@@ -6,7 +6,6 @@ import com.nathanielbennett.tweeter.model.service.LoginService;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
-import com.nathanielbennett.tweeter.server.dao.LoginDAO;
 import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.InvalidPasswordException;
