@@ -9,8 +9,7 @@ import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
 import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.WeakPasswordException;
-import com.nathanielbennett.tweeter.server.dao.LogoutDAO;
-import com.nathanielbennett.tweeter.server.dao.RegisterDAO;
+
 
 public class RegisterServiceImpl implements RegisterService {
 
@@ -42,7 +41,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         UserDAO userDAO = getUserDAO();
 
-        if (userDAO.createUser(request)) {
+        if (userDAO.createUser(null)) {
             User user = userDAO.getUser(request.getUsername());
             AuthTokenDAO authTokenDAO = new AuthTokenDAO();
             AuthToken authToken = authTokenDAO.createToken(request.getUsername());

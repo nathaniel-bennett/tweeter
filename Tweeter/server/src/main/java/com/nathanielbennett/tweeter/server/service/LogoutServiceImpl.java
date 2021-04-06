@@ -6,7 +6,6 @@ import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
 import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.NotAuthorizedException;
-import com.nathanielbennett.tweeter.server.dao.LogoutDAO;
 
 public class LogoutServiceImpl implements LogoutService {
     @Override
@@ -26,7 +25,7 @@ public class LogoutServiceImpl implements LogoutService {
         AuthTokenDAO authTokenDAO = new AuthTokenDAO();
         authTokenDAO.deleteToken(request.getAuthToken());
 
-        return getLogoutDao().logout(request);
+        return null;
     }
 
     /**
@@ -35,8 +34,9 @@ public class LogoutServiceImpl implements LogoutService {
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
-     */
+
     public LogoutDAO getLogoutDao() {
         return new LogoutDAO();
     }
+    */
 }

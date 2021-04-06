@@ -16,7 +16,6 @@ import com.nathanielbennett.tweeter.server.dao.FeedDAO;
 import com.nathanielbennett.tweeter.server.dao.StoryDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.NotAuthorizedException;
-import com.nathanielbennett.tweeter.server.dao.PostDAO;
 import com.nathanielbennett.tweeter.server.model.StoredStatus;
 
 import java.text.DateFormat;

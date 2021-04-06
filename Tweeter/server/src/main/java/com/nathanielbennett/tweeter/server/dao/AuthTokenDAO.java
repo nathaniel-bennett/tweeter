@@ -16,7 +16,6 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
-import com.nathanielbennett.tweeter.server.exceptions.DataAccessFailureException;
 import com.nathanielbennett.tweeter.server.model.ResultsPage;
 
 import java.util.ArrayList;
