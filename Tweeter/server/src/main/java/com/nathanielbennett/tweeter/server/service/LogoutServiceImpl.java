@@ -3,6 +3,7 @@ package com.nathanielbennett.tweeter.server.service;
 import com.nathanielbennett.tweeter.model.service.LogoutService;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
+import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.NotAuthorizedException;
 import com.nathanielbennett.tweeter.server.dao.LogoutDAO;
@@ -21,6 +22,9 @@ public class LogoutServiceImpl implements LogoutService {
         if (request.getAuthToken() == null || request.getAuthToken().getAuthTokenID().isEmpty()) {
             throw new NotAuthorizedException("Logout request missing Authorization Token");
         }
+
+        AuthTokenDAO authTokenDAO = new AuthTokenDAO();
+        authTokenDAO.deleteToken(request.getAuthToken());
 
         return getLogoutDao().logout(request);
     }

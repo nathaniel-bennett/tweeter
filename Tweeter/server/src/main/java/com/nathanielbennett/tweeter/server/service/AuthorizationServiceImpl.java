@@ -9,19 +9,16 @@ import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
 import java.util.List;
 
 public class AuthorizationServiceImpl implements AuthorizationService {
+
     @Override
     public AuthorizationResponse isAuthorized(AuthorizationRequest request) {
         AuthTokenDAO authTokenDAO = getAuthTokenDAO();
 
-        List<AuthToken> validTokens = authTokenDAO.getValidAuthTokens(request.getUsername());
-
-        for (AuthToken token : validTokens) {
-            if (token.equals(request.getAuthToken())) {
-                return new AuthorizationResponse();
-            }
+        if (authTokenDAO.checkToken(request.getAuthToken())) {
+            return new AuthorizationResponse();
+        } else {
+            return new AuthorizationResponse("Invalid or expired auth token.");
         }
-
-        return new AuthorizationResponse("Invalid or expired auth token.");
     }
 
     public AuthTokenDAO getAuthTokenDAO() {

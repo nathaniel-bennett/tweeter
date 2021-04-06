@@ -9,7 +9,6 @@ import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.response.AuthorizationResponse;
 import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
-import com.nathanielbennett.tweeter.model.service.response.PostResponse;
 import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.NotAuthorizedException;

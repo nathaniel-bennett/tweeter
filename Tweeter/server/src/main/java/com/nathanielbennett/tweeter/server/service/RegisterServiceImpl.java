@@ -45,7 +45,7 @@ public class RegisterServiceImpl implements RegisterService {
         if (userDAO.createUser(request)) {
             User user = userDAO.getUser(request.getUsername());
             AuthTokenDAO authTokenDAO = new AuthTokenDAO();
-            AuthToken authToken = authTokenDAO.createAuthToken(request.getUsername());
+            AuthToken authToken = authTokenDAO.createToken(request.getUsername());
             return new RegisterResponse(user, authToken);
         }
 

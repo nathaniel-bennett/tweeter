@@ -12,29 +12,29 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
+import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
 import com.nathanielbennett.tweeter.server.exceptions.DataAccessFailureException;
+import com.nathanielbennett.tweeter.server.model.ResultsPage;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
-public class AuthTokenDAO {
+public class AuthTokenDAO extends AmazonDAOTemplate {
 
+    //TODO: MAKE STATIC VARIABLES FOR TABLEnAME, POSITIONKEYATTR, SORTKEYATTR
+    private static final String TABLE_NAME = "auth_token";
+    private static final String PARTITION_KEY_LABEL = "username";
+    private static final String SORT_KEY_LABEL = "auth_token";
 
-    DynamoDB db;
-    Table table;
+    public AuthTokenDAO() { super(TABLE_NAME, PARTITION_KEY_LABEL, SORT_KEY_LABEL); }
 
-    public AuthTokenDAO() {
-        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
-                .withRegion("us-west-2")
-                .build();
-        this.db = new DynamoDB(client);
-
-        this.table = db.getTable("auth_token");
-    }
-
+    /*
     public AuthToken createAuthToken(String alias) throws DataAccessFailureException {
         AuthToken authToken = new AuthToken();
 
@@ -90,5 +90,51 @@ public class AuthTokenDAO {
             e.printStackTrace();
             throw new DataAccessFailureException("[InternalServerError] unable to delete auth token: " + e.getMessage());
         }
+    }
+
+     */
+
+    @Override
+    protected Object databaseItemToObject(Map<String, AttributeValue> item) throws DataAccessException {
+
+        String authTokenID = item.get(SORT_KEY_LABEL).getS();
+        return new AuthToken(authTokenID);
+    }
+
+    @Override
+    protected Item objectToDatabaseItem(Object o) {
+        AuthToken authToken = (AuthToken) o;
+
+        return new Item()
+                .withPrimaryKey(PARTITION_KEY_LABEL, authToken.getAssociatedUser(),
+                        SORT_KEY_LABEL, authToken.getAuthTokenID());
+    }
+
+    public AuthToken createToken(String userAlias) {
+        AuthToken authToken = new AuthToken();
+        authToken.setAssociatedUser(userAlias);
+
+        addToTable(authToken);
+
+        return authToken;
+
+    }
+
+    public boolean checkToken(AuthToken authToken) {
+        ResultsPage resultsPage = getPagedFromDatabase(authToken.getAssociatedUser(), 10, null);
+
+        if (resultsPage.hasValues()) {
+            for (Object o : resultsPage.getValues()) {
+                if (authToken.equals(o)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public void deleteToken(AuthToken authToken) {
+        removeFromTable(authToken.getAssociatedUser(), authToken.getAuthTokenID());
     }
 }
