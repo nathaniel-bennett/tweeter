@@ -12,11 +12,11 @@ import java.util.Map;
 
 public class StoryDAO extends AmazonDAOTemplate {
 
-    private static final String TABLE_NAME = "story";
+    private static final String TABLE_NAME = "stories";
 
-    private static final String PARTITION_KEY_LABEL = "story_owner";
-    private static final String SORT_KEY_LABEL = "message_body";
-    private static final String TIMESTAMP_LABEL = "timestamp";
+    private static final String PARTITION_KEY_LABEL = "owner";
+    private static final String SORT_KEY_LABEL = "message";
+    private static final String TIMESTAMP_LABEL = "date_posted";
 
     public StoryDAO() {
         super(TABLE_NAME, PARTITION_KEY_LABEL, SORT_KEY_LABEL);

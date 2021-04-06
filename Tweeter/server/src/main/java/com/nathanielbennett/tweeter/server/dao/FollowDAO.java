@@ -15,8 +15,8 @@ public class FollowDAO extends AmazonDAOTemplate {
     private static final String TABLE_NAME = "follow";
     private static final String FOLLOWING_INDEX_NAME = "following-index";
 
-    private static final String PARTITION_KEY_LABEL = "followee";
-    private static final String SORT_KEY_LABEL = "followed";
+    private static final String PARTITION_KEY_LABEL = "user1";
+    private static final String SORT_KEY_LABEL = "user2";
 
     @Override
     protected Object databaseItemToObject(Map<String, AttributeValue> item) throws DataAccessException {
