@@ -64,6 +64,22 @@ public class FollowDAO extends AmazonDAOTemplate {
     }
 
 
+    public List<String> getFollowing(String userAlias) {
+        List<Object> followingObjects = getAllFromTable(userAlias, new DBIndex(FOLLOWING_INDEX_NAME, SORT_KEY_LABEL));
+
+        List<String> following = new ArrayList<>();
+        if (followingObjects == null) {
+            return following;
+        }
+
+        for (Object o : followingObjects) {
+            StoredFollowRelationship followRelationship = (StoredFollowRelationship) o;
+            following.add(followRelationship.getFollowee());
+        }
+
+        return following;
+    }
+
     public List<String> getFollowing(String userAlias, int limit, String lastFollowingAlias) throws DataAccessException {
         ResultsPage resultsPage = getPagedFromDatabase(userAlias, limit, lastFollowingAlias, new DBIndex(FOLLOWING_INDEX_NAME, SORT_KEY_LABEL));
 
