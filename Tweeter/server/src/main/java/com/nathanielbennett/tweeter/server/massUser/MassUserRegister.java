@@ -50,5 +50,9 @@ public class MassUserRegister {
         }
     }
 
+    public static void main(String[] args) {
+        fillDatabase();
+    }
+
 
 }
