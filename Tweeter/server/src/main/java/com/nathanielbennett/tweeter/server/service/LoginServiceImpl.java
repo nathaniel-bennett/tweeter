@@ -1,11 +1,13 @@
 package com.nathanielbennett.tweeter.server.service;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
+import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.LoginService;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
 import com.nathanielbennett.tweeter.server.dao.LoginDAO;
+import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 
 public class LoginServiceImpl implements LoginService {
@@ -24,12 +26,20 @@ public class LoginServiceImpl implements LoginService {
             throw new BadRequestException("Password missing from login request");
         }
 
-        AuthTokenDAO authTokenDAO = new AuthTokenDAO();
+        UserDAO userDAO = getUserDAO();
+
+        // TODO: change to StoredUser object that has hashed password...
+        User user = userDAO.getUser(request.getUsername());
+        if (user == null) {
+            return new LoginResponse("Username not registered.");
+        }
+
+        AuthTokenDAO authTokenDAO = getAuthTokenDAO();
         AuthToken authToken = authTokenDAO.createToken(request.getUsername());
 
         // TODO: login stuff!
 
-        return getLoginDao().login(request);
+        return new LoginResponse(user, authToken);
     }
 
     /**
@@ -39,7 +49,11 @@ public class LoginServiceImpl implements LoginService {
      *
      * @return the instance.
      */
-    public LoginDAO getLoginDao() {
-        return new LoginDAO();
+    public AuthTokenDAO getAuthTokenDAO() {
+        return new AuthTokenDAO();
+    }
+
+    public UserDAO getUserDAO() {
+        return new UserDAO();
     }
 }
