@@ -50,6 +50,10 @@ public class FollowDAO extends AmazonDAOTemplate {
         return (getFromTable(followee, followed) != null);
     }
 
+    public void addFollowersBatch(List<Object> followRelations) {
+        addToTableBatch(followRelations);
+    }
+
     public List<String> getFollowedBy(String followee, int limit, String lastFollowedAlias) throws DataAccessException {
         ResultsPage resultsPage = getPagedFromDatabase(followee, limit, lastFollowedAlias);
 
