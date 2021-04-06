@@ -3,7 +3,9 @@ package com.nathanielbennett.tweeter.server.service;
 import com.nathanielbennett.tweeter.model.domain.Status;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.server.dao.UserDAO;
+import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
 import com.nathanielbennett.tweeter.server.model.StoredStatus;
+import com.nathanielbennett.tweeter.server.model.StoredUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,12 @@ public abstract class AbstractStatusServiceTemplate {
     protected Status formUserStatus(StoredStatus storedStatus) {
         UserDAO userDAO = getUserDAO();
 
-        User statusOwner = userDAO.getUser(storedStatus.getAlias());
+        StoredUser storedUser = userDAO.getUser(storedStatus.getAlias());
+        if (storedUser == null) {
+            throw new DataAccessException("User not found within database.");
+        }
+
+        User statusOwner = storedUser.toUser();
         List<User> mentionedUsers = getMentionedUsers(storedStatus.getMessage());
 
         return new Status(statusOwner, storedStatus.getMessage(), storedStatus.getTimestamp(), mentionedUsers);
@@ -38,9 +45,9 @@ public abstract class AbstractStatusServiceTemplate {
         UserDAO userDAO = getUserDAO();
 
         for (String alias : mentionedAliases) {
-            User user = userDAO.getUser(alias);
-            if (user != null) { // TODO: Make sure that this returns null instead of throwing error when no user is to be found. Either that or make UserNotFound exception...
-                mentionedUsers.add(user);
+            StoredUser storedUser = userDAO.getUser(alias);
+            if (storedUser != null) { // TODO: Make sure that this returns null instead of throwing error when no user is to be found. Either that or make UserNotFound exception...
+                mentionedUsers.add(storedUser.toUser());
             }
         }
 

@@ -14,10 +14,10 @@ public class FeedDAO extends AmazonDAOTemplate {
 
     private static final String TABLE_NAME = "feeds";
 
-    private static final String PARTITION_KEY_LABEL = "feed_owner";
-    private static final String SORT_KEY_LABEL = "message_body";
-    private static final String ALIAS_LABEL = "status_owner";
-    private static final String TIMESTAMP_LABEL = "timestamp";
+    private static final String PARTITION_KEY_LABEL = "owner";
+    private static final String SORT_KEY_LABEL = "message";
+    private static final String ALIAS_LABEL = "alias";
+    private static final String TIMESTAMP_LABEL = "date_posted";
 
 
     public FeedDAO() {

@@ -8,6 +8,8 @@ import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
 import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
 import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
+import com.nathanielbennett.tweeter.server.exceptions.InvalidPasswordException;
+import com.nathanielbennett.tweeter.server.model.StoredUser;
 
 public class LoginServiceImpl implements LoginService {
 
@@ -27,16 +29,22 @@ public class LoginServiceImpl implements LoginService {
 
         UserDAO userDAO = getUserDAO();
 
-        // TODO: change to StoredUser object that has hashed password...
-        User user = userDAO.getUser(request.getUsername());
-        if (user == null) {
+        StoredUser storedUser = userDAO.getUser(request.getUsername());
+        if (storedUser == null) {
             return new LoginResponse("Username not registered.");
+        }
+
+        // TODO: hash password...
+        String hashedPassword = request.getPassword();
+
+        if (!hashedPassword.equals(storedUser.getHashedPassword())) {
+            throw new InvalidPasswordException("Incorrect password");
         }
 
         AuthTokenDAO authTokenDAO = getAuthTokenDAO();
         AuthToken authToken = authTokenDAO.createToken(request.getUsername());
 
-        // TODO: login stuff!
+        User user = storedUser.toUser();
 
         return new LoginResponse(user, authToken);
     }

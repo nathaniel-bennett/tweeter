@@ -8,8 +8,9 @@ import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
 import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
 import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
+import com.nathanielbennett.tweeter.server.exceptions.HandleTakenException;
 import com.nathanielbennett.tweeter.server.exceptions.WeakPasswordException;
-
+import com.nathanielbennett.tweeter.server.model.StoredUser;
 
 public class RegisterServiceImpl implements RegisterService {
 
@@ -41,14 +42,25 @@ public class RegisterServiceImpl implements RegisterService {
 
         UserDAO userDAO = getUserDAO();
 
-        if (userDAO.createUser(null)) {
-            User user = userDAO.getUser(request.getUsername());
-            AuthTokenDAO authTokenDAO = new AuthTokenDAO();
-            AuthToken authToken = authTokenDAO.createToken(request.getUsername());
-            return new RegisterResponse(user, authToken);
+        StoredUser existingUser = userDAO.getUser(request.getUsername());
+        if (existingUser != null) {
+            throw new HandleTakenException("Requested user handle is taken; please try another.");
         }
 
-        return new RegisterResponse("Unable to create user");
+        String hashedPassword = request.getPassword(); // TODO: add hashing
+
+        String imageLocation = "lol"; // TODO: create S3 image resource from bytes, fetch resource location here
+
+
+        StoredUser storedUser = new StoredUser(request.getFirstName(), request.getLastName(), request.getPassword(), request.getUsername(), imageLocation, 0, 0);
+
+        userDAO.createUser(storedUser);
+
+        User user = storedUser.toUser();
+        AuthTokenDAO authTokenDAO = getAuthTokenDAO();
+        AuthToken authToken = authTokenDAO.createToken(request.getUsername());
+
+        return new RegisterResponse(user, authToken);
     }
 
     /**
@@ -60,5 +72,9 @@ public class RegisterServiceImpl implements RegisterService {
      */
     public UserDAO getUserDAO() {
         return new UserDAO();
+    }
+
+    public AuthTokenDAO getAuthTokenDAO() {
+        return new AuthTokenDAO();
     }
 }

@@ -7,6 +7,7 @@ import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.server.dao.FollowDAO;
 import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
+import com.nathanielbennett.tweeter.server.model.StoredUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +49,9 @@ public class FollowingServiceImpl  implements FollowingService {
 
         List<User> usersFollowing = new ArrayList<>();
         for (String alias : aliasesFollowing) {
-            User user = userDAO.getUser(alias);
-            if (user != null) {
-                usersFollowing.add(user);
+            StoredUser storedUser = userDAO.getUser(alias);
+            if (storedUser != null) {
+                usersFollowing.add(storedUser.toUser());
             }
         }
 
