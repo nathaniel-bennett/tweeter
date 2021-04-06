@@ -8,6 +8,15 @@ import java.util.UUID;
  */
 public class AuthToken implements Serializable {
     private String authTokenID;
+    private String associatedUser;
+
+    public String getAssociatedUser() {
+        return associatedUser;
+    }
+
+    public void setAssociatedUser(String associatedUser) {
+        this.associatedUser = associatedUser;
+    }
 
     public AuthToken(String authTokenID){
         this.authTokenID = authTokenID;
@@ -37,7 +46,7 @@ public class AuthToken implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         AuthToken authToken = (AuthToken) o;
 
-        return this.authTokenID.equals(authToken.authTokenID);
+        return this.authTokenID.equals(authToken.authTokenID) && this.associatedUser.equals(authToken.associatedUser);
     }
 
     @Override

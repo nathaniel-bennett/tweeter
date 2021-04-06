@@ -7,6 +7,7 @@ import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
 import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
+import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.NotAuthorizedException;
 import com.nathanielbennett.tweeter.server.dao.FollowDAO;
@@ -30,6 +31,12 @@ public class FollowServiceImpl implements FollowService {
         if (request.getUserToFollow() == null || request.getUserToFollow().isEmpty()) {
             throw new BadRequestException("Message body missing username to check");
         }
+
+        AuthTokenDAO authTokenDAO = new AuthTokenDAO();
+        if (!authTokenDAO.checkToken(request.getAuthToken())) {
+            // TODO: something if the token isn't valid
+        }
+
         return getFollowDAO().follow(request);
     }
 
@@ -50,6 +57,12 @@ public class FollowServiceImpl implements FollowService {
         if (request.getUserToUnfollow() == null || request.getUserToUnfollow().isEmpty()) {
             throw new BadRequestException("Message body missing username to check");
         }
+
+        AuthTokenDAO authTokenDAO = new AuthTokenDAO();
+        if (!authTokenDAO.checkToken(request.getAuthToken())) {
+            // TODO: something if the token isn't valid
+        }
+
         return getFollowDAO().unfollow(request);
     }
 
@@ -70,6 +83,12 @@ public class FollowServiceImpl implements FollowService {
         if (request.getOtherUser() == null || request.getOtherUser().isEmpty()) {
             throw new BadRequestException("Message body missing username to check");
         }
+
+        AuthTokenDAO authTokenDAO = new AuthTokenDAO();
+        if (!authTokenDAO.checkToken(request.getAuthToken())) {
+            // TODO: something if the token isn't valid
+        }
+
         return getFollowDAO().isFollowing(request);
     }
 
