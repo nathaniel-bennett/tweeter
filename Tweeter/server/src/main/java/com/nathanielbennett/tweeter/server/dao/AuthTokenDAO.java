@@ -105,8 +105,8 @@ public class AuthTokenDAO extends AmazonDAOTemplate {
         return authToken;
     }
 
-    public boolean checkToken(AuthToken authToken) {
-        ResultsPage resultsPage = getPagedFromDatabase(authToken.getAssociatedUser(), 10, null);
+    public boolean checkToken(AuthToken authToken, String associatedUser) {
+        ResultsPage resultsPage = getPagedFromDatabase(associatedUser, 10, null);
 
         if (resultsPage.hasValues()) {
             for (Object o : resultsPage.getValues()) {

@@ -14,7 +14,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     public AuthorizationResponse isAuthorized(AuthorizationRequest request) {
         AuthTokenDAO authTokenDAO = getAuthTokenDAO();
 
-        if (authTokenDAO.checkToken(request.getAuthToken())) {
+        if (authTokenDAO.checkToken(request.getAuthToken(), request.getUsername())) {
             return new AuthorizationResponse();
         } else {
             return new AuthorizationResponse("Invalid or expired auth token.");
