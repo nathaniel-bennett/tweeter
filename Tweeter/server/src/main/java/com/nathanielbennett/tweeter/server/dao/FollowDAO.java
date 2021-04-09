@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class FollowDAO extends AmazonDAOTemplate {
 
-    private static final String TABLE_NAME = "follow";
+    private static final String TABLE_NAME = "follows";
     private static final String FOLLOWING_INDEX_NAME = "following-index";
 
     private static final String PARTITION_KEY_LABEL = "user1";

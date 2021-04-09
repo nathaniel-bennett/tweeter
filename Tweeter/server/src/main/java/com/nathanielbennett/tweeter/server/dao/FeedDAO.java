@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class FeedDAO extends AmazonDAOTemplate {
 
-    private static final String TABLE_NAME = "feeds";
+    private static final String TABLE_NAME = "feed";
 
     private static final String PARTITION_KEY_LABEL = "owner";
     private static final String SORT_KEY_LABEL = "message";
