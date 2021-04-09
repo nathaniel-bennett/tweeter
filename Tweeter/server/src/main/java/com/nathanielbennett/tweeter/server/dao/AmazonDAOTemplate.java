@@ -77,6 +77,7 @@ public abstract class AmazonDAOTemplate {
             Table table = dynamoDB.getTable(tableName);
 
             Item item = objectToDatabaseItem(o);
+
             table.putItem(item);
         } catch (AmazonDynamoDBException e) {
             throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
@@ -164,12 +165,15 @@ public abstract class AmazonDAOTemplate {
 
         Map<String, String> attrNames = new HashMap<>();
         attrNames.put("#partitionAttr", partitionKeyAttr);
-        attrNames.put("#sortAttr", sortKeyAttr);
-        // TODO: do we need to take sortKeyAttr/sortValue out when sortKey is null, or...?
+        if (sortKey != null) {
+            attrNames.put("#sortAttr", sortKeyAttr);
+        }
 
         Map<String, AttributeValue> attrValues = new HashMap<>();
         attrValues.put(":partitionValue", new AttributeValue().withS(partitionKey));
-        attrValues.put(":sortValue", new AttributeValue().withS(sortKey));
+        if (sortKey != null) {
+            attrValues.put(":sortValue", new AttributeValue().withS(sortKey));
+        }
 
         try {
             QueryRequest queryRequest = new QueryRequest()
