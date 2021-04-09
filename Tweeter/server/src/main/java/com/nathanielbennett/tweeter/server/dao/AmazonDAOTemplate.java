@@ -184,7 +184,7 @@ public abstract class AmazonDAOTemplate {
 
             QueryResult queryResult = amazonDynamoDB.query(queryRequest);
             items = queryResult.getItems();
-            if (items == null) {
+            if (items == null || items.size() == 0) {
                 return null;
             }
 
