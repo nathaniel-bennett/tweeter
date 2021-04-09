@@ -101,8 +101,8 @@ public class AuthTokenDAO extends AmazonDAOTemplate {
 
         addToTable(authToken);
 
+        authToken.setAssociatedUser(null);
         return authToken;
-
     }
 
     public boolean checkToken(AuthToken authToken) {

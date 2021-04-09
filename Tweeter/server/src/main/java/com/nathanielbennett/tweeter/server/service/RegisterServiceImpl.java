@@ -14,13 +14,13 @@ import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
 import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
 import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
+import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
 import com.nathanielbennett.tweeter.server.exceptions.HandleTakenException;
 import com.nathanielbennett.tweeter.server.exceptions.WeakPasswordException;
 import com.nathanielbennett.tweeter.server.model.StoredUser;
 import com.nathanielbennett.tweeter.server.util.PasswordHasher;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.util.UUID;
 
@@ -95,6 +95,9 @@ public class RegisterServiceImpl implements RegisterService {
         User user = storedUser.toUser();
         AuthTokenDAO authTokenDAO = getAuthTokenDAO();
         AuthToken authToken = authTokenDAO.createToken(request.getUsername());
+        if (authToken == null) {
+            throw new DataAccessException("Couldn't create auth token...");
+        }
 
         return new RegisterResponse(user, authToken);
     }
