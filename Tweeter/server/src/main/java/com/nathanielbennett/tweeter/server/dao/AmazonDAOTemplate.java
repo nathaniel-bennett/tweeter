@@ -41,7 +41,7 @@ public abstract class AmazonDAOTemplate {
         }
     }
 
-    private static final String REGION = "us-west-1";
+    private static final String REGION = "us-west-2";
 
     private static AmazonDynamoDB amazonDynamoDB = AmazonDynamoDBClientBuilder
                                                         .standard()
