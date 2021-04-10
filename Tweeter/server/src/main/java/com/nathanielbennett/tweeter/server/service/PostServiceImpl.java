@@ -11,17 +11,13 @@ import com.nathanielbennett.tweeter.model.service.request.AuthorizationRequest;
 import com.nathanielbennett.tweeter.model.service.request.PostRequest;
 import com.nathanielbennett.tweeter.model.service.response.AuthorizationResponse;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
-import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
-import com.nathanielbennett.tweeter.server.dao.FeedDAO;
 import com.nathanielbennett.tweeter.server.dao.StoryDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.NotAuthorizedException;
 import com.nathanielbennett.tweeter.server.model.StoredStatus;
 
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class PostServiceImpl implements PostService {
 
@@ -49,14 +45,14 @@ public class PostServiceImpl implements PostService {
             return new PostResponse(authResponse.getErrorMessage());
         }
 
-        StoredStatus status = new StoredStatus(request.getUsername(), request.getStatus(), DateFormat.getDateTimeInstance().format(new Date()));
+        StoredStatus status = new StoredStatus(request.getUsername(), request.getStatus(), LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
 
         // Post the status to the user's own feed (*hopefully* within 1000 ms)
         getStoryDAO().addStatusToStory(status);
 
         // Send message to SQS Queue
         String messageBody = new Serializer().serialize(status);
-        String queueURL = "https://sqs.us-west-2.amazonaws.com/865443059576/CS340TweeterPostStatusQueue"; // TODO: change this to first queue
+        String queueURL = "https://sqs.us-west-2.amazonaws.com/865443059576/CS340TweeterPostStatusQueue";
 
         SendMessageRequest sendMessageRequest = new SendMessageRequest()
                 .withQueueUrl(queueURL)

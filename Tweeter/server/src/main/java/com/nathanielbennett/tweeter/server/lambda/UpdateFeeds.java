@@ -19,12 +19,7 @@ public class UpdateFeeds implements RequestHandler<SQSEvent, Void> {
         for (SQSEvent.SQSMessage msg : input.getRecords()) {
             PostUpdateBatch batch = serializer.deserialize(msg.getBody(), PostUpdateBatch.class);
 
-            try {
-                feedDAO.addStatusToFeeds(batch.getAliases(), batch.getStatus());
-
-            } catch (DataAccessException e) {
-                // TODO: Log data access failure here
-            }
+            feedDAO.addStatusToFeeds(batch.getAliases(), batch.getStatus());
         }
 
         return null;

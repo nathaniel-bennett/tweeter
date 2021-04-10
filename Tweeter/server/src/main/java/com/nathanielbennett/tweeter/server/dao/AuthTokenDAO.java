@@ -5,121 +5,78 @@ import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
-import com.nathanielbennett.tweeter.server.model.ResultsPage;
+import com.nathanielbennett.tweeter.server.model.StoredAuthToken;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 
 public class AuthTokenDAO extends AmazonDAOTemplate {
 
-    //TODO: MAKE STATIC VARIABLES FOR TABLEnAME, POSITIONKEYATTR, SORTKEYATTR
     private static final String TABLE_NAME = "auth_token";
     private static final String PARTITION_KEY_LABEL = "username";
     private static final String SORT_KEY_LABEL = "auth_token";
+    private static final String TIMESTAMP_LABEL = "timestamp";
 
     public AuthTokenDAO() { super(TABLE_NAME, PARTITION_KEY_LABEL, SORT_KEY_LABEL); }
-
-    /*
-    public AuthToken createAuthToken(String alias) throws DataAccessFailureException {
-        AuthToken authToken = new AuthToken();
-
-        // TODO: actually store auth token in database
-        // TODO: NO
-
-        try {
-            table.putItem(new Item().withPrimaryKey("username", alias,
-                    "auth_token", authToken.getAuthTokenID()));
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new DataAccessFailureException("[InternalServerError] " + e.getMessage());
-        }
-
-        return authToken;
-    }
-
-    public List<AuthToken> getValidAuthTokens(String alias) throws DataAccessFailureException {
-
-        List<AuthToken> authTokens = new ArrayList<>();
-
-        QuerySpec querySpec = new QuerySpec().withKeyConditionExpression("username = " + alias)
-                .withScanIndexForward(true);
-
-        ItemCollection<QueryOutcome> items;
-        Iterator<Item> itemIterator;
-        Item item;
-
-        try {
-            items = table.query(querySpec);
-            itemIterator = items.iterator();
-            while (itemIterator.hasNext()) {
-                item = itemIterator.next();
-                AuthToken authToken = new AuthToken(item.getString("auth_token"));
-                authTokens.add(authToken);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new DataAccessFailureException("[InternalServerError] Failure to access auth DAO " + e.getMessage());
-        }
-
-        return authTokens;
-    }
-
-
-    public void deleteAuthToken(AuthToken authToken) throws DataAccessFailureException {
-        DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
-                .withConditionExpression("auth_token = " + authToken.getAuthTokenID());
-
-        try {
-            table.deleteItem(deleteItemSpec);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new DataAccessFailureException("[InternalServerError] unable to delete auth token: " + e.getMessage());
-        }
-    }
-
-     */
 
     @Override
     protected Object databaseItemToObject(Map<String, AttributeValue> item) throws DataAccessException {
 
         String authTokenID = item.get(SORT_KEY_LABEL).getS();
-        return new AuthToken(authTokenID);
+        String associatedUser = item.get(PARTITION_KEY_LABEL).getS();
+        String timestamp = item.get(TIMESTAMP_LABEL).getS();
+
+        return new StoredAuthToken(authTokenID, associatedUser, timestamp);
     }
 
     @Override
     protected Item objectToDatabaseItem(Object o) {
-        AuthToken authToken = (AuthToken) o;
+        StoredAuthToken authToken = (StoredAuthToken) o;
 
         return new Item()
                 .withPrimaryKey(PARTITION_KEY_LABEL, authToken.getAssociatedUser(),
-                        SORT_KEY_LABEL, authToken.getAuthTokenID());
+                        SORT_KEY_LABEL, authToken.getAuthTokenID())
+                .withString(TIMESTAMP_LABEL, authToken.getTimestamp());
     }
 
     public AuthToken createToken(String userAlias) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
+
         AuthToken authToken = new AuthToken();
-        authToken.setAssociatedUser(userAlias);
+        StoredAuthToken storedAuthToken = new StoredAuthToken(authToken.getAuthTokenID(), userAlias, timestamp);
 
-        addToTable(authToken);
+        addToTable(storedAuthToken);
 
-        authToken.setAssociatedUser(null);
         return authToken;
     }
 
     public boolean checkToken(AuthToken authToken, String associatedUser) {
-        ResultsPage resultsPage = getPagedFromDatabase(associatedUser, 10, null);
 
-        if (resultsPage.hasValues()) {
-            for (Object o : resultsPage.getValues()) {
-                if (authToken.equals(o)) {
-                    return true;
-                }
+        List<Object> oValues = getAllFromTable(associatedUser);
+
+        for (Object value : oValues) {
+            StoredAuthToken storedAuthToken = (StoredAuthToken) value;
+
+            LocalDateTime authTokenStart = LocalDateTime.parse(storedAuthToken.getTimestamp());
+            LocalDateTime authTokenEnd = authTokenStart.plusHours(1);
+
+            if (LocalDateTime.now().isAfter(authTokenEnd)) {
+                deleteToken(storedAuthToken.getAuthTokenID(), storedAuthToken.getAssociatedUser());
+                continue;
+            }
+
+            if (authToken.getAuthTokenID().equals(storedAuthToken.getAuthTokenID())) {
+                return true;
             }
         }
 
         return false;
     }
 
-    public void deleteToken(AuthToken authToken) {
-        removeFromTable(authToken.getAssociatedUser(), authToken.getAuthTokenID());
+    public void deleteToken(String authTokenID, String associatedUser) {
+        removeFromTable(associatedUser, authTokenID);
     }
 }

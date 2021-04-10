@@ -53,7 +53,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     /**
-     * Returns an instance of {@link LoginDAO}. Allows mocking of the LoginDAO class
+     * Returns an instance of {@link AuthTokenDAO}. Allows mocking of the LoginDAO class
      * for testing purposes. All usages of LoginDAO should get their LoginDAO
      * instance from this method to allow for mocking of the instance.
      *
