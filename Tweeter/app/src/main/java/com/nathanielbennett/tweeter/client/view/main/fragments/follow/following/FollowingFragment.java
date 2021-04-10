@@ -103,7 +103,9 @@ public class FollowingFragment extends TemplateFragment<User> implements Followi
         followRecycleViewAdapter.setLastFollow(lastFollowee);
         followRecycleViewAdapter.setHasMorePages(followResponse.getHasMorePages());
         followRecycleViewAdapter.setLoading(false);
-        followRecycleViewAdapter.removeLoadingFooter();
+        if (followRecycleViewAdapter.getItemCount() > 0) {
+            followRecycleViewAdapter.removeLoadingFooter();
+        }
         followRecycleViewAdapter.addItems(followees);
 
     }

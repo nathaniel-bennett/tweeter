@@ -85,7 +85,7 @@ public class FeedFragment extends TemplateFragment<Status> implements FeedPresen
     @Override
     public void feedRetrieved(StatusResponse response) {
         List<Status> statuses = response.getStatuses();
-        String lastStatusMessage = (statuses.size() > 0) ? statuses.get(statuses.size() - 1).getStatusMessage() : null;
+        String lastStatusMessage = (statuses != null && statuses.size() > 0) ? statuses.get(statuses.size() - 1).getStatusMessage() : null;
 
         FeedRecyclerViewAdapter adapter = (FeedRecyclerViewAdapter) recyclerViewAdapter;
 

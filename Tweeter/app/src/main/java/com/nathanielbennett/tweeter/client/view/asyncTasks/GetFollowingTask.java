@@ -2,6 +2,7 @@ package com.nathanielbennett.tweeter.client.view.asyncTasks;
 
 import android.os.AsyncTask;
 
+import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
@@ -9,6 +10,7 @@ import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 import com.nathanielbennett.tweeter.client.presenter.FollowingPresenter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * An {@link AsyncTask} for retrieving followees for a user.
@@ -49,6 +51,9 @@ public class GetFollowingTask extends TemplateTask {
     @Override
     protected TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
         FollowResponse response = presenter.getFollowing((FollowRequest) request);
+        if (response.getRequestedUsers() == null) {
+            response.setRequestedUsers(new ArrayList<User>());
+        }
         if (response.getSuccess()) {
             loadUserImages(response.getRequestedUsers());
         }

@@ -7,6 +7,7 @@ import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 import com.nathanielbennett.tweeter.client.presenter.StoryPresenter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GetStoryTask extends TemplateTask {
 
@@ -43,11 +44,12 @@ public class GetStoryTask extends TemplateTask {
     @Override
     protected TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
         StatusResponse response = presenter.getStory((StatusRequest) request);
+        if (response.getStatuses() == null) {
+            response.setStatuses(new ArrayList<com.nathanielbennett.tweeter.model.domain.Status>());
+        }
+
         if (response.getSuccess()) {
             loadStatusImages(response.getStatuses());
-            for (com.nathanielbennett.tweeter.model.domain.Status status : response.getStatuses()) {
-                loadUserImages(status.getMentions());
-            }
         }
 
         return response;

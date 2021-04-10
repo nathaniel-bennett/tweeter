@@ -1,5 +1,6 @@
 package com.nathanielbennett.tweeter.client.view.asyncTasks;
 
+import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
@@ -7,6 +8,7 @@ import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 import com.nathanielbennett.tweeter.client.presenter.FollowersPresenter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GetFollowersTask extends TemplateTask {
 
@@ -27,6 +29,10 @@ public class GetFollowersTask extends TemplateTask {
     @Override
     protected TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
         FollowResponse response = presenter.getFollowers((FollowRequest) request);
+        if (response.getRequestedUsers() == null) {
+            response.setRequestedUsers(new ArrayList<User>());
+        }
+
         if (response.getSuccess()) {
             loadUserImages(response.getRequestedUsers());
         }
