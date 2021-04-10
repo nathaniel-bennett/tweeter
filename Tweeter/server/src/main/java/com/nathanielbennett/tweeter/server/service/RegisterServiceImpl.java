@@ -76,17 +76,17 @@ public class RegisterServiceImpl implements RegisterService {
             metadata.addUserMetadata("content-type", "image/png");
 
             PutObjectRequest objectRequest = new PutObjectRequest(bucket_name, bucket_key, byteStream, metadata);
-            objectRequest.setKey("bueno");
+            objectRequest.setKey(request.getUsername());
 
             PutObjectResult response = s3.putObject(objectRequest);
 
 
         } catch (AmazonServiceException e) {
             System.err.println(e.getErrorMessage());
-            System.exit(1);
+            throw new DataAccessException("S3 Bucket could not be accessed to store image");
         }
 
-        String imageLocation = "https://" + bucket_name + ".s3-us-west-2.amazonaws.com/" + bucket_key; // TODO: create S3 image resource from bytes, fetch resource location here
+        String imageLocation = "https://" + bucket_name + ".s3-us-west-2.amazonaws.com/" + request.getUsername();
 
         StoredUser storedUser = new StoredUser(request.getFirstName(), request.getLastName(), hashedPassword, request.getUsername(), imageLocation, 0, 0);
 
