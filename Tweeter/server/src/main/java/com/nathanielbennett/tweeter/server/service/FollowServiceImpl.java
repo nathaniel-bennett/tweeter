@@ -10,6 +10,7 @@ import com.nathanielbennett.tweeter.model.service.response.AuthorizationResponse
 import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
 import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
+import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.NotAuthorizedException;
 import com.nathanielbennett.tweeter.server.dao.FollowDAO;
@@ -45,7 +46,11 @@ public class FollowServiceImpl implements FollowService {
         }
 
         FollowDAO followDAO = getFollowDAO();
-        followDAO.addFollowRelationship(request.getUserToFollow(), request.getUserToFollow());
+        followDAO.addFollowRelationship(request.getUsername(), request.getUserToFollow());
+
+        UserDAO userDAO = getUserDAO();
+        userDAO.incrementUserFollowers(request.getUserToFollow());
+        userDAO.incrementUserFollowing(request.getUsername());
 
         return new FollowUserResponse();
     }
@@ -79,6 +84,10 @@ public class FollowServiceImpl implements FollowService {
 
         FollowDAO followDAO = getFollowDAO();
         followDAO.removeFollowRelationship(request.getUsername(), request.getUserToUnfollow());
+
+        UserDAO userDAO = getUserDAO();
+        userDAO.decrementUserFollowers(request.getUserToUnfollow());
+        userDAO.decrementUserFollowing(request.getUsername());
 
         return new UnfollowUserResponse();
     }
@@ -125,5 +134,9 @@ public class FollowServiceImpl implements FollowService {
      */
     public FollowDAO getFollowDAO() {
         return new FollowDAO();
+    }
+
+    public UserDAO getUserDAO() {
+        return new UserDAO();
     }
 }

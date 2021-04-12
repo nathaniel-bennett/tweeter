@@ -30,7 +30,7 @@ public class FollowersServiceImpl implements FollowersService {
         FollowDAO followDAO = getFollowDAO();
         UserDAO userDAO = getUserDAO();
 
-        List<String> aliasesFollowedBy = followDAO.getFollowedBy(request.getFollowAlias(), request.getLimit(), request.getLastFollowAlias());
+        List<String> aliasesFollowedBy = followDAO.getFollowing(request.getFollowAlias(), request.getLimit(), request.getLastFollowAlias());
         boolean hasMorePages = (aliasesFollowedBy.size() == request.getLimit());
 
         List<User> usersFollowedBy = new ArrayList<>();
