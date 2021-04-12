@@ -25,6 +25,8 @@ import com.nathanielbennett.tweeter.client.view.asyncTasks.GetStoryTask;
 import com.nathanielbennett.tweeter.client.view.main.fragments.TemplateFragment;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
@@ -103,6 +105,8 @@ public class StoryFragment extends TemplateFragment<Status> implements StoryPres
 
             // Convert date posted
             LocalDateTime timestamp = LocalDateTime.parse(status.getDatePosted());
+            timestamp = timestamp.minusHours(6); // Might want to make this more effective at converting timezones
+
             String dayOfWeek = timestamp.getDayOfWeek().toString().toLowerCase();
             dayOfWeek = dayOfWeek.substring(0, 1).toUpperCase() + dayOfWeek.substring(1);
             String datePosted =  dayOfWeek + ", "
@@ -111,6 +115,8 @@ public class StoryFragment extends TemplateFragment<Status> implements StoryPres
                     + Integer.toString(timestamp.getYear()) + " "
                     + Integer.toString(timestamp.getHour()) + ":"
                     + Integer.toString(timestamp.getMinute());
+
+
 
 
             status.setDatePosted(datePosted);
