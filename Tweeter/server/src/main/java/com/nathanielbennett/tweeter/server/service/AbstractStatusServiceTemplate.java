@@ -71,7 +71,7 @@ public abstract class AbstractStatusServiceTemplate {
                         || i == status.length() - 1) {
                     int end = (i == status.length() - 1) ? i + 1 : i;
 
-                    userMentions.add(sb.substring(start, end)); // TODO: make sure this substring works
+                    userMentions.add(sb.substring(start + 1, end)); // TODO: make sure this substring works
                     start = null;
                 }
             }

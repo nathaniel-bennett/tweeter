@@ -114,9 +114,6 @@ public class StoryFragment extends TemplateFragment<Status> implements StoryPres
                     + Integer.toString(timestamp.getHour()) + ":"
                     + Integer.toString(timestamp.getMinute());
 
-
-
-
             status.setDatePosted(datePosted);
         }
 

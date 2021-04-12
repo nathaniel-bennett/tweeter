@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.client.view.main;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nathanielbennett.tweeter.R;
+import com.nathanielbennett.tweeter.client.util.ByteArrayUtils;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
@@ -28,6 +30,7 @@ import com.nathanielbennett.tweeter.client.view.asyncTasks.TemplateTask;
 import com.nathanielbennett.tweeter.client.view.asyncTasks.UnfollowTask;
 import com.nathanielbennett.tweeter.client.view.util.ImageUtils;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 
 /**
@@ -136,7 +139,29 @@ public class UserActivity extends LoggedInActivity implements UserPresenter.View
         userAlias.setText(alias);
 
         ImageView userImageView = findViewById(R.id.userImage);
-        userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(selectedUser.getImageBytes()));
+
+        if (selectedUser.getImageBytes() == null) {
+            AsyncTask<String, Void, byte[]> getImageTask = new AsyncTask<String, Void, byte[]>() {
+                @Override
+                protected byte[] doInBackground(String... strings) {
+                    String url = strings[0];
+                    try {
+                        return ByteArrayUtils.bytesFromUrl(url);
+                    } catch (IOException e) {
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(byte[] imageBytes) {
+                    userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(imageBytes));
+                    selectedUser.setImageBytes(imageBytes);
+                }
+            };
+            getImageTask.execute(selectedUser.getImageUrl());
+        } else {
+            userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(selectedUser.getImageBytes()));
+        }
 
         TextView followeeCount = findViewById(R.id.followeeCount);
         followeeCount.setText(MessageFormat.format("Following: {0}", Integer.toString(selectedUser.getFolloweeCount())));
