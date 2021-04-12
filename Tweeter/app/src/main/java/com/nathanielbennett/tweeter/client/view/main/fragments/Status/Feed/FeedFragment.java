@@ -92,14 +92,18 @@ public class FeedFragment extends TemplateFragment<Status> implements FeedPresen
         adapter.setLastStatusMessage(lastStatusMessage);
         adapter.setHasMorePages(response.getHasMorePages());
         adapter.setLoading(false);
-        adapter.removeLoadingFooter();
+        if (adapter.getItemCount() > 0) {
+            adapter.removeLoadingFooter();
+        }
         adapter.addItems(statuses);
     }
 
     @Override
     public void feedNotRetrieved(StatusResponse response) {
         Log.e(LOG_TAG, response.getErrorMessage());
-        recyclerViewAdapter.removeLoadingFooter();
+        if (recyclerViewAdapter.getItemCount() > 0) {
+            recyclerViewAdapter.removeLoadingFooter();
+        }
         recyclerViewAdapter.setLoading(false);
         Toast.makeText(getContext(), response.getErrorMessage(), Toast.LENGTH_LONG).show();
     }
@@ -107,7 +111,9 @@ public class FeedFragment extends TemplateFragment<Status> implements FeedPresen
     @Override
     public void handleException(Exception exception) {
         Log.e(LOG_TAG, exception.getMessage(), exception);
-        recyclerViewAdapter.removeLoadingFooter();
+        if (recyclerViewAdapter.getItemCount() > 0) {
+            recyclerViewAdapter.removeLoadingFooter();
+        }
         recyclerViewAdapter.setLoading(false);
         Toast.makeText(getContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
     }

@@ -93,14 +93,18 @@ public class FollowersFragment extends TemplateFragment<User> implements Followe
         followRecycleViewAdapter.setLastFollow(lastFollower);
         followRecycleViewAdapter.setHasMorePages(followersResponse.getHasMorePages());
         followRecycleViewAdapter.setLoading(false);
-        followRecycleViewAdapter.removeLoadingFooter();
+        if (recyclerViewAdapter.getItemCount() > 0) {
+            followRecycleViewAdapter.removeLoadingFooter();
+        }
         followRecycleViewAdapter.addItems(followers);
     }
 
     @Override
     public void followersNotRetrieved(FollowResponse response) {
         Log.e(LOG_TAG, response.getErrorMessage());
-        recyclerViewAdapter.removeLoadingFooter();
+        if (recyclerViewAdapter.getItemCount() > 0) {
+            recyclerViewAdapter.removeLoadingFooter();
+        }
         recyclerViewAdapter.setLoading(false);
         Toast.makeText(getContext(), response.getErrorMessage(), Toast.LENGTH_LONG).show();
     }
@@ -108,7 +112,9 @@ public class FollowersFragment extends TemplateFragment<User> implements Followe
     @Override
     public void handleException(Exception ex) {
         Log.e(LOG_TAG, ex.getMessage(), ex);
-        recyclerViewAdapter.removeLoadingFooter();
+        if (recyclerViewAdapter.getItemCount() > 0) {
+            recyclerViewAdapter.removeLoadingFooter();
+        }
         recyclerViewAdapter.setLoading(false);
         Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
     }
