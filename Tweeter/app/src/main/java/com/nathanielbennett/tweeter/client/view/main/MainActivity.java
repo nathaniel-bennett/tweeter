@@ -101,7 +101,8 @@ public class MainActivity extends LoggedInActivity implements MainPresenter.View
         userName.setText(loggedInUser.getName());
 
         TextView userAlias = findViewById(R.id.userAlias);
-        userAlias.setText(loggedInUser.getAlias());
+        String alias = "@" + loggedInUser.getAlias();
+        userAlias.setText(alias);
 
         ImageView userImageView = findViewById(R.id.userImage);
         userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(loggedInUser.getImageBytes()));

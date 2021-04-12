@@ -73,7 +73,7 @@ public class StatusItemHolder extends TemplateItemHolder<Status> {
         associatedStatus = itemToBind;
         associatedUser = itemToBind.getUserOfStatus();
         userImage.setImageDrawable(ImageUtils.drawableFromByteArray(itemToBind.getUserOfStatus().getImageBytes()));
-        userAlias.setText(itemToBind.getUserOfStatus().getAlias());
+        userAlias.setText("@" + itemToBind.getUserOfStatus().getAlias());
         userName.setText(itemToBind.getUserOfStatus().getName());
         postDateInfo.setText(itemToBind.getDatePosted());
 

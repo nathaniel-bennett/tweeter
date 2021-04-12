@@ -48,9 +48,12 @@ public class GetStoryTask extends TemplateTask {
             response.setStatuses(new ArrayList<com.nathanielbennett.tweeter.model.domain.Status>());
         }
 
+        // We already have the user's profile pic--why load it several times?
+        /*
         if (response.getSuccess()) {
             loadStatusImages(response.getStatuses());
         }
+         */
 
         return response;
     }

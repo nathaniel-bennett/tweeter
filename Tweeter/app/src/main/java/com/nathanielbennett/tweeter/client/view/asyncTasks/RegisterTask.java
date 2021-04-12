@@ -26,10 +26,13 @@ public class RegisterTask extends TemplateTask {
 
     @Override
     protected TweeterAPIResponse performTask(TweeterAPIRequest request) throws IOException {
+        RegisterRequest registerRequest = (RegisterRequest) request;
+
         RegisterResponse response = presenter.register((RegisterRequest) request);
 
+        // No sense in loading the picture from S3 if we already have it...
         if (response.getSuccess()) {
-            loadUserImage(response.getUser());
+            response.getUser().setImageBytes(registerRequest.getImage());
         }
 
         return response;

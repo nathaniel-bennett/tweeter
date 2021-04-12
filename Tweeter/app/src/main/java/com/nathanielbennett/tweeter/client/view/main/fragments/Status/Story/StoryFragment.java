@@ -1,5 +1,6 @@
 package com.nathanielbennett.tweeter.client.view.main.fragments.Status.Story;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +24,10 @@ import com.nathanielbennett.tweeter.client.presenter.StoryPresenter;
 import com.nathanielbennett.tweeter.client.view.asyncTasks.GetStoryTask;
 import com.nathanielbennett.tweeter.client.view.main.fragments.TemplateFragment;
 
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 public class StoryFragment extends TemplateFragment<Status> implements StoryPresenter.View,
         GetStoryTask.Observer {
@@ -87,10 +92,29 @@ public class StoryFragment extends TemplateFragment<Status> implements StoryPres
      *
      * @param response The response from the getStoryTask.
      */
+    @RequiresApi(api = Build.VERSION_CODES.O) // TODO: use something other than LocalDateTime to allow for earlier API versions
     @Override
     public void storyRetrieved(StatusResponse response) {
         List<Status> statuses = response.getStatuses();
         String lastStatusMessage = (statuses.size() > 0) ? statuses.get(statuses.size() - 1).getStatusMessage() : null;
+
+        for (Status status : statuses) {
+            status.getUserOfStatus().setImageBytes(user.getImageBytes());
+
+            // Convert date posted
+            LocalDateTime timestamp = LocalDateTime.parse(status.getDatePosted());
+            String dayOfWeek = timestamp.getDayOfWeek().toString().toLowerCase();
+            dayOfWeek = dayOfWeek.substring(0, 1).toUpperCase() + dayOfWeek.substring(1);
+            String datePosted =  dayOfWeek + ", "
+                    + Integer.toString(timestamp.getDayOfMonth()) + " "
+                    + timestamp.getMonth().getDisplayName(TextStyle.SHORT, Locale.US) + " "
+                    + Integer.toString(timestamp.getYear()) + " "
+                    + Integer.toString(timestamp.getHour()) + ":"
+                    + Integer.toString(timestamp.getMinute());
+
+
+            status.setDatePosted(datePosted);
+        }
 
         StoryRecyclerViewAdapter adapter = (StoryRecyclerViewAdapter) recyclerViewAdapter;
 
