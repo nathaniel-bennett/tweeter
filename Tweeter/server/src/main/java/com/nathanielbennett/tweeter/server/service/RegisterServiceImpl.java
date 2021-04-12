@@ -40,6 +40,10 @@ public class RegisterServiceImpl implements RegisterService {
             throw new WeakPasswordException("You must create a password to register");
         }
 
+        if (request.getPassword().length() < 8) {
+            throw new WeakPasswordException("Password must be at least 8 characters long");
+        }
+
         if (request.getFirstName() == null || request.getFirstName().isEmpty()) {
             throw new BadRequestException("First name missing from registration request");
         }
