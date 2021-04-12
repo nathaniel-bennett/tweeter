@@ -25,8 +25,6 @@ import com.nathanielbennett.tweeter.client.view.asyncTasks.GetStoryTask;
 import com.nathanielbennett.tweeter.client.view.main.fragments.TemplateFragment;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
@@ -98,7 +96,7 @@ public class StoryFragment extends TemplateFragment<Status> implements StoryPres
     @Override
     public void storyRetrieved(StatusResponse response) {
         List<Status> statuses = response.getStatuses();
-        String lastStatusMessage = (statuses.size() > 0) ? statuses.get(statuses.size() - 1).getStatusMessage() : null;
+        String lastStatusMessageTimestamp = (statuses.size() > 0) ? statuses.get(statuses.size() - 1).getDatePosted() : null;
 
         for (Status status : statuses) {
             status.getUserOfStatus().setImageBytes(user.getImageBytes());
@@ -124,7 +122,7 @@ public class StoryFragment extends TemplateFragment<Status> implements StoryPres
 
         StoryRecyclerViewAdapter adapter = (StoryRecyclerViewAdapter) recyclerViewAdapter;
 
-        adapter.setLastStatusMessage(lastStatusMessage);
+        adapter.setLastStatusMessageTimestamp(lastStatusMessageTimestamp);
         adapter.setHasMorePages(response.getHasMorePages());
         adapter.setLoading(false);
         if (adapter.getItemCount() > 0) {

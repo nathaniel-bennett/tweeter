@@ -247,10 +247,19 @@ public abstract class AmazonDAOTemplate {
 
 
     protected ResultsPage getPagedFromDatabase(String partitionValue, int pageSize, String lastRetrieved) {
-        return getPagedFromDatabase(partitionValue, pageSize, lastRetrieved, null);
+        return getPagedFromDatabase(partitionValue, pageSize, lastRetrieved, null, true);
+    }
+
+    protected ResultsPage getPagedFromDatabase(String partitionValue, int pageSize, String lastRetrieved, boolean scanForward) {
+        return getPagedFromDatabase(partitionValue, pageSize, lastRetrieved, null, scanForward);
     }
 
     protected ResultsPage getPagedFromDatabase(String partitionValue, int pageSize, String lastRetrieved, DBIndex index) {
+        return getPagedFromDatabase(partitionValue, pageSize, lastRetrieved, index, true);
+    }
+
+
+    protected ResultsPage getPagedFromDatabase(String partitionValue, int pageSize, String lastRetrieved, DBIndex index, boolean scanForward) {
         ResultsPage result = new ResultsPage();
         String primaryAttr;
         if (index != null) {
@@ -272,6 +281,8 @@ public abstract class AmazonDAOTemplate {
                     .withExpressionAttributeNames(attrNames)
                     .withExpressionAttributeValues(attrValues)
                     .withLimit(pageSize);
+
+            queryRequest.setScanIndexForward(scanForward);
 
             if (index != null) {
                 queryRequest = queryRequest.withIndexName(index.getIndexName());

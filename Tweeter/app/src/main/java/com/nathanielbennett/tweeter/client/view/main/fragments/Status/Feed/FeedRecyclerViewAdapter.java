@@ -18,12 +18,12 @@ public class FeedRecyclerViewAdapter extends StatusRecycleViewAdapter {
      *
      * @param context           The context passed in from the os.
      * @param presenter         The presenter used to make requests.
-     * @param lastStatusMessage The last seen message.
+     * @param lastStatusMessageTimestamp The last seen message.
      * @param observer          The observer to notify when tasks are done.
      * @param user              The user who is associated with this fragment.
      */
-    public FeedRecyclerViewAdapter(Context context, TemplatePresenter presenter, String lastStatusMessage, GetFeedTask.Observer observer, User user) {
-        super(context, presenter, lastStatusMessage, user);
+    public FeedRecyclerViewAdapter(Context context, TemplatePresenter presenter, String lastStatusMessageTimestamp, GetFeedTask.Observer observer, User user) {
+        super(context, presenter, lastStatusMessageTimestamp, user);
         this.observer = observer;
         loadMoreItems();
     }
@@ -34,7 +34,7 @@ public class FeedRecyclerViewAdapter extends StatusRecycleViewAdapter {
         addLoadingFooter();
 
         GetFeedTask getFeedTask = new GetFeedTask((FeedPresenter) presenter, observer);
-        StatusRequest request = new StatusRequest(user.getAlias(), PAGE_SIZE, lastStatusMessage);
+        StatusRequest request = new StatusRequest(user.getAlias(), PAGE_SIZE, lastStatusMessageTimestamp);
         getFeedTask.execute(request);
     }
 }

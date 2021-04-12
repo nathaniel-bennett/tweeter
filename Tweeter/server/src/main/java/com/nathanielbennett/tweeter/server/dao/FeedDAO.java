@@ -46,7 +46,7 @@ public class FeedDAO extends AmazonDAOTemplate {
 
 
     public List<StoredStatus> getUserFeed(String feedOwner, int numStatuses, String lastSeenStatus) {
-        ResultsPage resultsPage = getPagedFromDatabase(feedOwner, numStatuses, lastSeenStatus);
+        ResultsPage resultsPage = getPagedFromDatabase(feedOwner, numStatuses, lastSeenStatus, false);
         if (!resultsPage.hasValues()) {
             return null;
         }

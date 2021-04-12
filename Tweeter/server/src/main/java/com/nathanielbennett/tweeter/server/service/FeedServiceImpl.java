@@ -21,7 +21,7 @@ public class FeedServiceImpl extends AbstractStatusServiceTemplate implements Fe
             throw new BadRequestException("Request missing user");
         }
 
-        List<StoredStatus> storedStatusList = getFeedDao().getUserFeed(request.getAlias(), request.getLimit(), request.getLastStatus());
+        List<StoredStatus> storedStatusList = getFeedDao().getUserFeed(request.getAlias(), request.getLimit(), request.getLastStatusTimestamp());
         boolean hasMorePages = (storedStatusList.size() == request.getLimit());
 
         List<Status> statuses = formUserStatuses(storedStatusList);

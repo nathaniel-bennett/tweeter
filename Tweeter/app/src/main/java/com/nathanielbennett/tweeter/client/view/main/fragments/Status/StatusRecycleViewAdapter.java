@@ -16,29 +16,29 @@ import java.util.ArrayList;
 abstract public class StatusRecycleViewAdapter extends TemplateRecyclerViewAdapter<Status> {
 
     protected TemplatePresenter presenter;
-    protected String lastStatusMessage;
+    protected String lastStatusMessageTimestamp;
 
     /**
      * Creates an instance.
      *
      * @param context The context passed in from the os.
      * @param presenter The presenter used to make requests.
-     * @param lastStatusMessage The last seen message.
+     * @param lastStatusMessageTimestamp The last seen message.
      */
-    public StatusRecycleViewAdapter(Context context, TemplatePresenter presenter, String lastStatusMessage, User user) {
+    public StatusRecycleViewAdapter(Context context, TemplatePresenter presenter, String lastStatusMessageTimestamp, User user) {
         this.context = context;
         this.presenter = presenter;
-        this.lastStatusMessage = lastStatusMessage;
+        this.lastStatusMessageTimestamp = lastStatusMessageTimestamp;
         this.user = user;
     }
 
     /**
-     * Setter for lastStatusMessage.
+     * Setter for lastStatusMessageTimestamp.
      *
-     * @param lastStatusMessage the last seen status message.
+     * @param lastStatusMessageTimestamp the last seen status message.
      */
-    public void setLastStatusMessage(String lastStatusMessage) {
-        this.lastStatusMessage = lastStatusMessage;
+    public void setLastStatusMessageTimestamp(String lastStatusMessageTimestamp) {
+        this.lastStatusMessageTimestamp = lastStatusMessageTimestamp;
     }
 
     /**
