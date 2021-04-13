@@ -1,8 +1,12 @@
 package com.nathanielbennett.tweeter.server.service;
 
+import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
+import com.nathanielbennett.tweeter.server.dao.FollowDAO;
+import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
+import com.nathanielbennett.tweeter.server.model.StoredUser;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,33 +18,37 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class FollowersServiceTests {
 
-    /*
+
     FollowersServiceImpl followersService;
-    FollowersDAO followDAO;
+    FollowDAO followDAO;
+    UserDAO userDAO;
     FollowRequest goodRequest;
     FollowResponse goodResponse;
-    FollowRequest badRequest;
-    FollowResponse badResponse;
+    List<String> alias;
 
     @BeforeEach
     public void setup() {
-        followDAO = Mockito.mock(FollowersDAO.class);
+        followDAO = Mockito.mock(FollowDAO.class);
+        userDAO = Mockito.mock(UserDAO.class);
         followersService = Mockito.spy(FollowersServiceImpl.class);
+        alias = Arrays.asList("sallyD", "hankD");
+
+        Mockito.when(followersService.getFollowDAO()).thenReturn(followDAO);
+        Mockito.when(followersService.getUserDAO()).thenReturn(userDAO);
 
         goodRequest = new FollowRequest("HELLO", 5, "FollowME");
-        goodResponse = new FollowResponse(null, false);
-        Mockito.when(followDAO.getFollowers(goodRequest)).thenReturn(goodResponse);
+        //Mockito.when(followDAO.getFollowers(goodRequest)).thenReturn(goodResponse);
+        Mockito.when(followDAO.getFollowing(goodRequest.getFollowAlias(), goodRequest.getLimit(), goodRequest.getLastFollowAlias())).thenReturn(alias);
+        Mockito.when(userDAO.getUser(alias.get(0))).thenReturn(new StoredUser("good", "response", "password", "hello", "", 0, 0));
+        Mockito.when(userDAO.getUser(alias.get(1))).thenReturn(new StoredUser("good", "response", "password", "hello", "", 0, 0));
 
-        badRequest = new FollowRequest("HELLO", 4, "FollowME");
-        badResponse = new FollowResponse("failure");
-        Mockito.when(followDAO.getFollowers(badRequest)).thenReturn(badResponse);
 
-        Mockito.when(followersService.getFollowersDAO()).thenReturn(followDAO);
     }
 
     static Stream<Arguments> generateInvalidTestInput() {
@@ -65,11 +73,7 @@ public class FollowersServiceTests {
     @Test
     public void testServiceReturnsCorrectObject() {
         FollowResponse response = followersService.fetchFollowers(goodRequest);
-        Assertions.assertTrue(response == goodResponse);
-
-        response = followersService.fetchFollowers(badRequest);
-        Assertions.assertTrue(response == badResponse);
+        Assertions.assertNotEquals(0, response.getRequestedUsers());
+        Assertions.assertFalse(response.getHasMorePages());
     }
-
-     */
 }
