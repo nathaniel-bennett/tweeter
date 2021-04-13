@@ -87,7 +87,6 @@ public class FollowersFragment extends TemplateFragment<User> implements Followe
     public void followersRetrieved(FollowResponse followersResponse) {
         List<User> followers = followersResponse.getRequestedUsers();
         User lastFollower = (followers.size() > 0) ? followers.get(followers.size() - 1) : null;
-        Log.i("lastFollower", lastFollower.getAlias() + " " + lastFollower.getName());
 
         FollowRecycleViewAdapter followRecycleViewAdapter = (FollowRecycleViewAdapter) recyclerViewAdapter;
 

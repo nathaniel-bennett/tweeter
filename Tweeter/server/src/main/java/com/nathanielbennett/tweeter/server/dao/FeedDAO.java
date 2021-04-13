@@ -67,14 +67,16 @@ public class FeedDAO extends AmazonDAOTemplate {
     }
 
     public void addStatusToFeeds(List<String> feedOwners, StoredStatus status) {
-        List<StoredStatus> statuses = new ArrayList<>();
+        List<Object> statuses = new ArrayList<>();
 
         for (String feedOwner : feedOwners) {
             StoredStatus duplicateStatus = new StoredStatus(status.getAlias(), status.getMessage(), status.getTimestamp());
             duplicateStatus.setFeedOwner(feedOwner);
+
+            statuses.add(duplicateStatus);
         }
 
-        addToTable(statuses);
+        addToTableBatch(statuses);
     }
 
 }

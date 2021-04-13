@@ -220,6 +220,9 @@ public abstract class AmazonDAOTemplate {
             primaryAttr = partitionKeyAttr;
         }
 
+        Table table = dynamoDB.getTable(tableName);
+
+
         Map<String, String> attrNames = new HashMap<>();
         attrNames.put("#partitionAttr", primaryAttr);
 
@@ -227,23 +230,33 @@ public abstract class AmazonDAOTemplate {
         attrValues.put(":partitionValue", new AttributeValue().withS(primaryValue));
 
         try {
-            QueryRequest queryRequest = new QueryRequest()
-                    .withTableName(tableName)
-                    .withKeyConditionExpression("#partitionAttr = :partitionValue")
-                    .withExpressionAttributeNames(attrNames)
-                    .withExpressionAttributeValues(attrValues);
 
-            if (index != null) {
-                queryRequest = queryRequest.withIndexName(index.getIndexName());
-            }
+            Map<String, AttributeValue> lastKey = null;
+            do {
+                QueryRequest queryRequest = new QueryRequest()
+                        .withTableName(tableName)
+                        .withKeyConditionExpression("#partitionAttr = :partitionValue")
+                        .withExpressionAttributeNames(attrNames)
+                        .withExpressionAttributeValues(attrValues);
 
-            QueryResult queryResult = amazonDynamoDB.query(queryRequest);
-            List<Map<String, AttributeValue>> items = queryResult.getItems();
-            if (items != null) {
-                for (Map<String, AttributeValue> item : items) {
-                    result.add(databaseItemToObject(item));
+                if (index != null) {
+                    queryRequest = queryRequest.withIndexName(index.getIndexName());
                 }
-            }
+
+                if (lastKey != null) {
+                    queryRequest = queryRequest.withExclusiveStartKey(lastKey);
+                }
+
+                QueryResult queryResult = amazonDynamoDB.query(queryRequest);
+                List<Map<String, AttributeValue>> items = queryResult.getItems();
+                if (items != null) {
+                    for (Map<String, AttributeValue> item : items) {
+                        result.add(databaseItemToObject(item));
+                    }
+                }
+
+                lastKey = queryResult.getLastEvaluatedKey();
+            } while (lastKey != null);
 
         } catch (AmazonDynamoDBException e) {
             throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
