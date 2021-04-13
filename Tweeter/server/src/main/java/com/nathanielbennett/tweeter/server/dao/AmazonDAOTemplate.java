@@ -262,6 +262,7 @@ public abstract class AmazonDAOTemplate {
     protected ResultsPage getPagedFromDatabase(String partitionValue, int pageSize, String lastRetrieved, DBIndex index, boolean scanForward) {
         ResultsPage result = new ResultsPage();
         String primaryAttr;
+
         if (index != null) {
             primaryAttr = index.getIndexPrimaryKeyAttr();
         } else {

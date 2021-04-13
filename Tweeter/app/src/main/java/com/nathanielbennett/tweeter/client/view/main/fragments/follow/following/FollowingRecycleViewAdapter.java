@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.client.view.main.fragments.follow.following;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
@@ -30,12 +31,19 @@ public class FollowingRecycleViewAdapter extends FollowRecycleViewAdapter {
      */
     @Override
     public void loadMoreItems() {
+        if (this.isLoading) {
+            return;
+        }
+
         this.isLoading = true;
         addLoadingFooter();
 
         GetFollowingTask getFollowingTask = new GetFollowingTask((FollowingPresenter) presenter, observer);
         FollowRequest request = new FollowRequest(user.getAlias(), PAGE_SIZE, (lastFollow ==
                 null ? null : lastFollow.getAlias()));
+
+        Log.i("followingAlias", lastFollow != null ? lastFollow.getAlias() : "null");
+
         getFollowingTask.execute(request);
     }
 }

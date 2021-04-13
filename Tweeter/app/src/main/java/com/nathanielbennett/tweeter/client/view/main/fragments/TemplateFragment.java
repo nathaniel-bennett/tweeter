@@ -72,6 +72,23 @@ abstract public class TemplateFragment<Item> extends Fragment {
         @Override
         public void onScrolled(@NotNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
+            /*
+            int visibleItemCount = layoutManager.getChildCount();
+            int totalItemCount = layoutManager.getItemCount();
+            int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+            if (!recyclerViewAdapter.isLoading && recyclerViewAdapter.hasMorePages) {
+                if ((visibleItemCount + firstVisibleItemPosition) >=
+                        totalItemCount && firstVisibleItemPosition >= 0) {
+                    recyclerViewAdapter.loadMoreItems();
+                }
+            }
+             */
+        }
+
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
 
             int visibleItemCount = layoutManager.getChildCount();
             int totalItemCount = layoutManager.getItemCount();

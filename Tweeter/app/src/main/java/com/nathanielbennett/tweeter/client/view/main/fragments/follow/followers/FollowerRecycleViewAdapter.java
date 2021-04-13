@@ -29,6 +29,10 @@ public class FollowerRecycleViewAdapter extends FollowRecycleViewAdapter {
 
     @Override
     public void loadMoreItems() {
+        if (this.isLoading) {
+            return; // Still loading items...
+        }
+
         this.isLoading = true;
         addLoadingFooter();
 
