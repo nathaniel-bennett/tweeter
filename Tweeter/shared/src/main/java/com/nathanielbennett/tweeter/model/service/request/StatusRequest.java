@@ -2,7 +2,7 @@ package com.nathanielbennett.tweeter.model.service.request;
 
 public class StatusRequest implements TweeterAPIRequest {
 
-    private String lastTimestamp;
+    private String timestamp;
     private String alias;
     private int limit;
 
@@ -11,10 +11,10 @@ public class StatusRequest implements TweeterAPIRequest {
      * @param userToGet the user that we want to get their stories.
      * @param limit
      */
-    public StatusRequest(String userToGet, int limit, String lastTimestamp) {
+    public StatusRequest(String userToGet, int limit, String timestamp) {
         this.alias = userToGet;
         this.limit = limit;
-        this.lastTimestamp = lastTimestamp;
+        this.timestamp = timestamp;
     }
 
     public StatusRequest() { }
@@ -47,11 +47,11 @@ public class StatusRequest implements TweeterAPIRequest {
      * Getter for lastStatusTimestamp
      * @return lastStatusTimestamp
      */
-    public String getLastTimestamp() {
-        return lastTimestamp;
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    public void setLastTimestamp(String lastTimestamp) {
-        this.lastTimestamp = lastTimestamp;
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 }

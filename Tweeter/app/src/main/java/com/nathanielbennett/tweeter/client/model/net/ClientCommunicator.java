@@ -1,5 +1,7 @@
 package com.nathanielbennett.tweeter.client.model.net;
 
+import android.util.Log;
+
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.net.Serializer;
 import com.nathanielbennett.tweeter.model.service.request.TweeterAPIRequest;
@@ -87,6 +89,9 @@ public class ClientCommunicator {
                 responseData = readString(errorBody);
                 errorBody.close();
             }
+
+            Log.i("HTTPResponseCode", Integer.toString(connection.getResponseCode()));
+            Log.i("HTTPResponse", responseData);
         } catch (Exception e) {
             throw e;
         } finally {

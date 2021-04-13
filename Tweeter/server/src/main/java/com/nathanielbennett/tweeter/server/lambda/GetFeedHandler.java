@@ -25,7 +25,7 @@ public class GetFeedHandler implements RequestHandler<StatusRequest, StatusRespo
 
         LambdaLogger logger = context.getLogger();
 
-        logger.log("Received GetStory Request; alias: " + request.getAlias() + "; limit: " + request.getLimit() + "; lastTimestamp: " + request.getLastTimestamp());
+        logger.log("Received GetStory Request; alias: " + request.getAlias() + "; limit: " + request.getLimit() + "; lastTimestamp: " + request.getTimestamp());
 
 
         StatusResponse response = feedService.fetchFeed(request);
