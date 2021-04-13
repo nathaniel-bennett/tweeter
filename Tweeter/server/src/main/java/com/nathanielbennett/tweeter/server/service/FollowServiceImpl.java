@@ -17,6 +17,7 @@ import com.nathanielbennett.tweeter.server.dao.FollowDAO;
 
 public class FollowServiceImpl implements FollowService {
 
+
     @Override
     public FollowUserResponse follow(FollowUserRequest request) {
         if (request == null) {
@@ -133,7 +134,7 @@ public class FollowServiceImpl implements FollowService {
      * @return the instance.
      */
     public FollowDAO getFollowDAO() {
-        return new FollowDAO();
+        return new FollowDAO(null);
     }
 
     public UserDAO getUserDAO() {

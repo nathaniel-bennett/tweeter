@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.server.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
@@ -19,7 +20,18 @@ public class GetFollowersHandler implements RequestHandler<FollowRequest, Follow
      */
     @Override
     public FollowResponse handleRequest(FollowRequest request, Context context) {
-        FollowersServiceImpl followersService = new FollowersServiceImpl();
+        LambdaLogger logger = context.getLogger();
+        FollowersServiceImpl followersService = new FollowersServiceImpl(logger);
+
+        logger.log("Received request to get followers; alias: " + request.getFollowAlias() + "; lastFollowAlias: " + request.getLastFollowAlias());
+
+        FollowResponse response = followersService.fetchFollowers(request);
+
+        if (response.getSuccess() && response.getRequestedUsers() != null && response.getRequestedUsers().size() > 0) {
+            logger.log("Response formed; first user: " + response.getRequestedUsers().get(0) + "; last user: " + response.getRequestedUsers().get(response.getRequestedUsers().size()-1));
+        } else {
+            logger.log("Response formed, but didn't contain users");
+        }
         return followersService.fetchFollowers(request);
     }
 }

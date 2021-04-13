@@ -22,7 +22,7 @@ public class StoryStrategy implements ClientCommunicator.WebRequestStrategy {
 
         String uri = "/story?alias=" + statusRequest.getAlias() + "&limit=" + statusRequest.getLimit();
         if (statusRequest.getLastStatusTimestamp() != null && !statusRequest.getLastStatusTimestamp().isEmpty()) {
-            uri += "&lastStatus=" + statusRequest.getLastStatusTimestamp();
+            uri += "&lastStatusTimestamp=" + statusRequest.getLastStatusTimestamp();
         }
 
         return uri;

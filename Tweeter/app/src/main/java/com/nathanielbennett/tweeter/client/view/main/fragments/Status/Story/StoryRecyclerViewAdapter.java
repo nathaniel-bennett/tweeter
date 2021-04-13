@@ -34,6 +34,9 @@ public class StoryRecyclerViewAdapter extends StatusRecycleViewAdapter {
      */
     @Override
     public void loadMoreItems() {
+        if (this.isLoading) {
+            return;
+        }
         this.isLoading = true;
         addLoadingFooter();
 

@@ -17,9 +17,8 @@ import java.net.URL;
 public class ClientCommunicator {
 
     private final String serverHost = "https://mg0d2gdm2b.execute-api.us-west-2.amazonaws.com/prod";
-    private final String serverPort = "";
 
-    private WebRequestStrategy webRequestStrategy;
+    private final WebRequestStrategy webRequestStrategy;
 
     public interface WebRequestStrategy {
 

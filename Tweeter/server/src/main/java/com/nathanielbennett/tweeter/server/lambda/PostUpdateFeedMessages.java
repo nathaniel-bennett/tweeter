@@ -55,6 +55,6 @@ public class PostUpdateFeedMessages implements RequestHandler<SQSEvent, Void> {
     }
 
     public FollowDAO getFollowDAO() {
-        return new FollowDAO();
+        return new FollowDAO(null);
     }
 }

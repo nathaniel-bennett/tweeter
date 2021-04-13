@@ -22,7 +22,7 @@ public class MassUserRegister {
     public static void fillDatabase() {
         // Get instance of DAOs
         UserDAO userDao = new UserDAO();
-        FollowDAO followDAO = new FollowDAO();
+        FollowDAO followDAO = new FollowDAO(null);
 
         List<Object> followers = new ArrayList<>();
         List<Object> users = new ArrayList<>();

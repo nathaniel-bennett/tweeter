@@ -30,6 +30,9 @@ public class FeedRecyclerViewAdapter extends StatusRecycleViewAdapter {
 
     @Override
     public void loadMoreItems() {
+        if (this.isLoading) {
+            return;
+        }
         this.isLoading = true;
         addLoadingFooter();
 

@@ -21,7 +21,7 @@ public class FolloweeStrategy implements ClientCommunicator.WebRequestStrategy {
         String uri = "/followee?followAlias=" + followRequest.getFollowAlias() + "&limit=" + followRequest.getLimit();
 
         if (followRequest.getLastFollowAlias() != null && !followRequest.getLastFollowAlias().isEmpty()) {
-            uri += "&lastFollowAlias" + followRequest.getLastFollowAlias();
+            uri += "&lastFollowAlias=" + followRequest.getLastFollowAlias();
         }
 
 

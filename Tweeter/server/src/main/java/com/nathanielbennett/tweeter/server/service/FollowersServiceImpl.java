@@ -1,5 +1,6 @@
 package com.nathanielbennett.tweeter.server.service;
 
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.FollowersService;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
@@ -13,6 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FollowersServiceImpl implements FollowersService {
+    private LambdaLogger logger;
+
+    public FollowersServiceImpl(LambdaLogger logger) {
+        this.logger = logger;
+    }
+
     @Override
     public FollowResponse fetchFollowers(FollowRequest request) {
         if (request == null) {
@@ -52,7 +59,7 @@ public class FollowersServiceImpl implements FollowersService {
      * @return the instance.
      */
     public FollowDAO getFollowDAO() {
-        return new FollowDAO();
+        return new FollowDAO(logger);
     }
 
     public UserDAO getUserDAO() {

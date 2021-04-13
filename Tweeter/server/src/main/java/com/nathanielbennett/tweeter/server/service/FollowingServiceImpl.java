@@ -1,5 +1,7 @@
 package com.nathanielbennett.tweeter.server.service;
 
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.FollowingService;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
@@ -16,6 +18,11 @@ import java.util.List;
  * Contains the business logic for getting the users a user is following.
  */
 public class FollowingServiceImpl  implements FollowingService {
+    private LambdaLogger logger;
+
+    public FollowingServiceImpl(LambdaLogger logger) {
+        this.logger = logger;
+    }
 
     /**
      * Returns the users that the user specified in the request is following. Uses information in
@@ -66,7 +73,7 @@ public class FollowingServiceImpl  implements FollowingService {
      * @return the instance.
      */
     public FollowDAO getFollowDAO() {
-        return new FollowDAO();
+        return new FollowDAO(logger);
     }
 
     public UserDAO getUserDAO() {

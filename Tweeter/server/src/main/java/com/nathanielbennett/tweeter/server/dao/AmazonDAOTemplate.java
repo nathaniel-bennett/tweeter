@@ -13,6 +13,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.amazonaws.services.dynamodbv2.model.QueryResult;
 import com.amazonaws.services.dynamodbv2.model.WriteRequest;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
 import com.nathanielbennett.tweeter.server.model.ResultsPage;
 
@@ -23,21 +24,27 @@ import java.util.Map;
 
 public abstract class AmazonDAOTemplate {
 
-    protected class DBIndex {
+    protected static class DBIndex {
         private final String indexName;
-        private final String indexPrimaryKeyAttr;
+        private final String primaryKeyAttr;
+        private final String sortKeyAttr;
 
-        public DBIndex(String indexName, String indexPrimaryKeyAttr) {
+        public DBIndex(String indexName, String primaryKeyAttr, String sortKeyAttr) {
             this.indexName = indexName;
-            this.indexPrimaryKeyAttr = indexPrimaryKeyAttr;
+            this.primaryKeyAttr = primaryKeyAttr;
+            this.sortKeyAttr = sortKeyAttr;
         }
 
         public String getIndexName() {
             return indexName;
         }
 
-        public String getIndexPrimaryKeyAttr() {
-            return indexPrimaryKeyAttr;
+        public String getPrimaryKeyAttr() {
+            return primaryKeyAttr;
+        }
+
+        public String getSortKeyAttr() {
+            return sortKeyAttr;
         }
     }
 
@@ -208,7 +215,7 @@ public abstract class AmazonDAOTemplate {
         List<Object> result = new ArrayList<>();
         String primaryAttr;
         if (index != null) {
-            primaryAttr = index.getIndexPrimaryKeyAttr();
+            primaryAttr = index.getPrimaryKeyAttr();
         } else {
             primaryAttr = partitionKeyAttr;
         }
@@ -259,21 +266,24 @@ public abstract class AmazonDAOTemplate {
     }
 
 
-    protected ResultsPage getPagedFromDatabase(String partitionValue, int pageSize, String lastRetrieved, DBIndex index, boolean scanForward) {
+    protected ResultsPage getPagedFromDatabase(String primaryValue, int pageSize, String lastRetrieved, DBIndex index, boolean scanForward) {
         ResultsPage result = new ResultsPage();
         String primaryAttr;
+        String secondaryAttr;
 
         if (index != null) {
-            primaryAttr = index.getIndexPrimaryKeyAttr();
+            primaryAttr = index.getPrimaryKeyAttr();
+            secondaryAttr = index.getSortKeyAttr();
         } else {
             primaryAttr = partitionKeyAttr;
+            secondaryAttr = sortKeyAttr;
         }
 
         Map<String, String> attrNames = new HashMap<>();
         attrNames.put("#primaryAttr", primaryAttr);
 
         Map<String, AttributeValue> attrValues = new HashMap<>();
-        attrValues.put(":primaryValue", new AttributeValue().withS(partitionValue));
+        attrValues.put(":primaryValue", new AttributeValue().withS(primaryValue));
 
         try {
             QueryRequest queryRequest = new QueryRequest()
@@ -291,8 +301,8 @@ public abstract class AmazonDAOTemplate {
 
             if (lastRetrieved != null && !lastRetrieved.isEmpty()) {
                 Map<String, AttributeValue> startKey = new HashMap<>();
-                startKey.put(partitionKeyAttr, new AttributeValue().withS(partitionValue));
-                startKey.put(sortKeyAttr, new AttributeValue().withS(lastRetrieved));
+                startKey.put(primaryAttr, new AttributeValue().withS(primaryValue));
+                startKey.put(secondaryAttr, new AttributeValue().withS(lastRetrieved));
 
                 queryRequest = queryRequest.withExclusiveStartKey(startKey);
             }
