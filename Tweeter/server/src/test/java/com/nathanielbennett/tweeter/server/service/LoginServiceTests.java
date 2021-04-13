@@ -1,8 +1,12 @@
 package com.nathanielbennett.tweeter.server.service;
 
+import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.service.request.LoginRequest;
 import com.nathanielbennett.tweeter.model.service.response.LoginResponse;
+import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
+import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
+import com.nathanielbennett.tweeter.server.model.StoredUser;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,30 +23,27 @@ import java.util.stream.Stream;
 
 public class LoginServiceTests {
 
-    /*
-
     LoginServiceImpl service;
-    LoginDAO dao;
+    UserDAO dao;
+    AuthTokenDAO authTokenDAO;
     LoginRequest goodRequest;
     LoginResponse goodResponse;
-    LoginRequest badRequest;
-    LoginResponse badResponse;
 
     @BeforeEach
     public void setup() {
 
-        dao = Mockito.mock(LoginDAO.class);
+        dao = Mockito.mock(UserDAO.class);
+        authTokenDAO = Mockito.mock(AuthTokenDAO.class);
         service = Mockito.spy(LoginServiceImpl.class);
 
         goodRequest = new LoginRequest("HELLO","FollowME");
         goodResponse = new LoginResponse(null, null);
-        Mockito.when(dao.login(goodRequest)).thenReturn(goodResponse);
 
-        badRequest = new LoginRequest("HELLO", "FollowME");
-        badResponse = new LoginResponse("failure");
-        Mockito.when(dao.login(badRequest)).thenReturn(badResponse);
-
-        Mockito.when(service.getLoginDao()).thenReturn(dao);
+        //Mockito.when(dao.login(goodRequest)).thenReturn(goodResponse);
+        Mockito.when(dao.getUser(goodRequest.getUsername())).thenReturn(new StoredUser("hello", "me", "$2a$10$w4Yhe34QPsYgpEwXuXbJ3uNHhQGAImI1z8RsRyVe91t..pO0eVxq.", "@me", "", 0, 0));
+        Mockito.when(authTokenDAO.createToken(goodRequest.getUsername())).thenReturn(new AuthToken());
+                Mockito.when(service.getUserDAO()).thenReturn(dao);
+        Mockito.when(service.getAuthTokenDAO()).thenReturn(authTokenDAO);
 
     }
 
@@ -69,10 +70,8 @@ public class LoginServiceTests {
     @Test
     public void testServiceReturnsCorrectObject() {
         LoginResponse response = service.login(goodRequest);
-        Assertions.assertTrue(response == goodResponse);
-
-        response = service.login(badRequest);
-        Assertions.assertTrue(response == badResponse);
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getAuthToken());
     }
-    */
+
 }

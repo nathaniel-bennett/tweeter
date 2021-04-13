@@ -35,7 +35,6 @@ public class LoginServiceImpl implements LoginService {
             return new LoginResponse("Username not registered.");
         }
 
-        // TODO: hash password...
         PasswordHasher hasher = new PasswordHasher();
 
         String hashedPassword = hasher.hash(request.getPassword());
