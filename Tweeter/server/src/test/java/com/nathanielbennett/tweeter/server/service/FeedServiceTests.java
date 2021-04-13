@@ -4,6 +4,7 @@ import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.server.dao.FeedDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
+import com.nathanielbennett.tweeter.server.model.StoredStatus;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,23 +24,25 @@ public class FeedServiceTests {
     FeedServiceImpl feedService;
     FeedDAO feedDAO;
     StatusRequest goodRequest;
-    StatusResponse goodResponse;
+    List<StoredStatus> statuses;
     StatusRequest badRequest;
-    StatusResponse badResponse;
 
-    /*
+
     @BeforeEach
     public void setup() {
         feedDAO = Mockito.mock(FeedDAO.class);
         feedService = Mockito.spy(FeedServiceImpl.class);
 
         goodRequest = new StatusRequest("@me", 10, "hello");
-        goodResponse = new StatusResponse(false, null);
-        Mockito.when(feedDAO.getFeed(goodRequest)).thenReturn(goodResponse);
+        //Mockito.when(feedDAO.fetchFeed(goodRequest)).thenReturn(goodResponse);
+        statuses = new ArrayList<>();
+        Mockito.when(feedDAO.getUserFeed(goodRequest.getAlias(), goodRequest.getLimit(),
+                goodRequest.getTimestamp())).thenReturn(statuses);
 
         badRequest = new StatusRequest("HELLO", 4, "FollowME");
-        badResponse = new StatusResponse("failure");
-        Mockito.when(feedDAO.getFeed(badRequest)).thenReturn(badResponse);
+        Mockito.when(feedDAO.getUserFeed(badRequest.getAlias(), badRequest.getLimit(),
+                badRequest.getTimestamp())).thenReturn(null);
+        //Mockito.when(feedDAO.getFeed(badRequest)).thenReturn(badResponse);
 
         Mockito.when(feedService.getFeedDao()).thenReturn(feedDAO);
     }
@@ -65,11 +68,9 @@ public class FeedServiceTests {
     @Test
     public void testServiceReturnsCorrectObject() {
         StatusResponse response = feedService.fetchFeed(goodRequest);
-        Assertions.assertTrue(response == goodResponse);
+        Assertions.assertTrue(response.getStatuses().equals(statuses));
 
         response = feedService.fetchFeed(badRequest);
-        Assertions.assertTrue(response == badResponse);
+        Assertions.assertNull(response.getStatuses());
     }
-
-     */
 }

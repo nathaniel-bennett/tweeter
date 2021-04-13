@@ -22,9 +22,9 @@ public class FeedServiceImpl extends AbstractStatusServiceTemplate implements Fe
         }
 
         List<StoredStatus> storedStatusList = getFeedDao().getUserFeed(request.getAlias(), request.getLimit(), request.getTimestamp());
-        boolean hasMorePages = (storedStatusList.size() == request.getLimit());
+        boolean hasMorePages = (storedStatusList == null) ? false : (storedStatusList.size() == request.getLimit());
 
-        List<Status> statuses = formUserStatuses(storedStatusList);
+        List<Status> statuses = (storedStatusList == null) ? null : formUserStatuses(storedStatusList);
 
         return new StatusResponse(hasMorePages, statuses);
     }
