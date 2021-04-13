@@ -61,7 +61,7 @@ public class FollowDAO extends AmazonDAOTemplate {
         for (Object o : resultsPage.getValues()) {
             StoredFollowRelationship followRelationship = (StoredFollowRelationship) o;
 
-            followedBy.add(followRelationship.getFollowee());
+            followedBy.add(followRelationship.getFollowed());
         }
 
         return followedBy;

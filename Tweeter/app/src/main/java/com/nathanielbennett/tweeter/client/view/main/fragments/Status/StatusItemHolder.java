@@ -9,6 +9,7 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -72,6 +73,7 @@ public class StatusItemHolder extends TemplateItemHolder<Status> {
     public void bindItem(Status itemToBind) {
         associatedStatus = itemToBind;
         associatedUser = itemToBind.getUserOfStatus();
+
         userImage.setImageDrawable(ImageUtils.drawableFromByteArray(itemToBind.getUserOfStatus().getImageBytes()));
         userAlias.setText("@" + itemToBind.getUserOfStatus().getAlias());
         userName.setText(itemToBind.getUserOfStatus().getName());
@@ -101,10 +103,15 @@ public class StatusItemHolder extends TemplateItemHolder<Status> {
                         User userForNextActivity = null;
 
                         for (User user : associatedStatus.getMentions()) {
-                            if (user.getAlias().equals(status.substring(start, end))) {
+                            if (user.getAlias().equals(status.substring(start+1, end))) {
                                 userForNextActivity = user;
                                 break;
                             }
+                        }
+
+                        if (userForNextActivity == null) {
+                            Toast.makeText(associatedContext, "No user with the given username exists.", Toast.LENGTH_SHORT).show();
+                            return;
                         }
 
                         Intent intent = new Intent(associatedContext, UserActivity.class);
