@@ -22,8 +22,8 @@ public class LogoutServiceImpl implements LogoutService {
             throw new NotAuthorizedException("Logout request missing Authorization Token");
         }
 
-        AuthTokenDAO authTokenDAO = new AuthTokenDAO();
-        authTokenDAO.deleteToken(request.getAuthToken().getAuthTokenID(), request.getUsername()); // TODO: notify when nothing was deleted
+        AuthTokenDAO authTokenDAO = getAuthTokenDAO();
+        authTokenDAO.deleteToken(request.getAuthToken().getAuthTokenID(), request.getUsername());
 
         return new LogoutResponse();
     }

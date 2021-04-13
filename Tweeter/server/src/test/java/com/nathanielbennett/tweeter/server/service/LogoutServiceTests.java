@@ -3,6 +3,7 @@ package com.nathanielbennett.tweeter.server.service;
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.service.request.LogoutRequest;
 import com.nathanielbennett.tweeter.model.service.response.LogoutResponse;
+import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.NotAuthorizedException;
 
@@ -21,29 +22,20 @@ import java.util.stream.Stream;
 
 public class LogoutServiceTests {
 
-    /*
+
     LogoutServiceImpl service;
-    LogoutDAO dao;
+    AuthTokenDAO dao;
     LogoutRequest goodRequest;
-    LogoutResponse goodResponse;
-    LogoutRequest badRequest;
-    LogoutResponse badResponse;
 
     @BeforeEach
     public void setup() {
 
-        dao = Mockito.mock(LogoutDAO.class);
+        dao = Mockito.mock(AuthTokenDAO.class);
         service = Mockito.spy(LogoutServiceImpl.class);
 
         goodRequest = new LogoutRequest("HELLO", new AuthToken());
-        goodResponse = new LogoutResponse("ok");
-        Mockito.when(dao.logout(goodRequest)).thenReturn(goodResponse);
 
-        badRequest = new LogoutRequest("Bad", new AuthToken());
-        badResponse = new LogoutResponse("failure");
-        Mockito.when(dao.logout(badRequest)).thenReturn(badResponse);
-
-        Mockito.when(service.getLogoutDao()).thenReturn(dao);
+        Mockito.when(service.getAuthTokenDAO()).thenReturn(dao);
 
     }
 
@@ -76,11 +68,6 @@ public class LogoutServiceTests {
     @Test
     public void testServiceReturnsCorrectObject() {
         LogoutResponse response = service.logout(goodRequest);
-        Assertions.assertTrue(response == goodResponse);
-
-        response = service.logout(badRequest);
-        Assertions.assertTrue(response == badResponse);
+        Assertions.assertTrue(response.getSuccess());
     }
-
-     */
 }
