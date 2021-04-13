@@ -23,10 +23,20 @@ public class StoryStrategy implements ClientCommunicator.WebRequestStrategy {
 
         String uri = "/story?alias=" + statusRequest.getAlias() + "&limit=" + statusRequest.getLimit() + "&timestamp=";
         if (statusRequest.getTimestamp() != null && !statusRequest.getTimestamp().isEmpty()) {
-            uri += statusRequest.getTimestamp();
+            String timestamp = statusRequest.getTimestamp();
+
+            int idx = timestamp.indexOf(":");
+            while (idx >= 0) {
+                timestamp = timestamp.substring(0, idx) + "%3A" + timestamp.substring(idx+1);
+                idx = timestamp.indexOf(":");
+            }
+
+            uri += timestamp;
         } else {
             uri += "%00";
         }
+
+
 
         Log.i("StoryRequestURI", uri);
 
