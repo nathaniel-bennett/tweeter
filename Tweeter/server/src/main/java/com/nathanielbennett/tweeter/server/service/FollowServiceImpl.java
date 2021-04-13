@@ -38,8 +38,8 @@ public class FollowServiceImpl implements FollowService {
 
         // Now check to make sure username/auth token combo is valid
 
-        AuthorizationRequest authRequest = new AuthorizationRequest(request);
-        AuthorizationService authService = new AuthorizationServiceImpl();
+        AuthorizationRequest authRequest = followToAuthRequest(request);
+        AuthorizationService authService = getAuthService();
         AuthorizationResponse authResponse = authService.isAuthorized(authRequest);
 
         if (!authResponse.getSuccess()) {
@@ -71,8 +71,8 @@ public class FollowServiceImpl implements FollowService {
         }
 
         // Now check to make sure username/auth token combo is valid
-        AuthorizationRequest authRequest = new AuthorizationRequest(request);
-        AuthorizationService authService = new AuthorizationServiceImpl();
+        AuthorizationRequest authRequest = unfollowToAuthRequest(request);
+        AuthorizationService authService = getAuthService();
 
         AuthorizationResponse authResponse = authService.isAuthorized(authRequest);
         if (!authResponse.getSuccess()) {
@@ -112,8 +112,8 @@ public class FollowServiceImpl implements FollowService {
         }
 
         // Now check to make sure username/auth token combo is valid
-        AuthorizationRequest authRequest = new AuthorizationRequest(request);
-        AuthorizationService authService = new AuthorizationServiceImpl();
+        AuthorizationRequest authRequest = checkFollowToAuthRequest(request);
+        AuthorizationService authService = getAuthService();
 
         AuthorizationResponse authResponse = authService.isAuthorized(authRequest);
         if (!authResponse.getSuccess()) {
@@ -137,7 +137,24 @@ public class FollowServiceImpl implements FollowService {
         return new FollowDAO();
     }
 
+    // THE METHODS BELOW ARE USED FOR MOCKING!
     public UserDAO getUserDAO() {
         return new UserDAO();
+    }
+
+    public AuthorizationService getAuthService() {
+        return new AuthorizationServiceImpl();
+    }
+
+    public AuthorizationRequest followToAuthRequest(FollowUserRequest request) {
+        return new AuthorizationRequest(request);
+    }
+
+    public AuthorizationRequest unfollowToAuthRequest(UnfollowUserRequest request) {
+        return new AuthorizationRequest(request);
+    }
+
+    public AuthorizationRequest checkFollowToAuthRequest(CheckFollowingRequest request) {
+        return new AuthorizationRequest(request);
     }
 }

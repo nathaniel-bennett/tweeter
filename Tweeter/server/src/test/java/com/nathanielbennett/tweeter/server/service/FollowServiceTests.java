@@ -1,15 +1,18 @@
 package com.nathanielbennett.tweeter.server.service;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
+import com.nathanielbennett.tweeter.model.service.request.AuthorizationRequest;
 import com.nathanielbennett.tweeter.model.service.request.CheckFollowingRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.FollowUserRequest;
 import com.nathanielbennett.tweeter.model.service.request.UnfollowUserRequest;
+import com.nathanielbennett.tweeter.model.service.response.AuthorizationResponse;
 import com.nathanielbennett.tweeter.model.service.response.CheckFollowingResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.model.service.response.FollowUserResponse;
 import com.nathanielbennett.tweeter.model.service.response.UnfollowUserResponse;
 import com.nathanielbennett.tweeter.server.dao.FollowDAO;
+import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.NotAuthorizedException;
 
@@ -28,55 +31,50 @@ import java.util.stream.Stream;
 
 public class FollowServiceTests {
 
-    /*
+
     FollowServiceImpl followService;
     FollowDAO followDAO;
+    UserDAO userDAO;
+    AuthorizationServiceImpl authService;
     FollowUserRequest goodRequest1;
     FollowUserResponse goodResponse1;
-    FollowUserRequest badRequest1;
-    FollowUserResponse badResponse1;
     UnfollowUserRequest goodRequest2;
     UnfollowUserResponse goodResponse2;
-    UnfollowUserRequest badRequest2;
-    UnfollowUserResponse badResponse2;
     CheckFollowingRequest goodRequest3;
     CheckFollowingResponse goodResponse3;
-    CheckFollowingRequest badRequest3;
-    CheckFollowingResponse badResponse3;
+
 
     @BeforeEach
     public void setup() {
         followDAO = Mockito.mock(FollowDAO.class);
+        userDAO = Mockito.mock(UserDAO.class);
         followService = Mockito.spy(FollowServiceImpl.class);
+        authService = Mockito.spy(AuthorizationServiceImpl.class);
 
         // test follow() method
         goodRequest1 = new FollowUserRequest("HELLO", new AuthToken(), "FollowME");
         goodResponse1 = new FollowUserResponse();
-        Mockito.when(followDAO.follow(goodRequest1)).thenReturn(goodResponse1);
-
-        badRequest1 = new FollowUserRequest("HELLO", new AuthToken(), "FollowME");
-        badResponse1 = new FollowUserResponse("failure");
-        Mockito.when(followDAO.follow(badRequest1)).thenReturn(badResponse1);
+        AuthorizationRequest request1 = new AuthorizationRequest(goodRequest1);
+        Mockito.when(followService.followToAuthRequest(goodRequest1)).thenReturn(request1);
+        Mockito.when(authService.isAuthorized(request1)).thenReturn(new AuthorizationResponse());
 
         // test unfollow() method
         goodRequest2 = new UnfollowUserRequest("HELLO", new AuthToken(), "FollowME");
         goodResponse2 = new UnfollowUserResponse();
-        Mockito.when(followDAO.unfollow(goodRequest2)).thenReturn(goodResponse2);
-
-        badRequest2 = new UnfollowUserRequest("HELLO", new AuthToken(), "FollowME");
-        badResponse2 = new UnfollowUserResponse("failure");
-        Mockito.when(followDAO.unfollow(badRequest2)).thenReturn(badResponse2);
+        AuthorizationRequest request2 = new AuthorizationRequest(goodRequest2);
+        Mockito.when(followService.unfollowToAuthRequest(goodRequest2)).thenReturn(request2);
+        Mockito.when(authService.isAuthorized(request2)).thenReturn(new AuthorizationResponse());
 
         // test checkFollowStatus() method
         goodRequest3 = new CheckFollowingRequest("HELLO", new AuthToken(), "FollowME");
         goodResponse3 = new CheckFollowingResponse(true);
-        Mockito.when(followDAO.isFollowing(goodRequest3)).thenReturn(goodResponse3);
-
-        badRequest3 = new CheckFollowingRequest("HELLO", new AuthToken(), "FollowME");
-        badResponse3 = new CheckFollowingResponse("failure");
-        Mockito.when(followDAO.isFollowing(badRequest3)).thenReturn(badResponse3);
+        AuthorizationRequest request3 = new AuthorizationRequest(goodRequest3);
+        Mockito.when(followService.checkFollowToAuthRequest(goodRequest3)).thenReturn(request3);
+        Mockito.when(authService.isAuthorized(request3)).thenReturn(new AuthorizationResponse());
 
         Mockito.when(followService.getFollowDAO()).thenReturn(followDAO);
+        Mockito.when(followService.getUserDAO()).thenReturn(userDAO);
+        Mockito.when(followService.getAuthService()).thenReturn(authService);
     }
 
     static Stream<Arguments> generateInvalidTestInput1() {
@@ -109,10 +107,7 @@ public class FollowServiceTests {
     @Test
     public void testServiceReturnsCorrectObject1() {
         FollowUserResponse response = followService.follow(goodRequest1);
-        Assertions.assertTrue(response == goodResponse1);
-
-        response = followService.follow(badRequest1);
-        Assertions.assertTrue(response == badResponse1);
+        Assertions.assertTrue(response.getSuccess());
     }
 
     static Stream<Arguments> generateInvalidTestInput2() {
@@ -145,10 +140,7 @@ public class FollowServiceTests {
     @Test
     public void testServiceReturnsCorrectObject2() {
         UnfollowUserResponse response = followService.unfollow(goodRequest2);
-        Assertions.assertTrue(response == goodResponse2);
-
-        response = followService.unfollow(badRequest2);
-        Assertions.assertTrue(response == badResponse2);
+        Assertions.assertTrue(response.getSuccess());
     }
 
     static Stream<Arguments> generateInvalidTestInput3() {
@@ -181,11 +173,7 @@ public class FollowServiceTests {
     @Test
     public void testServiceReturnsCorrectObject3() {
         CheckFollowingResponse response = followService.checkFollowStatus(goodRequest3);
-        Assertions.assertTrue(response == goodResponse3);
-
-        response = followService.checkFollowStatus(badRequest3);
-        Assertions.assertTrue(response == badResponse3);
+        Assertions.assertTrue(response.getSuccess());
     }
 
-     */
 }
