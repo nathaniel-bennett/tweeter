@@ -32,6 +32,10 @@ public class MassUserRegister {
             user.setAlias("guy" + i);
             user.setFirstName("Guy");
             user.setLastName("" + i);
+            user.setImageUrl("");
+            user.setHashedPassword("");
+            user.setFollowerCount(0);
+            user.setFolloweeCount(0);
 
             users.add(user);
 
