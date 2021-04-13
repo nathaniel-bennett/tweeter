@@ -29,7 +29,6 @@ public class FollowersServiceTests {
     FollowDAO followDAO;
     UserDAO userDAO;
     FollowRequest goodRequest;
-    FollowResponse goodResponse;
     List<String> alias;
 
     @BeforeEach
@@ -47,8 +46,6 @@ public class FollowersServiceTests {
         Mockito.when(followDAO.getFollowing(goodRequest.getFollowAlias(), goodRequest.getLimit(), goodRequest.getLastFollowAlias())).thenReturn(alias);
         Mockito.when(userDAO.getUser(alias.get(0))).thenReturn(new StoredUser("good", "response", "password", "hello", "", 0, 0));
         Mockito.when(userDAO.getUser(alias.get(1))).thenReturn(new StoredUser("good", "response", "password", "hello", "", 0, 0));
-
-
     }
 
     static Stream<Arguments> generateInvalidTestInput() {
