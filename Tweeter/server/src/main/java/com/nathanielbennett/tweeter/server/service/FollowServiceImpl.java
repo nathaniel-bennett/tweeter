@@ -134,7 +134,7 @@ public class FollowServiceImpl implements FollowService {
      * @return the instance.
      */
     public FollowDAO getFollowDAO() {
-        return new FollowDAO(null);
+        return new FollowDAO();
     }
 
     public UserDAO getUserDAO() {
