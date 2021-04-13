@@ -14,12 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FollowersServiceImpl implements FollowersService {
-    private LambdaLogger logger;
-
-    public FollowersServiceImpl(LambdaLogger logger) {
-        this.logger = logger;
-    }
-
     @Override
     public FollowResponse fetchFollowers(FollowRequest request) {
         if (request == null) {
@@ -59,7 +53,7 @@ public class FollowersServiceImpl implements FollowersService {
      * @return the instance.
      */
     public FollowDAO getFollowDAO() {
-        return new FollowDAO(logger);
+        return new FollowDAO();
     }
 
     public UserDAO getUserDAO() {

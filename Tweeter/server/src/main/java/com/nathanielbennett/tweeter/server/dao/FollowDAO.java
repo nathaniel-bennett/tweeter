@@ -2,9 +2,6 @@ package com.nathanielbennett.tweeter.server.dao;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import com.amazonaws.services.lambda.runtime.events.KinesisAnalyticsOutputDeliveryEvent;
 import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
 import com.nathanielbennett.tweeter.server.model.ResultsPage;
 import com.nathanielbennett.tweeter.server.model.StoredFollowRelationship;
@@ -21,7 +18,6 @@ public class FollowDAO extends AmazonDAOTemplate {
     private static final String PARTITION_KEY_LABEL = "user1";
     private static final String SORT_KEY_LABEL = "user2";
 
-    private LambdaLogger logger;
 
     @Override
     protected Object databaseItemToObject(Map<String, AttributeValue> item) throws DataAccessException {
@@ -39,9 +35,8 @@ public class FollowDAO extends AmazonDAOTemplate {
                 .withPrimaryKey(PARTITION_KEY_LABEL, followRelationship.getFollowee(), SORT_KEY_LABEL, followRelationship.getFollowed());
     }
 
-    public FollowDAO(LambdaLogger logger) {
+    public FollowDAO() {
         super(TABLE_NAME, PARTITION_KEY_LABEL, SORT_KEY_LABEL);
-        this.logger = logger;
     }
 
     public void addFollowRelationship(String followee, String followed) throws DataAccessException {
@@ -62,8 +57,6 @@ public class FollowDAO extends AmazonDAOTemplate {
 
     public List<String> getFollowedBy(String followee, int limit, String lastFollowedAlias) throws DataAccessException {
         ResultsPage resultsPage = getPagedFromDatabase(followee, limit, lastFollowedAlias);
-
-        logger.log("ResultsPage last key: " + resultsPage.getLastKey() + "; last value in list: " + ((StoredFollowRelationship) resultsPage.getValues().get(resultsPage.getValues().size()-1)).getFollowed());
 
         List<String> followedBy = new ArrayList<>();
         for (Object o : resultsPage.getValues()) {
@@ -94,8 +87,6 @@ public class FollowDAO extends AmazonDAOTemplate {
 
     public List<String> getFollowing(String userAlias, int limit, String lastFollowingAlias) throws DataAccessException {
         ResultsPage resultsPage = getPagedFromDatabase(userAlias, limit, lastFollowingAlias, new DBIndex(FOLLOWING_INDEX_NAME, SORT_KEY_LABEL, PARTITION_KEY_LABEL));
-
-        logger.log("ResultsPage last key: " + resultsPage.getLastKey() + "; last value in list: " + ((StoredFollowRelationship) resultsPage.getValues().get(resultsPage.getValues().size()-1)).getFollowee());
 
         List<String> following = new ArrayList<>();
         for (Object o : resultsPage.getValues()) {

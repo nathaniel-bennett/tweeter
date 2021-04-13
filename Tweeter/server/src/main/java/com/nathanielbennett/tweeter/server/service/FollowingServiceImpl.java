@@ -18,12 +18,6 @@ import java.util.List;
  * Contains the business logic for getting the users a user is following.
  */
 public class FollowingServiceImpl  implements FollowingService {
-    private LambdaLogger logger;
-
-    public FollowingServiceImpl(LambdaLogger logger) {
-        this.logger = logger;
-    }
-
     /**
      * Returns the users that the user specified in the request is following. Uses information in
      * the request object to limit the number of followees returned and to return the next set of
@@ -73,7 +67,7 @@ public class FollowingServiceImpl  implements FollowingService {
      * @return the instance.
      */
     public FollowDAO getFollowDAO() {
-        return new FollowDAO(logger);
+        return new FollowDAO();
     }
 
     public UserDAO getUserDAO() {
