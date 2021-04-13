@@ -1,5 +1,7 @@
 package com.nathanielbennett.tweeter.client.model.net.webrequeststrategies;
 
+import android.util.Log;
+
 import com.nathanielbennett.tweeter.client.model.net.ClientCommunicator;
 import com.nathanielbennett.tweeter.model.net.Serializer;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
@@ -8,7 +10,6 @@ import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 
 public class StoryStrategy implements ClientCommunicator.WebRequestStrategy {
-
 
     @Override
     public boolean hasRequestBody() {
@@ -21,9 +22,11 @@ public class StoryStrategy implements ClientCommunicator.WebRequestStrategy {
         StatusRequest statusRequest = (StatusRequest) request;
 
         String uri = "/story?alias=" + statusRequest.getAlias() + "&limit=" + statusRequest.getLimit();
-        if (statusRequest.getLastStatusTimestamp() != null && !statusRequest.getLastStatusTimestamp().isEmpty()) {
-            uri += "&lastStatusTimestamp=" + statusRequest.getLastStatusTimestamp();
+        if (statusRequest.getLastTimestamp() != null && !statusRequest.getLastTimestamp().isEmpty()) {
+            uri += "&lastTimestamp=" + statusRequest.getLastTimestamp();
         }
+
+        Log.i("StoryRequestURI", uri);
 
         return uri;
     }

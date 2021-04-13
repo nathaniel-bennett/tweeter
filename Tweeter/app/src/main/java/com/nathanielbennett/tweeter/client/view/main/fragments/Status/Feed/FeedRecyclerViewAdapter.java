@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.client.view.main.fragments.Status.Feed;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
@@ -38,6 +39,7 @@ public class FeedRecyclerViewAdapter extends StatusRecycleViewAdapter {
 
         GetFeedTask getFeedTask = new GetFeedTask((FeedPresenter) presenter, observer);
         StatusRequest request = new StatusRequest(user.getAlias(), PAGE_SIZE, lastStatusMessageTimestamp);
+        Log.i("lastMessageTimestamp", lastStatusMessageTimestamp);
         getFeedTask.execute(request);
     }
 }

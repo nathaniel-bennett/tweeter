@@ -1,6 +1,7 @@
 package com.nathanielbennett.tweeter.client.view.main.fragments.Status.Story;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.nathanielbennett.tweeter.model.domain.User;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
@@ -42,6 +43,7 @@ public class StoryRecyclerViewAdapter extends StatusRecycleViewAdapter {
 
         GetStoryTask getStoryTask = new GetStoryTask((StoryPresenter) presenter, observer);
         StatusRequest request = new StatusRequest(user.getAlias(), PAGE_SIZE, lastStatusMessageTimestamp);
+        Log.i("lastMessageTimestamp", lastStatusMessageTimestamp);
         getStoryTask.execute(request);
     }
 }

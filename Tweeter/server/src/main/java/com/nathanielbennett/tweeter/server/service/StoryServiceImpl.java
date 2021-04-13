@@ -27,7 +27,7 @@ public class StoryServiceImpl extends AbstractStatusServiceTemplate implements S
 
         StoryDAO storyDAO = getStoryDAO();
 
-        List<StoredStatus> storedStatusList = storyDAO.getUserStory(request.getAlias(), request.getLimit(), request.getLastStatusTimestamp());
+        List<StoredStatus> storedStatusList = storyDAO.getUserStory(request.getAlias(), request.getLimit(), request.getLastTimestamp());
         boolean hasMorePages = (storedStatusList.size() == request.getLimit());
 
         List<Status> statuses = formUserStatuses(storedStatusList);

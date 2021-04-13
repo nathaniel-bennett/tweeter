@@ -4,12 +4,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.nathanielbennett.tweeter.model.domain.Status;
-import com.nathanielbennett.tweeter.model.service.request.FollowRequest;
 import com.nathanielbennett.tweeter.model.service.request.StatusRequest;
-import com.nathanielbennett.tweeter.model.service.response.FollowResponse;
 import com.nathanielbennett.tweeter.model.service.response.StatusResponse;
 import com.nathanielbennett.tweeter.server.service.FeedServiceImpl;
-import com.nathanielbennett.tweeter.server.service.FollowingServiceImpl;
 
 public class GetFeedHandler implements RequestHandler<StatusRequest, StatusResponse> {
 
@@ -28,7 +25,7 @@ public class GetFeedHandler implements RequestHandler<StatusRequest, StatusRespo
 
         LambdaLogger logger = context.getLogger();
 
-        logger.log("Received GetStory Request; alias: " + request.getAlias() + "; limit: " + request.getLimit() + "; lastTimestamp: " + request.getLastStatusTimestamp());
+        logger.log("Received GetStory Request; alias: " + request.getAlias() + "; limit: " + request.getLimit() + "; lastTimestamp: " + request.getLastTimestamp());
 
 
         StatusResponse response = feedService.fetchFeed(request);
