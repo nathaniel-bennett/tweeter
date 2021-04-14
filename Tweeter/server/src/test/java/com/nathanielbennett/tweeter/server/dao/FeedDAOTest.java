@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-public class FeedDaoTest {
+public class FeedDAOTest {
 
     FeedDAO feedDAO;
 
