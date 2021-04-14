@@ -42,7 +42,7 @@ public class FollowingRecycleViewAdapter extends FollowRecycleViewAdapter {
         FollowRequest request = new FollowRequest(user.getAlias(), PAGE_SIZE, (lastFollow ==
                 null ? null : lastFollow.getAlias()));
 
-        Log.i("followingAlias", lastFollow != null ? lastFollow.getAlias() : "null");
+//        Log.i("followingAlias", lastFollow != null ? lastFollow.getAlias() : "null");
 
         getFollowingTask.execute(request);
     }
