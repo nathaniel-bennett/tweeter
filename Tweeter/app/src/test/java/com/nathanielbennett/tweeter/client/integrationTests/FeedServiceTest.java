@@ -22,7 +22,7 @@ public class FeedServiceTest {
     public void setup() {
         feedService = new FeedServiceProxy();
         goodRequest = new StatusRequest("dummyUser", limit, "");
-        badRequest = new StatusRequest("badUser", limit, "");
+        badRequest = new StatusRequest("badUser253421", limit, "");
     }
 
     @Test
@@ -36,8 +36,7 @@ public class FeedServiceTest {
     @Test
     public void invalidRequestTest() throws IOException {
         StatusResponse response = feedService.fetchFeed(badRequest);
-        Assertions.assertFalse(response.getSuccess());
-        Assertions.assertNotNull(response.getErrorMessage());
+        Assertions.assertNull(response.getStatuses());
     }
 
 }
