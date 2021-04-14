@@ -6,14 +6,15 @@ import com.amazonaws.services.dynamodbv2.document.AttributeUpdate;
 import com.amazonaws.services.dynamodbv2.document.BatchWriteItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.TableWriteItems;
+import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.amazonaws.services.dynamodbv2.model.QueryResult;
 import com.amazonaws.services.dynamodbv2.model.WriteRequest;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
 import com.nathanielbennett.tweeter.server.model.ResultsPage;
 
@@ -125,10 +126,26 @@ public abstract class AmazonDAOTemplate {
         }
     }
 
-    protected void updateTable(String partitionKey, String fieldName, Object fieldValue) {
+    protected void incrementTableField(String partitionKey, String fieldName) {
         try {
             AttributeUpdate attributeUpdate = new AttributeUpdate(fieldName)
-                    .put(fieldValue);
+                    .addNumeric(1);
+
+            UpdateItemSpec spec = new UpdateItemSpec()
+                    .withPrimaryKey(this.partitionKeyAttr, partitionKey)
+                    .addAttributeUpdate(attributeUpdate);
+
+            Table table = dynamoDB.getTable(tableName);
+            table.updateItem(spec);
+        } catch (AmazonDynamoDBException e) {
+            throw new DataAccessException("Amazon DynamoDB Exception occurred: " + e.getLocalizedMessage());
+        }
+    }
+
+    protected void decrementTableField(String partitionKey, String fieldName) {
+        try {
+            AttributeUpdate attributeUpdate = new AttributeUpdate(fieldName)
+                    .addNumeric(-1);
 
             Table table = dynamoDB.getTable(tableName);
             table.updateItem(partitionKey, attributeUpdate);

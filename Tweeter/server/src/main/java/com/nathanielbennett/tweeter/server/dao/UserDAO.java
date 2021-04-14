@@ -75,111 +75,22 @@ public class UserDAO extends AmazonDAOTemplate{
     }
 
     public void decrementUserFollowing(String alias) {
-        StoredUser user = getUser(alias);
-        if (user == null) {
-            throw new DataAccessException("Username not found in database");
-        }
-
-        updateTable(alias, FOLLOWEECOUNT_LABEL, user.getFolloweeCount()-1);
+        decrementTableField(alias, FOLLOWEECOUNT_LABEL);
     }
 
     public void incrementUserFollowing(String alias) {
-        StoredUser user = getUser(alias);
-        if (user == null) {
-            throw new DataAccessException("Username not found in database");
-        }
-
-        updateTable(alias, FOLLOWEECOUNT_LABEL, user.getFolloweeCount()+1);
+        incrementTableField(alias, FOLLOWEECOUNT_LABEL);
     }
 
     public void decrementUserFollowers(String alias) {
-        StoredUser user = getUser(alias);
-        if (user == null) {
-            throw new DataAccessException("Username not found in database");
-        }
-
-        updateTable(alias, FOLLOWERCOUNT_LABEL, user.getFollowerCount()-1);
+        decrementTableField(alias, FOLLOWERCOUNT_LABEL);
     }
 
     public void incrementUserFollowers(String alias) {
-        StoredUser user = getUser(alias);
-        if (user == null) {
-            throw new DataAccessException("Username not found in database");
-        }
-
-        updateTable(alias, FOLLOWERCOUNT_LABEL, user.getFollowerCount()+1);
+        incrementTableField(alias, FOLLOWERCOUNT_LABEL);
     }
 
     public void addUserBatch(List<Object> users) {
         addToTableBatch(users);
     }
-
-//    DynamoDB db;
-//    Table table;
-//
-//    public UserDAO(){
-//        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
-//                .withRegion("us-west-2")
-//                .build();
-//        this.db = new DynamoDB(client);
-//        this.table = db.getTable("user");
-//    }
-//
-//    public boolean createUser(RegisterRequest rr) {
-//        try{
-//            PutItemOutcome outcome = table
-//                    .putItem(new Item().withPrimaryKey("alias", rr.getUsername())
-//                            .withString("first_name", rr.getFirstName())
-//                            .withString("last_name", rr.getLastName())
-//                            .withString("imageURL", "https://i.imgur.com/OvMZBs9.jpg")
-//                            .withString("password", rr.getPassword())
-//                            .withInt("follower_count", 0)
-//                            .withInt("followee_count", 0));
-//        } catch (Exception e){
-//            e.printStackTrace();
-//            return false;
-//        }
-//        return true;
-//    }
-//
-//    public User getUser(String alias) {
-//        GetItemSpec spec = new GetItemSpec().withPrimaryKey("alias", alias);
-//        Item outcome = null;
-//        User user = new User();
-//        try{
-//            outcome = table.getItem(spec);
-//            user.setFirstName(outcome.getString("first_name"));
-//            user.setLastName(outcome.getString("last_name"));
-//            user.setImageUrl(outcome.getString("imageURL"));
-//            user.setFollowerCount(outcome.getInt("follower_count"));
-//            user.setFolloweeCount(outcome.getInt("followee_count"));
-//            user.setAlias(alias);
-//            user.setImageBytes(imageToByteArray(outcome.getString("imageURL")));
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        if (user.getAlias() != null){
-//            return user;
-//        }
-//        return null;
-//    }
-//
-//    private byte[] imageToByteArray(String url) throws IOException {
-//        URL u = new URL(url);
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        try (InputStream is = u.openStream()) {
-//            byte[] byteChunk = new byte[4096]; // Or whatever size you want to read in at a time.
-//            int n;
-//
-//            while ((n = is.read(byteChunk)) > 0) {
-//                baos.write(byteChunk, 0, n);
-//            }
-//        } catch (IOException e) {
-//            System.err.printf("Failed while reading bytes from %s: %s", u.toExternalForm(), e.getMessage());
-//            e.printStackTrace();
-//            // Perform any other exception handling that's appropriate.
-//        }
-//        return baos.toByteArray();
-//    }
-//
 }
