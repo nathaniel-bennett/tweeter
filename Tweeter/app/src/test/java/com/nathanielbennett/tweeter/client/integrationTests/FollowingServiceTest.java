@@ -23,7 +23,7 @@ public class FollowingServiceTest {
 
     private FollowRequest goodRequest;
     private FollowRequest badRequest;
-    private final int limit = 5;
+    private final int limit = 1;
     private FollowingService followingService;
 
     @BeforeEach
@@ -44,8 +44,9 @@ public class FollowingServiceTest {
     @Test
     public void invalidRequestTest() throws IOException, TweeterRemoteException {
         FollowResponse response = followingService.getFollowees(badRequest);
-        Assertions.assertFalse(response.getSuccess());
-        Assertions.assertNotNull(response.getErrorMessage());
+        Assertions.assertTrue(response.getRequestedUsers().isEmpty());
+//        Assertions.assertFalse(response.getSuccess());
+//        Assertions.assertNotNull(response.getErrorMessage());
     }
 
 
