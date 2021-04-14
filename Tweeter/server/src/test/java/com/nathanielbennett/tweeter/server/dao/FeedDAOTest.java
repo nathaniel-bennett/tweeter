@@ -39,7 +39,6 @@ public class FeedDAOTest {
         Assertions.assertNotNull(statuses2);
         Assertions.assertEquals(1, statuses2.size());
         Assertions.assertNotEquals(statuses.get(0), statuses2.get(0));
-
     }
 
     @Test
