@@ -44,7 +44,6 @@ public class PostServiceTest {
     @Test
     public void invalidRequestTest() throws IOException, TweeterRemoteException {
         PostResponse response = postService.addPost(badRequest);
-        Assertions.assertFalse(response.getSuccess());
         Assertions.assertNotNull(response.getErrorMessage());
     }
 
