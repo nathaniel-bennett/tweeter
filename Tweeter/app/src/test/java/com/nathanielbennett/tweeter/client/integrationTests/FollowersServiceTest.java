@@ -41,8 +41,7 @@ public class FollowersServiceTest {
     @Test
     public void invalidRequestTest() throws IOException {
         FollowResponse response = followersService.fetchFollowers(badRequest);
-        Assertions.assertFalse(response.getSuccess());
-        Assertions.assertNotNull(response.getErrorMessage());
+        Assertions.assertEquals(0, response.getRequestedUsers().size());
     }
 
 
