@@ -9,7 +9,9 @@ import com.nathanielbennett.tweeter.model.service.response.TweeterAPIResponse;
 import com.nathanielbennett.tweeter.client.util.ByteArrayUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class TemplateTask extends AsyncTask<TweeterAPIRequest,  Void, TweeterAPIResponse> {
 
@@ -58,8 +60,16 @@ public abstract class TemplateTask extends AsyncTask<TweeterAPIRequest,  Void, T
      * @param statuses the users whose profile images are to be loaded.
      */
     protected void loadStatusImages(List<com.nathanielbennett.tweeter.model.domain.Status> statuses) throws IOException {
+        Map<String, byte[]> images = new HashMap<>();
+
         for(com.nathanielbennett.tweeter.model.domain.Status status : statuses) {
-            loadUserImage(status.getUserOfStatus());
+            String url = status.getUserOfStatus().getImageUrl();
+            if (images.containsKey(url)) {
+                status.getUserOfStatus().setImageBytes(images.get(url));
+            } else {
+                loadUserImage(status.getUserOfStatus());
+                images.put(url, status.getUserOfStatus().getImageBytes());
+            }
         }
     }
 
