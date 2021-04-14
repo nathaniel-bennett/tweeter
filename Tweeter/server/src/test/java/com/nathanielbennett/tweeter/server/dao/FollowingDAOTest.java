@@ -1,139 +1,98 @@
 package com.nathanielbennett.tweeter.server.dao;
 
 import com.nathanielbennett.tweeter.model.domain.User;
+import com.nathanielbennett.tweeter.server.model.StoredFollowRelationship;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 class FollowingDAOTest {
 
-    private final User user1 = new User("Daffy", "Duck", "");
-    private final User user2 = new User("Fred", "Flintstone", "");
-    private final User user3 = new User("Barney", "Rubble", "");
-    private final User user4 = new User("Wilma", "Rubble", "");
-    private final User user5 = new User("Clint", "Eastwood", "");
-    private final User user6 = new User("Mother", "Teresa", "");
-    private final User user7 = new User("Harriett", "Hansen", "");
-    private final User user8 = new User("Zoe", "Zabriski", "");
+    FollowDAO dao;
 
-
-    /*
-    private FollowingDAO followingDAOSpy;
     @BeforeEach
-    void setup() {
-        followingDAOSpy = Mockito.spy(new FollowingDAO());
+    public void setup() {
+        dao = new FollowDAO();
     }
 
     @Test
-    void testGetFollowees_noFolloweesForUser() {
-        List<User> followees = Collections.emptyList();
-        Mockito.when(followingDAOSpy.getDummyFollowees()).thenReturn(followees);
-
-        FollowRequest request = new FollowRequest(user1.getAlias(), 10, null);
-        FollowResponse response = followingDAOSpy.getFollowees(request);
-
-        Assertions.assertEquals(0, response.getRequestedUsers().size());
-        Assertions.assertFalse(response.getHasMorePages());
+    public void testIsFollowing_validRelationship() {
+        Assertions.assertTrue(dao.isFollowing("guy1", "dummyUser"));
     }
 
     @Test
-    void testGetFollowees_oneFollowerForUser_limitGreaterThanUsers() {
-        List<User> followees = Collections.singletonList(user2);
-        Mockito.when(followingDAOSpy.getDummyFollowees()).thenReturn(followees);
-
-        FollowRequest request = new FollowRequest(user1.getAlias(), 10, null);
-        FollowResponse response = followingDAOSpy.getFollowees(request);
-
-        Assertions.assertEquals(1, response.getRequestedUsers().size());
-        Assertions.assertTrue(response.getRequestedUsers().contains(user2));
-        Assertions.assertFalse(response.getHasMorePages());
+    public void testIsFollowing_invalidRelationship() {
+        Assertions.assertFalse(dao.isFollowing("guy1", "guy2"));
     }
 
     @Test
-    void testGetFollowees_twoFollowersForUser_limitEqualsUsers() {
-        List<User> followees = Arrays.asList(user2, user3);
-        Mockito.when(followingDAOSpy.getDummyFollowees()).thenReturn(followees);
-
-        FollowRequest request = new FollowRequest(user3.getAlias(), 2, null);
-        FollowResponse response = followingDAOSpy.getFollowees(request);
-
-        Assertions.assertEquals(2, response.getRequestedUsers().size());
-        Assertions.assertTrue(response.getRequestedUsers().contains(user2));
-        Assertions.assertTrue(response.getRequestedUsers().contains(user3));
-        Assertions.assertFalse(response.getHasMorePages());
+    public void testAddFollowRelationship() {
+        dao.addFollowRelationship("guy1", "guy3");
+        Assertions.assertTrue(dao.isFollowing("guy1", "guy3"));
     }
 
     @Test
-    void testGetFollowees_limitLessThanUsers_endsOnPageBoundary() {
-        List<User> followees = Arrays.asList(user2, user3, user4, user5, user6, user7);
-        Mockito.when(followingDAOSpy.getDummyFollowees()).thenReturn(followees);
-
-        FollowRequest request = new FollowRequest(user5.getAlias(), 2, null);
-        FollowResponse response = followingDAOSpy.getFollowees(request);
-
-        // Verify first page
-        Assertions.assertEquals(2, response.getRequestedUsers().size());
-        Assertions.assertTrue(response.getRequestedUsers().contains(user2));
-        Assertions.assertTrue(response.getRequestedUsers().contains(user3));
-        Assertions.assertTrue(response.getHasMorePages());
-
-        // Get and verify second page
-        request = new FollowRequest(user5.getAlias(), 2, response.getRequestedUsers().get(1).getAlias());
-        response = followingDAOSpy.getFollowees(request);
-
-        Assertions.assertEquals(2, response.getRequestedUsers().size());
-        Assertions.assertTrue(response.getRequestedUsers().contains(user4));
-        Assertions.assertTrue(response.getRequestedUsers().contains(user5));
-        Assertions.assertTrue(response.getHasMorePages());
-
-        // Get and verify third page
-        request = new FollowRequest(user5.getAlias(), 2, response.getRequestedUsers().get(1).getAlias());
-        response = followingDAOSpy.getFollowees(request);
-
-        Assertions.assertEquals(2, response.getRequestedUsers().size());
-        Assertions.assertTrue(response.getRequestedUsers().contains(user6));
-        Assertions.assertTrue(response.getRequestedUsers().contains(user7));
-        Assertions.assertFalse(response.getHasMorePages());
+    public void testRemoveFollowRelationship() {
+        dao.removeFollowRelationship("guy1", "guy3");
+        Assertions.assertFalse(dao.isFollowing("guy1", "guy3"));
     }
-
 
     @Test
-    void testGetFollowees_limitLessThanUsers_notEndsOnPageBoundary() {
-        List<User> followees = Arrays.asList(user2, user3, user4, user5, user6, user7, user8);
-        Mockito.when(followingDAOSpy.getDummyFollowees()).thenReturn(followees);
+    public void testGetFollowedBy_PagedResponse() {
+        List<String> aliases = dao.getFollowing("dummyUser", 10, null);
+        Assertions.assertNotNull(aliases);
+        Assertions.assertEquals(10, aliases.size());
 
-        FollowRequest request = new FollowRequest(user6.getAlias(), 2, null);
-        FollowResponse response = followingDAOSpy.getFollowees(request);
+        List<String> nextPage = dao.getFollowing("dummyUser", 10, aliases.get(9));
+        Assertions.assertNotNull(nextPage);
+        Assertions.assertEquals(10, nextPage.size());
 
-        // Verify first page
-        Assertions.assertEquals(2, response.getRequestedUsers().size());
-        Assertions.assertTrue(response.getRequestedUsers().contains(user2));
-        Assertions.assertTrue(response.getRequestedUsers().contains(user3));
-        Assertions.assertTrue(response.getHasMorePages());
+        Assertions.assertNotEquals(aliases.get(9), nextPage.get(9));
+    }
 
-        // Get and verify second page
-        request = new FollowRequest(user6.getAlias(), 2, response.getRequestedUsers().get(1).getAlias());
-        response = followingDAOSpy.getFollowees(request);
+    @Test
+    public void testGetFollowedBy_invalidUser_PagedResponse() {
+        List<String> aliases = dao.getFollowing("fakeUser", 10, null);
+        Assertions.assertNotNull(aliases);
+        Assertions.assertEquals(0, aliases.size());
+    }
 
-        Assertions.assertEquals(2, response.getRequestedUsers().size());
-        Assertions.assertTrue(response.getRequestedUsers().contains(user4));
-        Assertions.assertTrue(response.getRequestedUsers().contains(user5));
-        Assertions.assertTrue(response.getHasMorePages());
+    @Test
+    public void testGetFollowedBy_nonPagedResponse() {
+        dao.addFollowRelationship("guy1", "guy9");
+        dao.addFollowRelationship("guy1", "guy6");
+        List<String> following = dao.getFollowing("guy1");
+        Assertions.assertNotNull(following);
+        Assertions.assertEquals(2, following.size());
+    }
 
-        // Get and verify third page
-        request = new FollowRequest(user6.getAlias(), 2, response.getRequestedUsers().get(1).getAlias());
-        response = followingDAOSpy.getFollowees(request);
+    @Test
+    public void testGetFollowedBy_invalidUser_nonPagedResponse() {
+        List<String> following = dao.getFollowing("fakeUser");
+        Assertions.assertNotNull(following);
+        Assertions.assertEquals(0, following.size());
+    }
 
-        Assertions.assertEquals(2, response.getRequestedUsers().size());
-        Assertions.assertTrue(response.getRequestedUsers().contains(user6));
-        Assertions.assertTrue(response.getRequestedUsers().contains(user7));
-        Assertions.assertTrue(response.getHasMorePages());
+    @Test
+    public void testAddFollowersBatch() {
+        StoredFollowRelationship one = new StoredFollowRelationship("guy1", "guy2");
+        StoredFollowRelationship two = new StoredFollowRelationship("guy1", "guy3");
+        StoredFollowRelationship three = new StoredFollowRelationship("guy1", "guy4");
 
-        // Get and verify fourth page
-        request = new FollowRequest(user6.getAlias(), 2, response.getRequestedUsers().get(1).getAlias());
-        response = followingDAOSpy.getFollowees(request);
+        List<Object> batch = Arrays.asList(one, two, three);
+        dao.addFollowersBatch(batch);
 
-        Assertions.assertEquals(1, response.getRequestedUsers().size());
-        Assertions.assertTrue(response.getRequestedUsers().contains(user8));
-        Assertions.assertFalse(response.getHasMorePages());
+        Assertions.assertTrue(dao.isFollowing("guy1", "guy2"));
+        Assertions.assertTrue(dao.isFollowing("guy1", "guy3"));
+        Assertions.assertTrue(dao.isFollowing("guy1", "guy4"));
+
+        dao.removeFollowRelationship("guy1", "guy2");
+        dao.removeFollowRelationship("guy1", "guy3");
+        dao.removeFollowRelationship("guy1", "guy4");
 
     }
-     */
 }
