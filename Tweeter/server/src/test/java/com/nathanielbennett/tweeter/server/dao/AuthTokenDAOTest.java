@@ -2,6 +2,7 @@ package com.nathanielbennett.tweeter.server.dao;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.server.exceptions.DataAccessException;
+import com.nathanielbennett.tweeter.server.util.PasswordHasher;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
