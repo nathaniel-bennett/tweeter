@@ -63,11 +63,13 @@ class FollowingDAOTest {
 
     @Test
     public void testGetFollowedBy_nonPagedResponse() {
-        dao.addFollowRelationship("guy1", "guy9");
-        dao.addFollowRelationship("guy1", "guy6");
+        dao.addFollowRelationship("guy6", "guy1");
+        dao.addFollowRelationship("guy9", "guy1");
         List<String> following = dao.getFollowing("guy1");
         Assertions.assertNotNull(following);
-        Assertions.assertEquals(2, following.size());
+        Assertions.assertEquals(3, following.size());
+        dao.removeFollowRelationship("guy6", "guy1");
+        dao.removeFollowRelationship("guy9", "guy1");
     }
 
     @Test
