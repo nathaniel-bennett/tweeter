@@ -60,11 +60,11 @@ public class FeedDAO extends AmazonDAOTemplate {
         return userFeed;
     }
 
-    public void addStatusToFeed(String feedOwner, StoredStatus status) {
-        status.setFeedOwner(feedOwner);
-
-        addToTable(status);
-    }
+//    public void addStatusToFeed(String feedOwner, StoredStatus status) {
+//        status.setFeedOwner(feedOwner);
+//
+//        addToTable(status);
+//    }
 
     public void addStatusToFeeds(List<String> feedOwners, StoredStatus status) {
         List<Object> statuses = new ArrayList<>();

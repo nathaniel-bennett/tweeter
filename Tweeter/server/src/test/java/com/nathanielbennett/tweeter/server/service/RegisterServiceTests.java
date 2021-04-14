@@ -1,9 +1,13 @@
 package com.nathanielbennett.tweeter.server.service;
 
+import com.nathanielbennett.tweeter.model.domain.AuthToken;
 import com.nathanielbennett.tweeter.model.service.request.RegisterRequest;
 import com.nathanielbennett.tweeter.model.service.response.RegisterResponse;
+import com.nathanielbennett.tweeter.server.dao.AuthTokenDAO;
+import com.nathanielbennett.tweeter.server.dao.UserDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.WeakPasswordException;
+import com.nathanielbennett.tweeter.server.model.StoredUser;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -20,32 +25,26 @@ import java.util.stream.Stream;
 
 public class RegisterServiceTests {
 
-    /**
-     *
-
     RegisterServiceImpl service;
-    RegisterDAO dao;
+    UserDAO dao;
+    AuthTokenDAO authDAO;
     RegisterRequest goodRequest;
-    RegisterResponse goodResponse;
-    RegisterRequest badRequest;
-    RegisterResponse badResponse;
 
     @BeforeEach
     public void setup() {
 
-        dao = Mockito.mock(RegisterDAO.class);
+        dao = Mockito.mock(UserDAO.class);
+        authDAO = Mockito.mock(AuthTokenDAO.class);
         service = Mockito.spy(RegisterServiceImpl.class);
 
-        goodRequest = new RegisterRequest("Hank", "Dog", "@HankD", "@hello", "hi".getBytes());
-        goodResponse = new RegisterResponse("ok");
-        Mockito.when(dao.register(goodRequest)).thenReturn(goodResponse);
+        Mockito.when(service.getAuthTokenDAO()).thenReturn(authDAO);
+        Mockito.when(service.getUserDAO()).thenReturn(dao);
 
-        badRequest = new RegisterRequest("Hank", "Dog", "@HankD", "@hello", "BAD".getBytes());
-        badResponse = new RegisterResponse("failure");
-        Mockito.when(dao.register(badRequest)).thenReturn(badResponse);
-
-        Mockito.when(service.getRegisterDAO()).thenReturn(dao);
-
+        goodRequest = new RegisterRequest("Hank", "Dog", "@HankD", "@hello000", "hi".getBytes());
+        StoredUser user = new StoredUser(goodRequest.getFirstName(), goodRequest.getLastName(), "hash", goodRequest.getUsername(), "nowhere", 0, 0);
+        Mockito.when(dao.getUser(goodRequest.getUsername())).thenReturn(null);
+        Mockito.when(service.requestToStoredUser(goodRequest)).thenReturn(user);
+        Mockito.when(authDAO.createToken(goodRequest.getUsername())).thenReturn(new AuthToken());
     }
 
     static Stream<Arguments> generateInvalidTestInput() {
@@ -55,8 +54,6 @@ public class RegisterServiceTests {
         args.add(Arguments.of(new RegisterRequest("", "Dog", "@HankD", "@hello", "GOOD".getBytes())));
         args.add(Arguments.of(new RegisterRequest("Hank", null, "@HankD", "@hello", "GOOD".getBytes())));
         args.add(Arguments.of(new RegisterRequest("Hank", "", "@HankD", "@hello", "GOOD".getBytes())));
-        args.add(Arguments.of(new RegisterRequest("Hank", "Dog", null, "@hello", "GOOD".getBytes())));
-        args.add(Arguments.of(new RegisterRequest("Hank", "Dog", "", "@hello", "GOOD".getBytes())));
         args.add(Arguments.of(new RegisterRequest("Hank", "Dog", "@HankD", null, "GOOD".getBytes())));
         args.add(Arguments.of(new RegisterRequest("Hank", "Dog", "@HankD", "", "GOOD".getBytes())));
         args.add(Arguments.of(new RegisterRequest("Hank", "Dog", "@HankD", "@hello", null)));
@@ -70,8 +67,12 @@ public class RegisterServiceTests {
     @MethodSource("generateInvalidTestInput")
     public void testBadInputThrowsException(RegisterRequest request) {
 
-        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+        if (request.getPassword() == null || request.getPassword().isEmpty() || request.getUsername().length() < 8) {
             Assertions.assertThrows(WeakPasswordException.class, () -> {
+                service.register(request);
+            });
+        } else if (request.getUsername() == null || request.getUsername().isEmpty()) {
+            Assertions.assertThrows(BadRequestException.class, () -> {
                 service.register(request);
             });
         } else {
@@ -85,10 +86,6 @@ public class RegisterServiceTests {
     @Test
     public void testServiceReturnsCorrectObject() {
         RegisterResponse response = service.register(goodRequest);
-        Assertions.assertTrue(response == goodResponse);
-
-        response = service.register(badRequest);
-        Assertions.assertTrue(response == badResponse);
+        Assertions.assertTrue(response.getSuccess());
     }
-    */
 }

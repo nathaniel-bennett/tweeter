@@ -1,10 +1,14 @@
 package com.nathanielbennett.tweeter.server.service;
 
 import com.nathanielbennett.tweeter.model.domain.AuthToken;
+import com.nathanielbennett.tweeter.model.service.request.AuthorizationRequest;
 import com.nathanielbennett.tweeter.model.service.request.PostRequest;
+import com.nathanielbennett.tweeter.model.service.response.AuthorizationResponse;
 import com.nathanielbennett.tweeter.model.service.response.PostResponse;
+import com.nathanielbennett.tweeter.server.dao.StoryDAO;
 import com.nathanielbennett.tweeter.server.exceptions.BadRequestException;
 import com.nathanielbennett.tweeter.server.exceptions.NotAuthorizedException;
+import com.nathanielbennett.tweeter.server.model.StoredStatus;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,36 +19,37 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class PostServiceTests {
 
-    /*
     PostServiceImpl service;
-    PostDAO dao;
+    StoryDAO dao;
+    AuthorizationServiceImpl authService;
     PostRequest goodRequest;
     PostResponse goodResponse;
-    PostRequest badRequest;
-    PostResponse badResponse;
 
     @BeforeEach
     public void setup() {
 
-        dao = Mockito.mock(PostDAO.class);
+        dao = Mockito.mock(StoryDAO.class);
+        authService = Mockito.mock(AuthorizationServiceImpl.class);
         service = Mockito.spy(PostServiceImpl.class);
 
         goodRequest = new PostRequest("HELLO", "@me", new AuthToken());
         goodResponse = new PostResponse("ok");
-        Mockito.when(dao.addToStory(goodRequest)).thenReturn(goodResponse);
 
-        badRequest = new PostRequest("Bad", "@fake", new AuthToken());
-        badResponse = new PostResponse("failure");
-        Mockito.when(dao.addToStory(badRequest)).thenReturn(badResponse);
+        StoredStatus storedStatus =  new StoredStatus(goodRequest.getUsername(), goodRequest.getStatus(), LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
 
-        Mockito.when(service.getPostDAO()).thenReturn(dao);
-
+        AuthorizationRequest request1 = new AuthorizationRequest(goodRequest);
+        Mockito.when(service.postToStoredStatus(goodRequest)).thenReturn(storedStatus);
+        Mockito.when(service.getAuthService()).thenReturn(authService);
+        Mockito.when(service.postToAuthRequest(goodRequest)).thenReturn(request1);
+        Mockito.when(authService.isAuthorized(request1)).thenReturn(new AuthorizationResponse());
     }
 
     static Stream<Arguments> generateInvalidTestInput() {
@@ -78,11 +83,6 @@ public class PostServiceTests {
     @Test
     public void testServiceReturnsCorrectObject() {
         PostResponse response = service.addPost(goodRequest);
-        Assertions.assertTrue(response == goodResponse);
-
-        response = service.addPost(badRequest);
-        Assertions.assertTrue(response == badResponse);
+        Assertions.assertTrue(response.getSuccess());
     }
-
-     */
 }

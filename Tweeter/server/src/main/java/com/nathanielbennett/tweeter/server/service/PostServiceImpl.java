@@ -37,15 +37,15 @@ public class PostServiceImpl implements PostService {
 
         // Now check to make sure username/auth token combo is valid
 
-        AuthorizationRequest authRequest = new AuthorizationRequest(request);
-        AuthorizationService authService = new AuthorizationServiceImpl();
+        AuthorizationRequest authRequest = postToAuthRequest(request);
+        AuthorizationService authService = getAuthService();
         AuthorizationResponse authResponse = authService.isAuthorized(authRequest);
 
         if (!authResponse.getSuccess()) {
             return new PostResponse(authResponse.getErrorMessage());
         }
 
-        StoredStatus status = new StoredStatus(request.getUsername(), request.getStatus(), LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+        StoredStatus status = postToStoredStatus(request);
 
         // Post the status to the user's own feed (*hopefully* within 1000 ms)
         getStoryDAO().addStatusToStory(status);
@@ -75,5 +75,17 @@ public class PostServiceImpl implements PostService {
      */
     public StoryDAO getStoryDAO() {
         return new StoryDAO();
+    }
+
+    public AuthorizationService getAuthService() {
+        return new AuthorizationServiceImpl();
+    }
+
+    public AuthorizationRequest postToAuthRequest(PostRequest request) {
+        return new AuthorizationRequest(request);
+    }
+
+    public StoredStatus postToStoredStatus(PostRequest request) {
+        return new StoredStatus(request.getUsername(), request.getStatus(), LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
     }
 }

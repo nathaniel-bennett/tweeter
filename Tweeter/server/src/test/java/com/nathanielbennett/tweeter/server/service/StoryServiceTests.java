@@ -24,10 +24,7 @@ public class StoryServiceTests {
     StoryDAO dao;
     StatusRequest goodRequest;
     StatusResponse goodResponse;
-    StatusRequest badRequest;
-    StatusResponse badResponse;
 
-    /*
     @BeforeEach
     public void setup() {
 
@@ -36,12 +33,7 @@ public class StoryServiceTests {
 
         goodRequest = new StatusRequest("@Hank",1,"hello there");
         goodResponse = new StatusResponse("ok");
-        Mockito.when(dao.getStory(goodRequest)).thenReturn(goodResponse);
-
-        badRequest = new StatusRequest("@Hank",1,"hello there");;
-        badResponse = new StatusResponse("failure");
-        Mockito.when(dao.getStory(badRequest)).thenReturn(badResponse);
-
+        Mockito.when(dao.getUserStory(goodRequest.getAlias(), goodRequest.getLimit(), goodRequest.getTimestamp())).thenReturn(new ArrayList<>());
         Mockito.when(service.getStoryDAO()).thenReturn(dao);
 
     }
@@ -70,11 +62,7 @@ public class StoryServiceTests {
     @Test
     public void testServiceReturnsCorrectObject() {
         StatusResponse response = service.fetchStory(goodRequest);
-        Assertions.assertTrue(response == goodResponse);
-
-        response = service.fetchStory(badRequest);
-        Assertions.assertTrue(response == badResponse);
+        Assertions.assertTrue(response.getSuccess());
+        Assertions.assertNotNull(response.getStatuses());
     }
-
-     */
 }

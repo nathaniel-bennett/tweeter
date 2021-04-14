@@ -26,6 +26,8 @@ import java.util.UUID;
 
 public class RegisterServiceImpl implements RegisterService {
 
+    String bucket_name = "cs340nccimagebucket";
+
     @Override
     public RegisterResponse register(RegisterRequest request) {
         if (request == null) {
@@ -63,15 +65,13 @@ public class RegisterServiceImpl implements RegisterService {
             throw new HandleTakenException("Requested user handle is taken; please try another.");
         }
 
-        PasswordHasher hasher = new PasswordHasher();
-        String hashedPassword = hasher.hash(request.getPassword());
+
 
         AmazonS3 s3 = AmazonS3ClientBuilder
                 .standard()
                 .withRegion("us-west-2")
                 .build();
 
-        String bucket_name = "cs340nccimagebucket";
         String bucket_key = UUID.randomUUID().toString();
 
         try {
@@ -90,9 +90,7 @@ public class RegisterServiceImpl implements RegisterService {
             throw new DataAccessException("S3 Bucket could not be accessed to store image");
         }
 
-        String imageLocation = "https://" + bucket_name + ".s3-us-west-2.amazonaws.com/" + request.getUsername();
-
-        StoredUser storedUser = new StoredUser(request.getFirstName(), request.getLastName(), hashedPassword, request.getUsername(), imageLocation, 0, 0);
+        StoredUser storedUser = requestToStoredUser(request);
 
         userDAO.createUser(storedUser);
 
@@ -119,5 +117,12 @@ public class RegisterServiceImpl implements RegisterService {
 
     public AuthTokenDAO getAuthTokenDAO() {
         return new AuthTokenDAO();
+    }
+
+    public StoredUser requestToStoredUser(RegisterRequest request) {
+        PasswordHasher hasher = new PasswordHasher();
+        String hashedPassword = hasher.hash(request.getPassword());
+        String imageLocation = "https://" + bucket_name + ".s3-us-west-2.amazonaws.com/" + request.getUsername();
+        return new StoredUser(request.getFirstName(), request.getLastName(), hashedPassword, request.getUsername(), imageLocation, 0, 0);
     }
 }
