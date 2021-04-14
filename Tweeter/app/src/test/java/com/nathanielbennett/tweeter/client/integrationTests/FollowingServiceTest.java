@@ -45,8 +45,6 @@ public class FollowingServiceTest {
     public void invalidRequestTest() throws IOException, TweeterRemoteException {
         FollowResponse response = followingService.getFollowees(badRequest);
         Assertions.assertTrue(response.getRequestedUsers().isEmpty());
-//        Assertions.assertFalse(response.getSuccess());
-//        Assertions.assertNotNull(response.getErrorMessage());
     }
 
 
