@@ -19,5 +19,7 @@ public class FixFollow implements RequestHandler<Void, Void> {
                 logger.log("User " + username + "incremented.");
             }
         }
+
+        return null;
     }
 }
