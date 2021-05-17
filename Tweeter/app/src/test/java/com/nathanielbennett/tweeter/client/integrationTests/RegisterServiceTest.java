@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class RegisterServiceTest {
 
@@ -26,7 +27,7 @@ public class RegisterServiceTest {
     @BeforeEach
     public void setup() {
         registerService = new RegisterServiceProxy();
-        goodRequest = new RegisterRequest("Bartholomew", "Desperation", "@TheMr.Desperate", "GOODPASSWORD", new byte[1]);
+        goodRequest = new RegisterRequest("Bartholomew", "Desperation", UUID.randomUUID().toString(), "GOODPASSWORD", new byte[1]);
         badRequest = new RegisterRequest(null, null, null, null, null);
     }
 

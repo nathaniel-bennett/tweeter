@@ -35,7 +35,6 @@ public class StoryServiceTest {
     @Test
     public void invalidStoryRequest() throws IOException {
         StatusResponse response = storyService.fetchStory(invalidRequest);
-        Assertions.assertFalse(response.getSuccess());
-        Assertions.assertNotNull(response.getErrorMessage());
+        Assertions.assertNull(response.getStatuses());
     }
 }

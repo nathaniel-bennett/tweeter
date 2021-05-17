@@ -36,7 +36,7 @@ public class StoryStrategy implements ClientCommunicator.WebRequestStrategy {
 
 
 
-        Log.i("StoryRequestURI", uri);
+//        Log.i("StoryRequestURI", uri);
 
         return uri;
     }
