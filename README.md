@@ -1,39 +1,8 @@
-# tweeter-client
-Client-side Android App (clone of Twitter) for CS 340
+# tweeter
 
-**Sign-Up Feature (Nathan):**
+Tweeter is an Android client and AWS Java server implementation of a clone of Twitter. This project was developed and completed by Chris McClain, Curtis Larsen and Nathaniel Bennett as part of a course on design patterns. 
 
-&emsp;•	Make Unit Tests
+The client code can be found in Tweeter/app and Tweeter/shared; AWS server code is in Tweeter/server and Tweeter/shared. The Android client code makes use of the MVP (Model/View/Presenter), and both client and server code are layered to separate presentation, business code and data access.
 
-&emsp;•	Picture thingy (with Chris)
-
-**Sign-In Feature (Nathan):**
-
-&emsp;•	Make Unit Tests
-
-**Sign-Out Feature (Curtis):**
-
-**Post Status Feature (Nathan):**
-
-**View Feed Feature (Chris):**
-
-&emsp;•	Using recycler-view abstraction
-
-**View User Story Feature (Chris):**
-
-&emsp;•	Using recycler-view abstraction
-
-**View User Followers Feature (Curtis):**
-
-&emsp;•	Abstracted requests and responses so this can be reused for followers
-
-**View User Following Feature (Curtis):**
-
-&emsp;•	Abstracted requests and responses so this can be reused for followers
-
-**Follow Feature (Chris):**
-
-**Unfollow Feature (Chris):**
-
-**User Activity Feature (Nathan):**
+Through the use of AWS SQS message queues, the end result of this project was a social media app capable of propogating and updating status feeds for tens or hundreds of thousands of users within a relatively small period of time (<60 seconds) whenever a user posted a status, without incurring any noticable charges for AWS services. It was a fun project!
 
